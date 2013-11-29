@@ -9,102 +9,59 @@
 
 # region header
 
-# Copyright Torben Sickert 16.12.2012
+###
+This plugin provided client side internationalisation support for websites.
 
-# License
-#    This library written by Torben Sickert stand under a creative commons
-#    naming 3.0 unported license.
-#    see http://creativecommons.org/licenses/by/3.0/deed.de
+Copyright
+---------
 
-###!
-    Copyright see require on https://github.com/thaibault/require
+Torben Sickert 16.12.2012
 
-    Conventions see require on https://github.com/thaibault/require
+License
+-------
 
-    @author t.sickert@gmail.com (Torben Sickert)
-    @version 1.0 stable
-    @fileOverview
-    This plugin provided client side internationalisation support for websites.
+This library written by Torben Sickert stand under a creative commons naming
+3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de
+
+Extending this module
+---------------------
+
+For conventions see require on https://github.com/thaibault/require
+
+Author
+------
+
+t.sickert@gmail.com (Torben Sickert)
+
+Version
+-------
+
+1.0 stable
 ###
 
 ## standalone
 ## do ($=this.jQuery) ->
-this.require([
-    ['jQuery', 'jquery-2.0.3']
-    ['jQuery.cookie', 'jquery-cookie-1.4.0.js']
-
-    ['jQuery.Tools', 'jquery-tools-1.0.coffee']
+this.require.scopeIndicator = 'jQuery.Lang'
+this.require [
+    'jquery-tools-1.0.coffee', ['jQuery.cookie', 'jquery-cookie-1.4.0.js']
 ], ($) ->
 ##
 
 # endregion
 
 # region plugins/classes
-#
-    ###*
-        @memberOf $
-        @class
-        @extends $.Tools
-    ###
+
     class Lang extends $.Tools.class
+        ###
+            This plugin holds all needed methods to extend a website for
+            internationalisation.
+        ###
 
     # region properties
-    #
-        ###*
-            Saves the current active language.
 
-            @property {String}
         ###
-        currentLanguage: ''
-        ###*
-            Saves default options for manipulating the Gui's behaviour.
-
-            @property {Object}
-        ###
-        _options:
-            domNodeSelectorPrefix: 'body'
-            default: 'enUS'
-            domNodeClassPrefix: ''
-            fadeEffect: true
-            fadeOptions: 'normal'
-            replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$'
-            currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$'
-            replacementDomNodeName: '#comment'
-            replaceDomNodeName: '#text'
-            toolsLockDescription: '{1}Switch'
-            languageHashPrefix: 'lang-'
-            currentLanguageIndicatorClassName: 'current'
-            cookieDescription: '{1}Last'
-            domNodes: {}
-            languageMapping:
-                deDE: ['de', 'de-de']
-                enUS: ['en', 'en-us']
-                enEN: ['en-en']
-                frFR: ['fr', 'fr-fr']
-        ###*
-            During switching language this property holds a collection of
-            dom nodes to fade.
-
-            @property {$}
-        ###
-        _domNodesToFade: null
-        ###*
-            Saves the number of iterated dom nodes during language switching.
-
-            @property {Number}
-        ###
-        _numberOfFadedDomNodes: 0
-        ###*
-            Saves a list of replacement objects. This list is collected during
-            language switching procedure.
-
-            @property {Object[]}
-        ###
-        _replacements: []
-        ###*
-            Saves the class name for introspection.
-
-            @property {String}
+            **__name__ {String}**
+            Holds the class name to provide inspection features.
         ###
         __name__: 'Lang'
 
@@ -114,26 +71,60 @@ this.require([
 
         # region special
 
-        ###*
-            @description Initializes the plugin. Current language is set and
-                         later needed dom nodes are graped.
+        initialize: (
+            options={}, @currentLanguage='', @_$domNodeToFade=null,
+            @_numberOfFadedDomNodes=0, @_replacements=[]
+        ) ->
+            ###
+                Initializes the plugin. Current language is set and later
+                needed dom nodes are grabbed.
 
-            @param {Object} options An options object.
+                **options {Object}** - An options object.
 
-            @returns {$.Lang} Returns the current instance.
-        ###
-        initialize: (options={}) ->
+                **returns {$.Lang}** - Returns the current instance.
+            ###
+            ###
+                **_options {Object}**
+                Saves default options for manipulating the Gui's behaviour.
+            ###
+            this._options =
+                domNodeSelectorPrefix: 'body'
+                default: 'enUS'
+                domNodeClassPrefix: ''
+                fadeEffect: true
+                textNodeParent:
+                    fadeIn: duration: 'normal'
+                    fadeOut: duration: 'normal'
+                replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$'
+                currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$'
+                replacementDomNodeName: '#comment'
+                replaceDomNodeNames: ['#text', 'langreplace']
+                toolsLockDescription: '{1}Switch'
+                languageHashPrefix: 'lang-'
+                currentLanguageIndicatorClassName: 'current'
+                cookieDescription: '{1}Last'
+                languageMapping:
+                    deDE: ['de', 'de-de']
+                    enUS: ['en', 'en-us']
+                    enEN: ['en-en']
+                    frFR: ['fr', 'fr-fr']
+                onSwitched: $.noop()
             super options
             this._options.toolsLockDescription = this.stringFormat(
                 this._options.toolsLockDescription, this.__name__)
             this._options.cookieDescription = this.stringFormat(
                 this._options.cookieDescription, this.__name__)
-            this._domNodes = this.grabDomNodes this._options.domNodes
+            this._options.textNodeParent.fadeIn.always = =>
+                this._numberOfFadedDomNodes += 1
+                if this._numberOfFadedDomNodes is this._$domNodeToFade.length
+                    this._numberOfFadedDomNodes = 0
+                    this.releaseLock this._options.toolsLockDescription
+            this.$domNodes = this.grabDomNode()
+            this.$domNodes.switchLanguageButtons = $(
+                "a[href^=\"##{this._options.languageHashPrefix}\"]")
             this.currentLanguage = this._options.default
             this.switch this._determineUsefulLanguage()
-            this.on $(
-                "a[href^=\"##{this._options.languageHashPrefix}\"]"
-            ), 'click', (event) =>
+            this.on this.$domNodes.switchLanguageButtons, 'click', (event) =>
                 event.preventDefault()
                 this.switch $(event.target).attr('href').substr(
                     this._options.languageHashPrefix.length + 1)
@@ -141,35 +132,39 @@ this.require([
 
         # endregion
 
-        ###*
-            @description Switches the current language to given language. This
-                         method is mutual synchronized.
-
-            @param {String} language New language.
-
-            @returns {$.Lang} Returns the current instance.
-        ###
         switch: (language) ->
-            language = this._normalizeLanguage language
-            this.debug 'Switch to {1}', language
+            ###
+                Switches the current language to given language. This method is
+                mutual synchronized.
+
+                **language {String}** - New language.
+
+                **returns {$.Lang}**  - Returns the current instance.
+            ###
             this.acquireLock(this._options.toolsLockDescription, =>
-                this._domNodesToFade = null
+                language = this._normalizeLanguage language
+                this.debug 'Switch to {1}', language
+                this._$domNodeToFade = null
                 this._replacements = []
                 $currentTextNodeToTranslate = null
                 $currentLanguageDomNode = null
                 $lastTextNodeToTranslate = null
                 $lastLanguageDomNode = null
                 self = this
-                $(this._options.domNodeSelectorPrefix).find(
-                    ':not(iframe)'
-                ).contents().each(->
-                    if this.nodeName is self._options.replaceDomNodeName
-                        # NOTE: We skip empty text nodes.
-                        if $.trim $(this).text()
+                this.$domNodes.parent.find(':not(iframe)').contents().each ->
+                    if $.inArray(
+                        this.nodeName.toLowerCase(),
+                        self._options.replaceDomNodeNames
+                    ) isnt -1
+                        $this = $ this
+                        # NOTE: We skip empty and nested text nodes
+                        if $.trim($this.text()) and $this.parents(
+                            self._options.replaceDomNodeNames.join()
+                        ).length is 0
                             $lastLanguageDomNode = \
                             self._checkLastTextNodeHavingLanguageIndicator(
                                 $lastTextNodeToTranslate, $lastLanguageDomNode)
-                            $currentTextNodeToTranslate = $ this
+                            $currentTextNodeToTranslate = $this
                     else
                         $currentDomNode = $ this
                         if $currentTextNodeToTranslate?
@@ -201,7 +196,6 @@ this.require([
                             $currentTextNodeToTranslate = null
                             $currentDomNode = null
                     return true
-                )
                 this._checkLastTextNodeHavingLanguageIndicator(
                     $lastTextNodeToTranslate, $lastLanguageDomNode)
                 this._handleSwitchEffect language
@@ -212,78 +206,93 @@ this.require([
 
     # region protected methods
 
-        ###*
-            @description Normalizes a given language string.
-
-            @param {String} language New language.
-
-            @returns {String} Returns the normalized version of given language.
-        ###
         _normalizeLanguage: (language) ->
+            ###
+                Normalizes a given language string.
+
+                **language {String}** - New language.
+
+                *returns {String}**   - Returns the normalized version of given
+                                        language.
+            ###
             for key, value of this._options.languageMapping
                 if $.inArray(key.toLowerCase(), value) is -1
                     value.push key.toLowerCase()
                 if $.inArray(language.toLowerCase(), value) isnt -1
                     return key.substring(0, 2) + key.substring 2
             return this._options.default
-        ###*
-            @description Determines a useful initial language depending on
-                         cookie and browser settings.
-
-            @returns {String} Returns the determined language.
-        ###
         _determineUsefulLanguage: ->
+            ###
+                Determines a useful initial language depending on cookie and
+                browser settings.
+
+                **returns {String}** - Returns the determined language.
+            ###
             if $.cookie(this._options.cookieDescription)?
+                this.debug(
+                    'Determine "{1}", because of cookie information.',
+                    $.cookie this._options.cookieDescription)
                 return $.cookie this._options.cookieDescription
-            this.log navigator.language
             if navigator.language?
                 $.cookie this._options.cookieDescription, navigator.language
+                this.debug(
+                    'Determine "{1}", because of browser settings.',
+                    $.cookie this._options.cookieDescription)
                 return navigator.language
             $.cookie this._options.cookieDescription, this._options.default
+            this.debug(
+                'Determine "{1}", because of default option.',
+                $.cookie this._options.cookieDescription)
             this._options.default
-        ###*
-            @description Depending an activated switching effect this method
-                         initialized the effect of replace all text string
-                         directly.
-
-            @param {String} language New language.
-
-            @returns {$.Lang} Returns the current instance.
-        ###
         _handleSwitchEffect: (language) ->
-            if this._options.fadeEffect and this._domNodesToFade?
-                this._domNodesToFade.fadeOut(
-                    duration: this._options.fadeOptions
-                    always: this.getMethod(
-                        this._handleLanguageSwitching, this, language))
+            ###
+                Depending an activated switching effect this method initialized
+                the effect of replace all text string directly.
+
+                **language {String}** - New language.
+
+                **returns {$.Lang}**  - Returns the current instance.
+            ###
+            if this._options.fadeEffect and this._$domNodeToFade?
+                this._options.textNodeParent.fadeOut.always = this.getMethod(
+                    this._handleLanguageSwitching, this, language)
+                this._$domNodeToFade.fadeOut(
+                    this._options.textNodeParent.fadeOut)
             else
                 this._handleLanguageSwitching(
                     this._handleLanguageSwitching, this, language)
             this
-        ###*
-            @description Registers a text node to change its content with given
-                         replacement.
-
-            @param {$} $currentTextNodeToTranslate Text node with content to
-                                                   translate.
-            @param {$} $currentDomNode A comment node with replacement content.
-            @param {String[]} match A matching array of replacement's text
-                                    content.
-            @param {$|null} $currentLanguageDomNode A potential given text node
-                                                    indicating the language of
-                                                    given text node.
-
-            @returns {$.Lang} Returns the current instance.
-        ###
         _registerTextNodeToChange: (
             $currentTextNodeToTranslate, $currentDomNode, match,
             $currentLanguageDomNode
         ) ->
+            ###
+                Registers a text node to change its content with given
+                replacement.
+
+                **$currentTextNodeToTranslate {$}**  - Text node with content
+                                                       to translate.
+
+                **$currentDomNode {$}**              - A comment node with
+                                                       replacement content.
+
+                **match {String[]}**                 - A matching array of
+                                                       replacement's text
+                                                       content.
+
+                **$currentLanguageDomNode {$|null}** - A potential given text
+                                                       node indicating the
+                                                       language of given text
+                                                       node.
+
+                **returns {$.Lang}**                 - Returns the current
+                                                       instance.
+            ###
             $parent = $currentTextNodeToTranslate.parent()
-            if this._domNodesToFade is null
-                this._domNodesToFade = $parent
+            if this._$domNodeToFade is null
+                this._$domNodeToFade = $parent
             else
-                this._domNodesToFade = this._domNodesToFade.add $parent
+                this._$domNodeToFade = this._$domNodeToFade.add $parent
             this._replacements.push(
                 $textNodeToTranslate: $currentTextNodeToTranslate
                 $commentNodeToReplace: $currentDomNode
@@ -291,67 +300,65 @@ this.require([
                 $parent: $parent
                 $currentLanguageDomNode: $currentLanguageDomNode)
             this
-        ###*
-            @description Checks if last text has a language indication comment
-                         node. This function is called after each parsed dom
-                         text node.
-
-            @param {$|null} $lastTextNodeToTranslate Last text to node to
-                                                     check.
-            @param {$|null} $lastLanguageDomNode A potential given language
-                                                 indication commend node.
-
-            @returns {$} Returns the retrieved or newly created language
-                         indicating comment node.
-        ###
         _checkLastTextNodeHavingLanguageIndicator: (
             $lastTextNodeToTranslate, $lastLanguageDomNode
         ) ->
+            ###
+                Checks if last text has a language indication comment node.
+                This function is called after each parsed dom text node.
+
+                **$lastTextNodeToTranslate {$|null}** - Last text to node to
+                                                        check.
+
+                **$lastLanguageDomNode {$|null}**     - A potential given
+                                                        language indication
+                                                        commend node.
+
+                **returns {$}**                       - Returns the retrieved
+                                                        or newly created
+                                                        language indicating
+                                                        comment node.
+            ###
             if $lastTextNodeToTranslate? and not $lastLanguageDomNode?
-                # Last text node doesn't have a current
-                # language indicating dom node.
+                # Last text node doesn't have a current language indicating
+                # dom node.
                 $lastLanguageDomNode = $ "<!--#{this.currentLanguage}-->"
                 $lastTextNodeToTranslate.after $lastLanguageDomNode
             $lastLanguageDomNode
-        ###*
-            @description Initialized the language switch an performs an effect
-                         if specified.
-
-            @param {Function} theFunction The function itself.
-            @param {$.Lang} self The current instance.
-            @param {String} language The new language to switch to.
-
-            @returns {$.Lang} Returns the current instance.
-        ###
         _handleLanguageSwitching: (thisFunction, self, language) ->
+            ###
+                Initialized the language switch an performs an effect if
+                specified.
+
+                **thisFunction {Function}** - The function itself.
+
+                **self {$.Lang}**           - The current instance.
+
+                **language {String}**       - The new language to switch to.
+
+                **returns {$.Lang}**        - Returns the current instance.
+            ###
             this._numberOfFadedDomNodes += 1
-            if this._options.fadeEffect and this._domNodesToFade?
-                if this._numberOfFadedDomNodes is this._domNodesToFade.length
+            if this._options.fadeEffect and this._$domNodeToFade?
+                if this._numberOfFadedDomNodes is this._$domNodeToFade.length
                     this._switchLanguage language
                     this._numberOfFadedDomNodes = 0
-                    this._domNodesToFade.fadeIn(
-                        duration: this._options.fadeOptions
-                        always: =>
-                            this._numberOfFadedDomNodes += 1
-                            if(this._numberOfFadedDomNodes is
-                               this._domNodesToFade.length)
-                                this._numberOfFadedDomNodes = 0
-                                this.releaseLock(
-                                    this._options.toolsLockDescription))
+                    this._$domNodeToFade.fadeIn(
+                        this._options.textNodeParent.fadeIn)
             else
                 this._switchLanguage language
                 this._numberOfFadedDomNodes = 0
                 this.releaseLock this._options.toolsLockDescription
             this
-        ###*
-            @description Performs the low level text replacements for switching
-                         to given language.
-
-            @param {String} language The new language to switch to.
-
-            @returns {$.Lang} Returns the current instance.
-        ###
         _switchLanguage: (language) ->
+            ###
+                Performs the low level text replacements for switching to given
+                language.
+
+                **language {String}** - The new language to switch to.
+
+                **returns {$.Lang}**  - Returns the current instance.
+            ###
             for replacement in this._replacements
                 if not replacement.$currentLanguageDomNode?
                     # Language note wasn't present initially. So we have to
@@ -366,28 +373,38 @@ this.require([
                             currentDomNodeFound = true
                         true
                     )
+                currentText = replacement.$textNodeToTranslate.html()
+                if replacement.$textNodeToTranslate[0].nodeName is '#text'
+                    currentText =
+                        replacement.$textNodeToTranslate[0].textContent
                 replacement.$textNodeToTranslate.after($(
                     "<!--" +
                     "#{replacement.$currentLanguageDomNode[0].textContent}:" +
-                    "#{replacement.$textNodeToTranslate[0].textContent}-->"
+                    "#{currentText}-->"
                 )).after($("<!--#{language}-->"))
-                replacement.$textNodeToTranslate[0].textContent = \
-                    "#{replacement.textToReplace}"
+                if replacement.$textNodeToTranslate[0].nodeName is '#text'
+                    replacement.$textNodeToTranslate[0].textContent =
+                        replacement.textToReplace
+                else
+                    replacement.$textNodeToTranslate.html(
+                        replacement.textToReplace)
                 replacement.$currentLanguageDomNode.remove()
                 replacement.$commentNodeToReplace.remove()
             this._switchCurrentLanguageIndicator language
             $.cookie this._options.cookieDescription, language
+            this.fireEvent(
+                'switched', true, this, this.currentLanguage, language)
             this.currentLanguage = language
             this
-        ###*
-            @description Switches the current language indicator in language
-                         triggered dom nodes.
-
-            @param {String} language The new language to switch to.
-
-            @returns {$.Lang} Returns the current instance.
-        ###
         _switchCurrentLanguageIndicator: (language) ->
+            ###
+                Switches the current language indicator in language triggered
+                dom nodes.
+
+                **language {String}** - The new language to switch to.
+
+                **returns {$.Lang}**  - Returns the current instance.
+            ###
             $(
                 "a[href=\"##{this._options.languageHashPrefix}" +
                 "#{this.currentLanguage}\"]." +
@@ -400,12 +417,11 @@ this.require([
 
     # endregion
 
-    ###* @ignore ###
-    $.Lang = ->
-        self = new Lang
-        self._controller.apply self, arguments
+    # region handle $ extending
+
+    $.Lang = -> $.Tools().controller Lang, arguments
+    $.Lang.class = Lang
+
+    # endregion
 
 # endregion
-
-## standalone
-)

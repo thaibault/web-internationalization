@@ -9,74 +9,69 @@
 
 # region header
 
-# Copyright Torben Sickert 16.12.2012
+###
+This module provides common reusable logic for every non trivial jQuery plugin.
 
-# License
-#    This library written by Torben Sickert stand under a creative commons
-#    naming 3.0 unported license.
-#    see http://creativecommons.org/licenses/by/3.0/deed.de
+Copyright
+---------
 
-###!
-    Copyright see require on https://github.com/thaibault/require
+Torben Sickert 16.12.2012
 
-    Conventions see require on https://github.com/thaibault/require
+License
+-------
 
-    @author t.sickert@gmail.com (Torben Sickert)
-    @version 1.0 stable
-    @fileOverview
-    This module provides common reusable logic for every jQuery non trivial
-    plugin.
+This library written by Torben Sickert stand under a creative commons naming
+3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de
+
+Extending this module
+---------------------
+
+For conventions see require on https://github.com/thaibault/require
+
+Author
+------
+
+t.sickert@gmail.com (Torben Sickert)
+
+Version
+-------
+
+1.0 stable
 ###
 
-###*
-    @name $
-    @see www.jquery.com
-###
-## standalone do ($=this.jQuery) ->
-this.require([['jQuery', 'jquery-2.0.3']], ($) ->
+## standalone
+## do ($=this.jQuery) ->
+this.require.scopeIndicator = 'jQuery.Tools'
+this.require [['jQuery', 'jquery-2.0.3']], ($) ->
+##
 
 # endregion
 
 # region plugins/classes
 
-    ###*
-        This plugin provides such interface logic like generic controller
-        logic for integrating plugins into $, mutual exclusion for
-        depending gui elements, logging additional string, array or function
-        handling. A set of helper functions to parse option objects dom trees
-        or handle events is also provided.
-
-        @memberOf $
-        @class
-    ###
     class Tools
+        ###
+            This plugin provides such interface logic like generic controller
+            logic for integrating plugins into $, mutual exclusion for
+            depending gui elements, logging additional string, array or
+            function handling. A set of helper functions to parse option
+            objects dom trees or handle events is also provided.
+        ###
 
     # region properties
 
-        ###*
-            Saves the $ wrapped dom node.
-
-            @property {Object}
         ###
-        _domNode: null
-        ###*
-            Saves default options for manipulating the default behaviour.
-
-            @property {Object}
+            **keyCode {Object}**
+            Saves a mapping from key codes to their corresponding name.
         ###
-        _options:
-            logging: false
-            domNodeSelectorPrefix: 'body'
-        ###*
-            Used for internal mutual exclusion in critical areas. To prevent
-            race conditions. Represents a map with critical area description
-            and queues saving all functions waiting for unlocking their
-            mapped critical area.
-
-            @property {Object}
+        keyCode:
+            BACKSPACE: 8, COMMA: 188, DELETE: 46, DOWN: 40, END: 35, ENTER: 13
+            ESCAPE: 27, HOME: 36, LEFT: 37, NUMPAD_ADD: 107,
+            NUMPAD_DECIMAL: 110, NUMPAD_DIVIDE: 111, NUMPAD_ENTER: 108
+            NUMPAD_MULTIPLY: 106, NUMPAD_SUBTRACT: 109, PAGE_DOWN: 34
+            PAGE_UP: 33, PERIOD: 190, RIGHT: 39, SPACE: 32, TAB: 9, UP: 38
         ###
-        _locks: {}
-        ###*
+            **_consoleMethods {String[]}**
             This variable contains a collection of methods usually binded to
             the console object.
         ###
@@ -85,10 +80,14 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
             'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
             'markTimeline', 'profile', 'profileEnd', 'table', 'time',
             'timeEnd', 'timeStamp', 'trace', 'warn']
-        ###*
-            Saves the class name for introspection.
-
-            @property {String}
+        ###
+            **__tools__ {Boolean}**
+            Indicates if an instance was derived from this class.
+        ###
+        __tools__: true
+        ###
+            **__name__ {String}**
+            Holds the class name to provide inspection features.
         ###
         __name__: 'Tools'
 
@@ -98,142 +97,180 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
 
         # region special
 
-        ###*
-            @description This method should be overwritten normally. It is
-                         triggered if current object is created via the "new"
-                         keyword.
+        constructor: (
+            @$domNode=null, @_options={}, @_defaultOptions={
+                logging: false, domNodeSelectorPrefix: 'body'
+            }, @_locks={}
+        ) ->
+            ###
+                This method should be overwritten normally. It is triggered if
+                current object is created via the "new" keyword.
 
-            @returns {$.Tools} Returns the current instance.
-        ###
-        constructor: (@_domNode) ->
+                **returns {$.Tools}** Returns the current instance.
+            ###
             # Avoid errors in browsers that lack a console.
             for method in this._consoleMethods
-                if not window.console?
-                    window.console = {}
+                window.console = {} if not window.console?
                 # Only stub the $ empty method.
-                if not window.console[method]?
-                    console[method] = $.noop()
-            this
-        ###*
-            @description This method could be overwritten normally.
-                         It acts like a destructor.
-
-            @returns {$.Tools} Returns the current instance.
-        ###
+                console[method] = $.noop() if not window.console[method]?
+            # NOTE: A constructor doesn't return last statement by default.
+            return this
         destructor: ->
+            ###
+                This method could be overwritten normally. It acts like a
+                destructor.
+
+                **returns {$.Tools}** - Returns the current instance.
+            ###
             this.off '*'
             this
-        ###*
-            @description This method should be overwritten normally. It is
-                         triggered if current opject was created via the "new"
-                         keyword and is called now.
-
-            @param {Object} options An options object.
-
-            @returns {$.Tools} Returns the current instance.
-        ###
         initialize: (options={}) ->
+            ###
+                This method should be overwritten normally. It is triggered if
+                current object was created via the "new" keyword and is called
+                now.
+
+                **options {Object}**  - options An options object.
+
+                **returns {$.Tools}** - Returns the current instance.
+            ###
+            # NOTE: We have to create a new options object instance to
+            # avoid changing a static options object.
+            $.extend true, this._options, this._defaultOptions, options
+            # The selector prefix should be parsed after extending options
+            # because the selector would be overwritten otherwise.
             this._options.domNodeSelectorPrefix = this.stringFormat(
                 this._options.domNodeSelectorPrefix,
                 this.camelCaseStringToDelimited this.__name__)
-            if (options)
-                this._options = $.extend true, this._options, options
             this
+
+        # endregion
+
+        # region object orientation
+
+        controller: (object, parameter, $domNode=null) ->
+            ###
+                Defines a generic controller for $ plugins.
+
+                **object {Object|String}** - The object or class to control. If
+                                             "object" is a class an instance
+                                             will be generated.
+
+                **parameter {Arguments}**  - The initially given arguments
+                                             object.
+
+                **returns {Mixed}**        - Returns whatever the initializer
+                                             method returns.
+            ###
+            parameter = this.argumentsObjectToArray parameter
+            if not object.__name__?
+                object = new object $domNode
+                if not object.__tools__?
+                    object = $.extend true, new Tools(), object
+            if $domNode?
+                if $domNode.data object.__name__
+                    object = $domNode.data object.__name__
+                else
+                    $domNode.data object.__name__, object
+            if object[parameter[0]]?
+                return object[parameter[0]].apply object, parameter.slice 1
+            else if not parameter.length or $.type(parameter[0]) is 'object'
+                ###
+                    If an options object or no method name is given the
+                    initializer will be called.
+                ###
+                return object.initialize.apply object, parameter
+            $.error(
+                "Method \"#{parameter[0]}\" does not exist on $-extension " +
+                "#{object.__name__}\".")
 
         # endregion
 
         # region mutual exclusion
 
-        ###*
-            @description Calling this method introduces a starting point for a
-                         critical area with potential race conditions.
-                         The area will be binded to given description string.
-                         So don't use same names for different areas.
-
-            @param {String} description A short string describing the criticial
-                                        areas properties.
-            @param {Function} callbackFunction A procedure which should only be
-                                               executed if the interpreter
-                                               isn't in the given critical
-                                               area. The lock description
-                                               string will be given to the
-                                               callback function.
-            @param {Boolean} autoRelease Release the lock after execution of
-                                         given callback.
-
-            @returns {$.Tools} Returns the current instance.
-        ###
         acquireLock: (description, callbackFunction, autoRelease=false) ->
             ###
+                Calling this method introduces a starting point for a critical
+                area with potential race conditions. The area will be binded to
+                given description string. So don't use same names for different
+                areas.
+
+                **description {String}**        - A short string describing the
+                                                  critical areas properties.
+
+                **callbackFunction {Function}** - A procedure which should only
+                                                  be executed if the
+                                                  interpreter isn't in the
+                                                  given critical area. The lock
+                                                  description string will be
+                                                  given to the callback
+                                                  function.
+
+                **autoRelease {Boolean}**       - Release the lock after
+                                                  execution of given callback.
+
+                **returns {$.Tools}**           - Returns the current instance.
+            ###
+            ###
                 NOTE: The "window.setTimeout()" wrapper guarantees that the
                 following function will be executed without any context
-                switches in all browsers.
-                If you want to understand more about that,
-                "What are event loops?" might be a good question.
+                switches in all browsers. If you want to understand more about
+                that, "What are event loops?" might be a good question.
             ###
-            window.setTimeout(
-                (=>
-                    wrappedCallbackFunction = (description) =>
-                        callbackFunction(description)
-                        if autoRelease
-                            this.releaseLock(description)
-                    if not this._locks[description]?
-                        this._locks[description] = []
-                        wrappedCallbackFunction description
-                    else
-                        this._locks[description].push wrappedCallbackFunction
-                ),
-                0)
+            wrappedCallbackFunction = (description) =>
+                callbackFunction(description)
+                if autoRelease
+                    this.releaseLock(description)
+            if not this._locks[description]?
+                this._locks[description] = []
+                wrappedCallbackFunction description
+            else
+                this._locks[description].push wrappedCallbackFunction
             this
-        ###*
-            @description Calling this method  causes the given critical area to
-                         be finished and all functions given to
-                         "this.acquireLock()" will be executed in right order.
-
-            @param {String} description A short string describing the criticial
-                                        areas properties.
-
-            @returns {$.Tools} Returns the current instance.
-        ###
         releaseLock: (description) ->
             ###
+                Calling this method  causes the given critical area to be
+                finished and all functions given to "this.acquireLock()" will
+                be executed in right order.
+
+                **description {String}** - A short string describing the
+                                           critical areas properties.
+
+                **returns {$.Tools}**    - Returns the current instance.
+            ###
+            ###
                 NOTE: The "window.setTimeout()" wrapper guarantees that the
                 following function will be executed without any context
                 switches in all browsers.
                 If you want to understand more about that,
                 "What are event loops?" might be a good question.
             ###
-            window.setTimeout(
-                (=>
-                    if this._locks[description]?
-                        if this._locks[description].length
-                            this._locks[description].shift()(description)
-                            if not this._locks[description].length
-                                this._locks[description] = undefined
-                        else
-                            this._locks[description] = undefined),
-                0)
+            if this._locks[description]?
+                if this._locks[description].length
+                    this._locks[description].shift()(description)
+                    if not this._locks[description].length
+                        this._locks[description] = undefined
+                else
+                    this._locks[description] = undefined
             this
 
         # endregion
 
         # region language fixes
 
-        ###*
-            @description This method fixes an ugly javascript bug.
-                         If you add a mouseout event listener to a dom node
-                         the given handler will be called each time any dom
-                         node inside the observed dom node triggers a mouseout
-                         event. This methods guarantees that the given event
-                         handler is only called if the observed dom node was
-                         leaved.
-
-            @param {Function} eventHandler The mouse out event handler.
-
-            @returns {Function} Returns the given function wrapped by the
-                                workaround logic.
-        ###
         mouseOutEventHandlerFix: (eventHandler) ->
+            ###
+                This method fixes an ugly javaScript bug. If you add a mouseout
+                event listener to a dom node the given handler will be called
+                each time any dom node inside the observed dom node triggers a
+                mouseout event. This methods guarantees that the given event
+                handler is only called if the observed dom node was leaved.
+
+                **eventHandler {Function}** - The mouse out event handler.
+
+                **returns {Function}**      - Returns the given function
+                                              wrapped by the workaround logic.
+            ###
             self = this
             (event) ->
                 relatedTarget = event.toElement
@@ -249,30 +286,42 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
 
         # region logging
 
-        ###*
-            @description Shows the given object's representation in the
-                         browsers console if possible or in a standalone
-                         alert-window as fallback.
+        log: (
+            object, force=false, avoidAnnotation=false, level='info',
+            additionalArguments...
+        ) ->
+            ###
+                Shows the given object's representation in the browsers
+                console if possible or in a standalone alert-window as
+                fallback.
 
-            @param {Mixed} object Any type to show.
-            @param {Boolean} force If set to "true" given input will be shown
-                                   independly from current logging
-                                   configuration or interpreter's console
-                                   implementation.
-            @param {Boolean} avoidAnnotation If set to "true" given input
-                                             has no module or log level
-                                             specific annotations.
+                **object {Mixed}**            - Any object to print.
 
-            @returns {$.Tools} Returns the current instance.
-        ###
-        log: (object, force=false, avoidAnnotation=false, level='info') ->
+                **force {Boolean}**           - If set to "true" given input
+                                                will be shown independently
+                                                from current logging
+                                                configuration or interpreter's
+                                                console implementation.
+
+                **avoidAnnotation {Boolean}** - If set to "true" given input
+                                                has no module or log level
+                                                specific annotations.
+
+                **level {String}**            - Description of log messages
+                                                importance.
+
+                Additional arguments are used for string formating.
+
+                **returns {$.Tools}**         - Returns the current instance.
+            ###
             if this._options.logging or force
                 if avoidAnnotation
                     message = object
                 else if $.type(object) is 'string'
+                    additionalArguments.unshift object
                     message = (
                         "#{this.__name__} (#{level}): " +
-                        this.stringFormat.apply(this, arguments))
+                        this.stringFormat.apply this, additionalArguments)
                 else if $.isNumeric object
                     message = (
                         "#{this.__name__} (#{level}): #{object.toString()}")
@@ -284,86 +333,74 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
                     this.log object, force, true
                     this.log "'--------------------------------------------'"
                 if message
-                    if window.console?[level]? == $.noop() and force
+                    if window.console?[level]? is $.noop() and force
                         window.alert message
                     window.console[level] message
             this
-        ###*
-            @description Wrapper method for the native console method usually
-                         provided by interpreter.
+        info: (object, additionalArguments...) ->
+            ###
+                Wrapper method for the native console method usually provided
+                by interpreter.
 
-            @param {Mixed} object Any type to show.
-            @param {Boolean} force If set to "true" given input will be shown
-                                   independly from current logging
-                                   configuration or interpreter's console
-                                   implementation.
-            @param {Boolean} avoidAnnotation If set to "true" given input
-                                             has no module or log level
-                                             specific annotations.
+                **object {Mixed}**    - Any object to print.
 
-            @returns {$.Tools} Returns the current instance.
-        ###
-        info: (object, force=false, avoidAnnotation=false, level='info') ->
-            this.log object, force, avoidAnnotation, level
-        ###*
-            @description Wrapper method for the native console method usually
-                         provided by interpreter.
+                Additional arguments are used for string formating.
 
-            @param {Mixed} object Any type to show.
-            @param {Boolean} force If set to "true" given input will be shown
-                                   independly from current logging
-                                   configuration or interpreter's console
-                                   implementation.
-            @param {Boolean} avoidAnnotation If set to "true" given input
-                                             has no module or log level
-                                             specific annotations.
+                **returns {$.Tools}** - Returns the current instance.
+            ###
+            this.log.apply(
+                this, [object, false, false, 'info'].concat(
+                    additionalArguments))
+        debug: (object, additionalArguments...) ->
+            ###
+                Wrapper method for the native console method usually provided
+                by interpreter.
 
-            @returns {$.Tools} Returns the current instance.
-        ###
-        debug: (object, force=false, avoidAnnotation=false, level='debug') ->
-            this.log object, force, avoidAnnotation, level
-        ###*
-            @description Wrapper method for the native console method usually
-                         provided by interpreter.
+                **param {Mixed}**     - Any object to print.
 
-            @param {Mixed} object Any type to show.
-            @param {Boolean} force If set to "true" given input will be shown
-                                   independly from current logging
-                                   configuration or interpreter's console
-                                   implementation.
-            @param {Boolean} avoidAnnotation If set to "true" given input
-                                             has no module or log level
-                                             specific annotations.
+                Additional arguments are used for string formating.
 
-            @returns {$.Tools} Returns the current instance.
-        ###
-        error: (object, force=false, avoidAnnotation=false, level='error') ->
-            this.log object, force, avoidAnnotation, level
-        ###*
-            @description Wrapper method for the native console method usually
-                         provided by interpreter.
+                **returns {$.Tools}** - Returns the current instance.
+            ###
+            this.log.apply(
+                this, [object, false, false, 'debug'].concat(
+                    additionalArguments))
+        error: (object, additionalArguments...) ->
+            ###
+                Wrapper method for the native console method usually provided
+                by interpreter.
 
-            @param {Mixed} object Any type to show.
-            @param {Boolean} force If set to "true" given input will be shown
-                                   independly from current logging
-                                   configuration or interpreter's console
-                                   implementation.
-            @param {Boolean} avoidAnnotation If set to "true" given input
-                                             has no module or log level
-                                             specific annotations.
+                **object {Mixed}**    - Any object to print.
 
-            @returns {$.Tools} Returns the current instance.
-        ###
-        warn: (object, force=false, avoidAnnotation=false, level='warn') ->
-            this.log object, force, avoidAnnotation, level
-        ###*
-            @description Dumps a given object in a human readable format.
+                Additional arguments are used for string formating.
 
-            @param {Object} object Any type.
+                **returns {$.Tools}** - Returns the current instance.
+            ###
+            this.log.apply(
+                this, [object, false, false, 'error'].concat(
+                    additionalArguments))
+        warn: (object, additionalArguments...) ->
+            ###
+                Wrapper method for the native console method usually provided
+                by interpreter.
 
-            @returns {String} Returns the searialized object.
-        ###
+                **object {Mixed}**    - Any object to print.
+
+                Additional arguments are used for string formating.
+
+                **returns {$.Tools}** - Returns the current instance.
+            ###
+            this.log.apply(
+                this, [object, false, false, 'warn'].concat(
+                    additionalArguments))
         show: (object) ->
+            ###
+                Dumps a given object in a human readable format.
+
+                **object {Object}**  - Any object to show.
+
+                **returns {String}** - Returns the serialized object.
+            ###
             output = ''
             if $.type(object) is 'string'
                 output = object
@@ -371,6 +408,8 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
                 $.each object, (key, value) ->
                     if value is undefined
                         value = 'undefined'
+                    else if value is null
+                        value = 'null'
                     output += "#{key.toString()}: #{value.toString()}\n"
             output = output.toString() if not output
             "#{$.trim(output)}\n(Type: \"#{$.type(object)}\")"
@@ -379,16 +418,16 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
 
         # region dom node handling
 
-        ###*
-            @description Removes a selector prefix from a given selector.
-                         This methods searches in the options object for a
-                         given "domNodeSelectorPrefix".
-
-            @param {String} domNodeSelector The dom node selector to slice.
-
-            @return {String} Returns the silced selector.
-        ###
         sliceDomNodeSelectorPrefix: (domNodeSelector) ->
+            ###
+                Removes a selector prefix from a given selector. This methods
+                searches in the options object for a given
+                "domNodeSelectorPrefix".
+
+                **domNodeSelector {String}** - The dom node selector to slice.
+
+                **return {String}**          - Returns the sliced selector.
+            ###
             if(this._options?.domNodeSelectorPrefix? and
                domNodeSelector.substring(
                 0, this._options.domNodeSelectorPrefix.length) is
@@ -396,86 +435,87 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
                 return $.trim(domNodeSelector.substring(
                     this._options.domNodeSelectorPrefix.length))
             domNodeSelector
-        ###*
-            @description Determines the dom node name of a given dom node
-                         string.
-
-            @param {String} domNode A given to dom node selector to determine
-                            its name.
-
-            @returns {String}
-
-            @example
-$.Tools.getDomNodeName('&lt;div&gt;');
-'div'
-
-$.Tools.getDomNodeName('&lt;div&gt;&lt;/div&gt;');
-'div'
-
-$.Tools.getDomNodeName('&lt;br/&gt;');
-'br'
-        ###
         getDomNodeName: (domNode) ->
+            ###
+                Determines the dom node name of a given dom node string.
+
+                **domNode {String}** - A given to dom node selector to
+                                       determine its name.
+
+                **returns {String}** - Returns the dom node name.
+
+                **examples**
+
+                >>> $.Tools.getDomNodeName('&lt;div&gt;');
+                'div'
+
+                >>> $.Tools.getDomNodeName('&lt;div&gt;&lt;/div&gt;');
+                'div'
+
+                >>> $.Tools.getDomNodeName('&lt;br/&gt;');
+                'br'
+            ###
             domNode.match(new RegExp('^<?([a-zA-Z]+).*>?.*'))[1]
-        ###*
-            @description Converts an object of dom selectors to an array of
-                         $ wrapped dom nodes. Note if selector
-                         description as one of "class" or "id" as suffix
-                         element will be ignored.
+        grabDomNode: (domNodeSelectors) ->
+            ###
+                Converts an object of dom selectors to an array of $ wrapped
+                dom nodes. Note if selector description as one of "class" or
+                "id" as suffix element will be ignored.
 
-            @param {Object} domNodeSelectors An object with dom node selectors.
+                **domNodeSelectors {Object}** - An object with dom node
+                                                selectors.
 
-            @returns {Object} Returns all $ wrapped dom nodes corressponding to
-                              given selectors.
-        ###
-        grabDomNodes: (domNodeSelectors) ->
+                **returns {Object}**          - Returns all $ wrapped dom nodes
+                                                corresponding to given
+                                                selectors.
+            ###
             domNodes = {}
-            $.each(domNodeSelectors, (key, value) =>
-                if(key.substring(key.length - 2) isnt 'Id' and
-                   key.substring(key.length - 5) isnt 'Class')
+            if domNodeSelectors?
+                $.each(domNodeSelectors, (key, value) =>
                     match = value.match ', *'
                     if match
-                        $.each(
-                            value.split(match[0]), (key, valuePart) =>
-                                if key
-                                    value += ', ' + this._grabDomNodesHelper(
-                                        key, valuePart, domNodeSelectors)
-                                else
-                                    value = valuePart)
-                    value = this._grabDomNodesHelper(
+                        $.each value.split(match[0]), (key, valuePart) =>
+                            if key
+                                value += ", " + this._grabDomNodeHelper(
+                                    key, valuePart, domNodeSelectors)
+                            else
+                                value = valuePart
+                    domNodes[key] = $ this._grabDomNodeHelper(
                         key, value, domNodeSelectors)
-                domNodes[key] = $ value)
-            if this._options and this._options.domNodeSelectorPrefix
+                )
+            if this._options.domNodeSelectorPrefix
                 domNodes.parent = $ this._options.domNodeSelectorPrefix
             domNodes.window = $ window
+            domNodes.document = $ document
             domNodes
 
         # endregion
 
         # region function handling
 
-        ###*
-            @description Methods given by this method has the plugin scope
-                         referenced with "this". Otherwise "this" usualy
-                         points to the object the given method was attached to.
-                         If "method" doesn't match string arguments are passed
-                         through "$.proxy()" with "context" setted as
-                         "scope" or "this" if nothing is provided.
-
-            @param {String|Function|Object} method A method name of given
-                                                   scope.
-            @param {Object|String} scope A given scope.
-
-            @returns {Mixed} Returns the given methods return value.
-        ###
         getMethod: (method, scope=this, additionalArguments...) ->
+            ###
+                Methods given by this method has the plugin scope referenced
+                with "this". Otherwise "this" usually points to the object the
+                given method was attached to. If "method" doesn't match string
+                arguments are passed through "$.proxy()" with "context" setted
+                as "scope" or "this" if nothing is provided.
+
+                **method {String|Function|Object}** - A method name of given
+                                                      scope.
+
+                **scope {Object|String}**           - A given scope.
+
+                **returns {Mixed}**                 - Returns the given methods
+                                                      return value.
+            ###
             ###
                 This following outcomment line would be responsible for a
                 bug in yuicompressor.
                 Because of declaration of arguments the parser things that
                 arguments is a local variable and could be renamed.
                 It doesn't care about that the magic arguments object is
-                neccessary to generate the arguments array in this context.
+                necessary to generate the arguments array in this context.
 
                 var arguments = this.argumentsObjectToArray(arguments);
 
@@ -488,7 +528,7 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
                $.type(scope) is 'object')
                 return ->
                     if not scope[method]
-                        throw Error(
+                        $.error(
                             "Method \"#{method}\" doesn't exists in " +
                             "\"#{scope}\".")
                     thisFunction = arguments.callee
@@ -505,25 +545,46 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
 
         # region event handling
 
-        ###*
-            @description Searches for internal event handler methods and runs
-                         them by default. In addition this method searches for
-                         a given event method by the options object.
+        debounce: (eventFunction, thresholdInMilliseconds=300) ->
+            ###
+                Prevents event functions from triggering to often by defining a
+                minimal span between each function call.
 
-            @param {String} eventName An event name.
-            @param {Boolean} callOnlyOptionsMethod Prevents from trying to
-                                                   call an internal event
-                                                   handler.
-            @param {Object} scope The scope from where the given event handler
-                                  should be called.
-
-            @returns {Boolean} Returns "true" if an event handler was called
-                               and "false" otherwise.
-        ###
+                **returns {Function}** - Returns the wrapped method.
+            ###
+            timeoutID = null
+            ->
+                if timeoutID?
+                    window.clearTimeout timeoutID
+                    timeoutID = setTimeout(
+                        eventFunction, thresholdInMilliseconds)
+                else
+                    result = eventFunction()
+                    timeoutID = setTimeout $.noop(), thresholdInMilliseconds
+                    result
         fireEvent: (
             eventName, callOnlyOptionsMethod=false, scope=this,
             additionalArguments...
         ) ->
+            ###
+                Searches for internal event handler methods and runs them by
+                default. In addition this method searches for a given event
+                method by the options object.
+
+                **eventName {String}                - An event name.
+
+                **callOnlyOptionsMethod {Boolean}** - Prevents from trying to
+                                                      call an internal event
+                                                      handler.
+
+                **scope {Object}**                  - The scope from where the
+                                                      given event handler
+                                                      should be called.
+
+                **returns {Boolean}**               - Returns "true" if an
+                                                      event handler was called
+                                                      and "false" otherwise.
+            ###
             scope = this if not scope
             eventHandlerName =
                 'on' + eventName.substr(0, 1).toUpperCase() +
@@ -539,164 +600,123 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
                     scope, additionalArguments)
                 return true
             false
-        ###*
-            @description A wrapper method for "$.delegate()".
-                         It sets current plugin name as event scope if no scope
-                         is given. Given arguments are modified and passed
-                         through "$.delegate()".
-
-            @returns {$} Returns $'s grabbed dom node.
-        ###
-        delegate: ->
-            this._bindHelper arguments, false, 'delegate'
-        ###*
-            @description A wrapper method for "$.undelegate()". It sets current
-                         plugin name as event scope if no scope is given. Given
-                         arguments are modified and passed through
-                         "$.undelegate()".
-
-            @returns {$} Returns $'s grabbed dom node.
-        ###
-        undelegate: ->
-            this._bindHelper arguments, true, 'undelegate'
-        ###*
-            @description A wrapper method for "$.on()".
-                         It sets current plugin name as event scope if no scope
-                         is given. Given arguments are modified and passed
-                         through "$.on()".
-
-            @returns {$} Returns $'s grabbed dom node.
-        ###
         on: ->
-            this._bindHelper arguments, false, 'on'
-        ###*
-            @description A wrapper method fo "$.off()".
-                         It sets current plugin name as event scope if no scope
-                         is given. Given arguments are modified and passed
-                         through "$.off()".
+            ###
+                A wrapper method for "$.on()". It sets current plugin name as
+                event scope if no scope is given. Given arguments are modified
+                and passed through "$.on()".
 
-            @returns {$} Returns $'s grabbed dom node.
-        ###
+                **returns {$}** - Returns $'s grabbed dom node.
+            ###
+            this._bindHelper arguments, false,
         off: ->
+            ###
+                A wrapper method fo "$.off()". It sets current plugin name as
+                event scope if no scope is given. Given arguments are modified
+                and passed through "$.off()".
+
+                **returns {$}** - Returns $'s grabbed dom node.
+            ###
             this._bindHelper arguments, true, 'off'
-        ###*
-            @description A wrapper method for "$.bind()".
-                         It sets current plugin name as event scope if no scope
-                         is given. Given arguments are modified and passed
-                         through "$.bind()".
-
-            @returns {$} Returns $'s grabbed dom node.
-        ###
-        bind: ->
-            this._bindHelper arguments
-        ###*
-            @description A wrapper method fo "$.unbind()".
-                         It sets current plugin name as event scope if no scope
-                         is given. Given arguments are modified and passed
-                         through "$.unbind()".
-
-            @returns {$} Returns $'s grabbed dom node.
-        ###
-        unbind: ->
-            this._bindHelper arguments, true
-        ###*
-            @description Converts a given argument object to an array.
-
-            @param {Object} argumentsObject The arguments object to convert.
-
-            @returns {Object[]} Returns the given arguments as array.
-        ###
 
         # endregion
 
         # region array handling
 
-        ###*
-            @description Converts the interpreter given magic arguments
-                         object to a standard array object.
-
-            @param {Object} argumentsObject An argument object.
-
-            @returns {Object[]} Returns the array containing all elements in
-                                given arguments object.
-        ###
         argumentsObjectToArray: (argumentsObject) ->
+            ###
+                Converts the interpreter given magic arguments object to a
+                standard array object.
+
+                **argumentsObject {Object}** - An argument object.
+
+                **returns {Object[]}**       - Returns the array containing all
+                                               elements in given arguments
+                                               object.
+            ###
             Array.prototype.slice.call argumentsObject
 
         # endregion
 
         # region number handling
 
-        ###*
-            @description Rounds a given number accurate to given number of
-                         digits.
-
-            @param {Float} number The number to round.
-            @param {Integer} digits The number of digits after comma.
-
-            @returns {Float} Returns the rounded number.
-        ###
         round: (number, digits=0) ->
+            ###
+                Rounds a given number accurate to given number of digits.
+
+                **number {Float}**   - The number to round.
+
+                **digits {Integer}** - The number of digits after comma.
+
+                **returns {Float}**  - Returns the rounded number.
+            ###
             Math.round(number * Math.pow 10, digits) / Math.pow 10, digits
 
         # endregion
 
         # region string manipulating
 
-        ###*
-            @description Performs a string formation. Replaces every
-                         placeholder "{i}" with the i'th argument.
+        stringFormat: (string, additionalArguments...) ->
+            ###
+                Performs a string formation. Replaces every placeholder "{i}"
+                with the i'th argument.
 
-            @param {String} string The string to format.
+                **string {String}**  - The string to format.
 
-            @returns {String} The formatted string.
-        ###
-        stringFormat: (string) ->
-            $.each(arguments, (key, value) ->
+                Additional arguments are interpreted as replacements for string
+                formating.
+
+                **returns {String}** - The formatted string.
+            ###
+            additionalArguments.unshift string
+            $.each(additionalArguments, (key, value) ->
                 string = string.replace(
                     new RegExp("\\{#{key}\\}", 'gm'), value))
             string
-        ###*
-            @description Converts a camel case string to a string with given
-                         delimiter between each camel case seperation.
-
-            @param {String} string The string to format.
-            @param {String} delimiter The string tu put between each camel case
-                                      seperation.
-
-            @returns {String} The formatted string.
-        ###
         camelCaseStringToDelimited: (string, delimiter='-') ->
+            ###
+                Converts a camel case string to a string with given delimiter
+                between each camel case separation.
+
+                **string {String}**    - The string to format.
+
+                **delimiter {String}** - The string tu put between each camel
+                                         case separation.
+
+                **returns {String}**   - The formatted string.
+            ###
             string.replace(new RegExp('(.)([A-Z])', 'g'), ->
                 arguments[1] + delimiter + arguments[2]
             ).toLowerCase()
-        ###*
-            @description Appends a path selector to the given path if there
-                         isn't one yet.
-
-            @param {String} path The path for appending a selector.
-            @param {String} pathSeperator The selector for appending to path.
-
-            @returns {String} The appended path.
-        ###
         addSeperatorToPath: (path, pathSeperator='/') ->
+            ###
+                Appends a path selector to the given path if there isn't one
+                yet.
+
+                **path {String}**          - The path for appending a selector.
+
+                **pathSeparator {String}** - The selector for appending to
+                                             path.
+
+                **returns {String}**       - The appended path.
+            ###
             path = $.trim path
-            if path.substr(-1) isnt pathSeperator and path.length
-                return path + pathSeperator
+            if path.substr(-1) isnt pathSeparator and path.length
+                return path + pathSeparator
             path
-        ###*
-            @description Read a page's GET URL variables and return them as an
-                         associative array.
-
-            @param {String} key A get array key. If given only the
-                                corresponding value is returned and full array
-                                otherwise.
-
-            @returns {Mixed} Returns the current get array or requested value.
-                                     If requested key doesn't exist "undefined"
-                                     is returned.
-        ###
         getUrlVariables: (key) ->
+            ###
+                Read a page's GET URL variables and return them as an
+                associative array.
+
+                **key {String}**    - A get array key. If given only the
+                                      corresponding value is returned and full
+                                      array otherwise.
+
+                **returns {Mixed}** - Returns the current get array or
+                                      requested value. If requested key doesn't
+                                      exist "undefined" is returned.
+            ###
             variables = []
             $.each(window.location.href.slice(
                 window.location.href.indexOf('?') + 1
@@ -716,130 +736,71 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
 
     # region protected
 
-        ###*
-            @description Helper method for atach event handler methods and
-                         their event handler removings pendants.
-
-            @param {Object} parameter Arguments object given to methods
-                                      like "bind()" or "unbind()".
-            @param {Boolean} removeEvent Indicates if "unbind()" or "bind()"
-                                         was given.
-            @param {String} eventFunctionName Name of function to wrap.
-
-            @returns {$} Returns $'s wrapped dom node.
-        ###
         _bindHelper: (
-            parameter, removeEvent=false, eventFunctionName='bind'
+            parameter, removeEvent=false, eventFunctionName='on'
         ) ->
-            $Object = $ parameter[0]
+            ###
+                Helper method for attach event handler methods and their event
+                handler remove pendants.
+
+                **parameter** {Object}**       - Arguments object given to
+                                                 methods like "bind()" or
+                                                 "unbind()".
+
+                **removeEvent {Boolean}**      - Indicates if "unbind()" or
+                                                 "bind()" was given.
+
+                **eventFunctionName {String}** - Name of function to wrap.
+
+                **returns {$}**                - Returns $'s wrapped dom node.
+            ###
+            $domNode = $ parameter[0]
             if $.type(parameter[1]) is 'object' and not removeEvent
                 $.each(parameter[1], (eventType, handler) =>
-                    this[eventFunctionName] $Object, eventType, handler)
-                return $Object
+                    this[eventFunctionName] $domNode, eventType, handler)
+                return $domNode
             parameter = this.argumentsObjectToArray(parameter).slice 1
             if parameter.length is 0
                 parameter.push ''
             if parameter[0].indexOf('.') is -1
                 parameter[0] += ".#{this.__name__}"
             if removeEvent
-                return $Object[eventFunctionName].apply(
-                    $Object, parameter)
-            $Object[eventFunctionName].apply $Object, parameter
-        ###*
-            @description Extends a given object with the tools attributes.
-
-            @param {Object} childAttributs The attributes from child.
-
-            @returns {$.Tools} Returns the current instance.
-        ###
-        _extend: (childAttributes) ->
-            if childAttributes
-                $.extend true, this, childAttributes
-            this
-        ###*
-            @description Defines a generic controller for $ plugins.
-
-            @param {Function | Object} attribute A called method from outside
-                                                 via the controller.
-                                                 Default value is "initialize".
-                                                 If the initializer is called
-                                                 implicit an options object is
-                                                 expected.
-
-            @returns {Mixed} Returns the result of called method.
-
-            @example
-
-// Call a plugins method.
-
-$('body').InheritedFromTools(options).method();
-
-// Call the initializer.
-
-$('div#id').InheritedFromTools(options);
-        ###
-        _controller: (attribute, additionalArguments...) ->
+                return $domNode[eventFunctionName].apply $domNode, parameter
+            $domNode[eventFunctionName].apply $domNode, parameter
+        _grabDomNodeHelper: (key, selector, domNodeSelectors) ->
             ###
-                This following outcomment line would be responsible for a bug
-                in yuicompressor.
-                Because of declaration of arguments the parser things that
-                arguments is a local variable and could be renamed.
-                It doesn't care about that the magic arguments object is
-                neccessary to generate the arguments array in this context.
+                Converts a dom selector to a prefixed dom selector string.
 
-                var arguments = this.argumentsObjectToArray(arguments);
+                **key {Integer}**             - Current element in options
+                                                array to
+                                                grab.
+
+                **selector {String}**         - A dom node selector.
+
+                **domNodeSelectors {Object}** - An object with dom node
+                                                selectors.
+
+                **returns {Object}**          - Returns given selector
+                                                prefixed.
             ###
-            parameter = this.argumentsObjectToArray arguments
-            if this[attribute]
-                return this[attribute].apply this, additionalArguments
-            else if $.type(attribute) is 'object' or not attribute
-                ###
-                    If an options object or no method name is given the
-                    initializer will be called.
-                ###
-                return this.initialize.apply this, parameter
-            $.error(
-                "Method \"#{attribute}\" does not exist on " +
-                "$-extension \"#{this.__name__}\".")
-        ###*
-            @description Converts a dom selector to a prefixed dom selector
-                         string.
-
-            @param {Integer} key Current element in options array to grab.
-            @param {String} selector A dom node selector.
-            @param {Object} domNodeSelectors An object with dom node selectors.
-
-            @returns {Object}
-        ###
-        _grabDomNodesHelper: (key, selector, domNodeSelectors) ->
-            domNodeSelectorPrefix = 'body'
-            if this._options and this._options.domNodeSelectorPrefix
-                domNodeSelectorPrefix = this._options.domNodeSelectorPrefix
+            domNodeSelectorPrefix = ''
+            if this._options.domNodeSelectorPrefix
+                domNodeSelectorPrefix = this._options.domNodeSelectorPrefix +
+                    ' '
             if (selector.substr(0, domNodeSelectorPrefix.length) isnt
                     domNodeSelectorPrefix)
-                return domNodeSelectors[key] =
-                    "#{domNodeSelectorPrefix} #{selector}"
-            selector
+                domNodeSelectors[key] = domNodeSelectorPrefix + selector
+                return $.trim domNodeSelectors[key]
+            $.trim selector
 
     # endregion
 
     # region handle $ extending
 
-    ###* @ignore ###
-    $.fn.Tools = ->
-        self = new Tools this
-        self._controller.apply self, arguments
-        this
-    ###* @ignore ###
-    $.Tools = ->
-        self = new Tools
-        self._controller.apply self, arguments
-    ###* @ignore ###
+    $.fn.Tools = -> new Tools().controller Tools, arguments, this
+    $.Tools = -> new Tools().controller Tools, arguments
     $.Tools.class = Tools
 
     # endregion
 
 # endregion
-
-## standalone
-)

@@ -10,6 +10,8 @@
 # region header
 
 ###
+[Project page](https://thaibault.github.com/jQuery-tools)
+
 This module provides common reusable logic for every non trivial jQuery plugin.
 
 Copyright
@@ -136,7 +138,8 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             ###
             # NOTE: We have to create a new options object instance to
             # avoid changing a static options object.
-            $.extend true, this._options, this._defaultOptions, options
+            this._options = $.extend(
+                true, {}, this._defaultOptions, this._options, options)
             # The selector prefix should be parsed after extending options
             # because the selector would be overwritten otherwise.
             this._options.domNodeSelectorPrefix = this.stringFormat(
@@ -688,7 +691,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             string.replace(new RegExp('(.)([A-Z])', 'g'), ->
                 arguments[1] + delimiter + arguments[2]
             ).toLowerCase()
-        addSeperatorToPath: (path, pathSeperator='/') ->
+        addSeparatorToPath: (path, pathSeparator='/') ->
             ###
                 Appends a path selector to the given path if there isn't one
                 yet.

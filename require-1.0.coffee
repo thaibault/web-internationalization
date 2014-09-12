@@ -1,11 +1,5 @@
-#!/usr/bin/env require
-
-# region vim modline
-
-# vim: set tabstop=4 shiftwidth=4 expandtab:
-# vim: foldmethod=marker foldmarker=region,endregion:
-
-# endregion
+#!/usr/bin/env coffee
+# -*- coding: utf-8 -*-
 
 # region header
 
@@ -15,10 +9,7 @@
 This native javaScript module provides a full featured import mechanism like
 python, php, c++ etc..
 
-Copyright
----------
-
-Torben Sickert 16.12.2012
+Copyright Torben Sickert 16.12.2012
 
 License
 -------
@@ -164,11 +155,10 @@ Version
 class Require
     ###
         This class can be used as function for defining dependencies for
-        modules.
-        Note that this function searches in the same resource as the first
-        javaScript include tag in your markup if given dependency resource
-        doesn't start with "http://".
-        You can manually change this behavior by adding a search base via
+        modules. Note that this function searches in the same resource as the
+        first javaScript include tag in your markup if given dependency
+        resource doesn't start with "http://" or "https://". You can manually
+        change this behavior by adding search bases via
         "window.require.basePath".
 
         **example**
@@ -214,18 +204,24 @@ class Require
     ###
     this.basePath
     ###
+        **localStoragePathReminderPrefix {String}**
+        Save a prefix for saved paths in resolved dependencies. If prefix is
+        empty (default) no paths will be saved.
+    ###
+    this.localStoragePathReminderPrefix
+    ###
         **noConflict {Boolean}**
         If the require scope should be deleted after serving all dependencies
         are loaded this property should be set to "true".
     ###
     this.noConflict
     ###
-        **injectingNode {DomNode}**
+        **injectingDomNode {DomNode}**
         Caches a reference to the dom node for injecting needed script tags.
         You can alter this property to specify where to inject required
         scripts. Default is the head node.
     ###
-    this.injectingNode
+    this.injectingDomNode
     ###
         **initializedLoadings {String[]}**
         Saves all loaded script resources to prevent double script
@@ -241,18 +237,83 @@ class Require
     ###
     this.passiv
     ###
-        **scriptTypes {Object}**
+        **includeTypes {Object}**
         Describes all supported scripts with their needed properties to
         load them. A Mapping from file endings to their script node types.
     ###
-    this.scriptTypes
+    this.includeTypes
     ###
-        **asyncronModulePatternHandling {Object}**
+        **defaultType {String}**
+        Describes a default type if no type could be determined.
+    ###
+    this.defaultType
+    ###
+        **asynchronModulePatternHandling {Object}**
         Defines a mapping from regular expression pattern which detects all
         modules to load via ajax to their corresponding handler functions. A
         css, JavaScript and CoffeeScript loader is included by default.
     ###
-    this.asyncronModulePatternHandling
+    this.asynchronModulePatternHandling
+    ###
+        **defaultAsynchronModulePatternHandler {Object}**
+        Defines all default asynchron module pattern handler.
+    ###
+    this.defaultAsynchronModulePatternHandler =
+        '^.+\.less$': (lessContent, url) ->
+            # Specify a filename, for better error messages.
+            options = filename: url
+            # Specify search paths for @import directives.
+            options.paths = []
+            if self.basePath.less? and self.basePath.less.length
+                options.paths = self.basePath.less
+            compiledCSSCode = null
+            new window.less.Parser(options).parse lessContent, (error, tree) ->
+                if error
+                    self._log error
+                else
+                    styleDomNode = document.createElement 'style'
+                    styleDomNode.type = 'text/css'
+                    compiledCSSCode = tree.toCSS()
+                    styleDomNode.appendChild window.document.createTextNode(
+                        compiledCSSCode)
+                    self.injectingDomNode.appendChild styleDomNode
+            return [compiledCSSCode, lessContent, null]
+        '^.+\.coffee$': (coffeeScriptCode, url, module) ->
+            sourceRootPath = url.replace(/\\/g, '/').replace(
+                /\/[^\/]*\/?$/, '/')
+            localSourceRootPath = sourceRootPath.replace(/^https?:\/\/[^/]+\//,
+                '/')
+            fileName = module[1].substr module[1].lastIndexOf('/') + 1
+            coffeeScriptCompilerOptions =
+                header: '// Generated with require.js'
+                sourceMap: false
+                dirname: localSourceRootPath
+                filename: fileName
+                modulename: fileName.substr 0, fileName.lastIndexOf '.'
+                generatedFile: fileName.substr(
+                    0, fileName.lastIndexOf('.') + 1
+                ) + 'js'
+                sourceRoot: sourceRootPath
+                sourceFiles: [fileName]
+            if window.btoa? and window.JSON? and window.unescape? and
+               window.encodeURIComponent?
+                coffeeScriptCompilerOptions.sourceMap = true
+                # NOTE: Workaround to enable source maps for asynchron loaded
+                # coffee scripts.
+                {js, v3SourceMap} = window.CoffeeScript.compile(
+                    coffeeScriptCode, coffeeScriptCompilerOptions)
+                # NOTE: Additional commend syntax with "/*...*/" is necessary
+                # to support internet explorer.
+                window.eval(
+                    "#{js}\n//# sourceMappingURL=data:application/json;" +
+                    'base64,' + window.btoa(
+                        window.unescape window.encodeURIComponent v3SourceMap
+                    ) + "\n//# sourceURL=#{localSourceRootPath + fileName}")
+                return [js, coffeeScriptCode, v3SourceMap]
+            else
+                window.CoffeeScript.run(
+                    coffeeScriptCode, coffeeScriptCompilerOptions)
+                return [null, coffeeScriptCode, null]
     ###
         **context {Object}**
         Defines scope where the required dependencies have to be present. In
@@ -267,6 +328,12 @@ class Require
     ###
     this.onEverythingIsLoaded
     ###
+        **_currentSessionTimestamp {Date}**
+        Saves the date and time of each session, to distinguish old local
+        storage entries from new one.
+    ###
+    this._currentSessionTimestamp
+    ###
         **_callQueue {Object[]}**
         Saves function calls to require for running them in right order to
         guarantee dependencies. It consist of a list of tuples storing
@@ -280,52 +347,12 @@ class Require
         "window.require" to reset that reference in "noConflict" mode.
     ###
     this._referenceBackup = window.require
-    ###
-        **_defaultAsynchronModulePatternHandler {Object}**
-        Handles all default asynchron module pattern handler.
-    ###
-    this._defaultAsynchronModulePatternHandler =
-        '^.+\.css$': (cssContent) ->
-            styleNode = document.createElement 'style'
-            styleNode.type = 'text/css'
-            styleNode.appendChild document.createTextNode cssContent
-            self.injectingNode.appendChild styleNode
-        '^.+\.coffee$': (coffeeScriptCode, module) ->
-            sourceRootPath = self.basePath.default
-            if self.basePath.coffee
-                sourceRootPath = self.basePath.coffee
-            coffeeScriptCompilerOptions =
-                header: false
-                sourceMap: false
-                filename: module[1]
-                generatedFile: module[1].substr(
-                    0, module[1].lastIndexOf('.') + 1
-                ) + 'js'
-                sourceRoot: sourceRootPath
-                sourceFiles: [module[1]]
-            if window.btoa? and window.JSON? and window.unescape? and
-               window.encodeURIComponent?
-                coffeeScriptCompilerOptions.sourceMap = true
-                # NOTE: Workaround to enable source maps for asynchron loaded
-                # coffee scripts.
-                {js, v3SourceMap} = window.CoffeeScript.compile(
-                    coffeeScriptCode, coffeeScriptCompilerOptions)
-                # NOTE: Additional commend syntax with "/*...*/" is necessary
-                # to support internet explorer.
-                window.eval(
-                    js + '\n/*//# sourceMappingURL=data:application/json;' +
-                    'base64,' +
-                    (btoa unescape encodeURIComponent v3SourceMap) + '\n//@ ' +
-                    'sourceURL=' + module[1] + '*/')
-            else
-                window.CoffeeScript.run(
-                    coffeeScriptCode, coffeeScriptCompilerOptions)
 
     # endregion
 
     # region public methods
 
-        # region special methods
+        # region special
 
     constructor: (modules, onLoaded, onLoadedArguments...) ->
         ###
@@ -351,55 +378,96 @@ class Require
                                             (class).
         ###
         # Set class property default values.
-        if not self.context?
-            self.context = this
-        if not self.basePath?
-            self.basePath = {}
-            for scriptNode in document.getElementsByTagName 'script'
-                if not self.basePath.default
-                    self.basePath.default = scriptNode.src.substring(
-                        0, scriptNode.src.lastIndexOf('/') + 1)
-                extension = scriptNode.src.substring(
-                    scriptNode.src.lastIndexOf('.') + 1)
-                if extension and not self.basePath[extension]
-                    self.basePath[extension] = scriptNode.src.substring(
-                        0, scriptNode.src.lastIndexOf('/') + 1)
-        for type, path of self.basePath
-            if path.substring(path.length - 1) isnt '/'
-                self.basePath[type] += '/'
-        if not self.appendTimeStamp?
-            self.appendTimeStamp = false
-        if not self.passiv?
-            self.passiv = false
-        if not self.logging?
-            self.logging = false
-        if not self.noConflict?
-            self.noConflict = false
-        if not self.initializedLoadings?
-            self.initializedLoadings = []
-        if not self.injectingNode?
-            self.injectingNode = document.getElementsByTagName('head')[0]
-        if not self.scriptTypes?
-            self.scriptTypes = '.js': 'text/javascript'
-        if not self.asyncronModulePatternHandling?
-            self.asyncronModulePatternHandling = {}
+        self.context = this if not self.context?
+        self.includeTypes = {} if not self.includeTypes?
+        if not self.includeTypes?.javaScript?
+            self.includeTypes.javaScript =
+                extension: 'js', domNodeName: 'script'
+                sourcePropertyName: 'src'
+                domNodeProperties: type: 'text/javascript'
+        if not self.includeTypes?.cascadingStyleSheet?
+            self.includeTypes.cascadingStyleSheet =
+                extension: 'css', domNodeName: 'link'
+                sourcePropertyName: 'href', domNodeProperties:
+                    type: 'text/css', media: 'all', rel: 'stylesheet'
+        self.defaultType = 'javaScript' if not self.defaultType?
+        self::_determineBasePath() if not self.basePath?.all?
+        for type, paths of self.basePath
+            for path, index in paths
+                if path.substring(path.length - 1) isnt '/'
+                    self.basePath[type][index] += '/'
+        if not self.localStoragePathReminderPrefix?
+            self.localStoragePathReminderPrefix = ''
+        if not self._currentSessionTimestamp?
+            self._currentSessionTimestamp = new Date
+        self.appendTimeStamp = false if not self.appendTimeStamp?
+        self.passiv = false if not self.passiv?
+        self.logging = false if not self.logging?
+        self.noConflict = false if not self.noConflict?
+        self.initializedLoadings = [] if not self.initializedLoadings?
+        if not self.injectingDomNode?
+            self.injectingDomNode = document.getElementsByTagName('head')[0]
+        if not self.asynchronModulePatternHandling?
+            self.asynchronModulePatternHandling = {}
         if not self.onEverythingIsLoaded?
             self.onEverythingIsLoaded = ->
-        for pattern, handler of self._defaultAsynchronModulePatternHandler
-            if not self.asyncronModulePatternHandling[pattern]?
-                self.asyncronModulePatternHandling[pattern] = handler
-        if not self._callQueue?
-            self._callQueue = []
+        for pattern, handler of self.defaultAsynchronModulePatternHandler
+            if not self.asynchronModulePatternHandling[pattern]?
+                self.asynchronModulePatternHandling[pattern] = handler
+        self._callQueue = [] if not self._callQueue?
         # NOTE: A constructor doesn't return last statement by default.
-        return self::_load.apply Require, arguments
+        if arguments.length
+            return self::_load.apply Require, arguments
+        return self
 
         # endregion
+
+    self.clearOldPathReminder = ->
+        ###
+            Removes all path reminders from local storage of other then the
+            current session.
+
+            **returns {Require}** - Returns the current function (class).
+        ###
+        if self.localStoragePathReminderPrefix
+            for key, value of window.localStorage
+                if(key.substring(
+                    0, self.localStoragePathReminderPrefix.length + 1
+                ) is "#{self.localStoragePathReminderPrefix}:" and
+                key.substring(key.indexOf(':') + 1, key.lastIndexOf(':')) isnt
+                "#{self._currentSessionTimestamp.getTime()}")
+                    self::_log(
+                        "Remove old stored path reference \"#{value}\".")
+                    delete window.localStorage[key]
+        self
 
     # endregion
 
     # region protected methods
 
-    _load: (parameter...) ->
+    _determineBasePath: ->
+        ###
+            Searches the dom tree for useful resource paths.
+
+            **returns {Require}** - Returns the current function (class).
+        ###
+        self.basePath = {} if not self.basePath?
+        self.basePath.all = []
+        for name, properties of self.includeTypes
+            for domNode in document.getElementsByTagName properties.domNodeName
+                url = domNode[properties.sourcePropertyName]
+                self.basePath.all.push url.substring 0, url.lastIndexOf(
+                    '/') + 1
+                extension = url.substring url.lastIndexOf('.') + 1
+                if extension
+                    path = url.substring 0, url.lastIndexOf('/') + 1
+                    if not self.basePath[extension]
+                        self.basePath[extension] = [path]
+                    else if path not in self.basePath[extension]
+                        self.basePath[extension].push path
+        self
+
+    _load: (parameters...) ->
         ###
             Loads needed modules and run the "onLoaded" callback function. This
             methods gets the same arguments as the global "Require"
@@ -425,142 +493,63 @@ class Require
 
             use something like this instead:
 
-            var parameter = Array.prototype.slice.call(arguments);
+            var parameters = Array.prototype.slice.call(arguments);
         ###
         ###
             Make sure that we have a copy of given array containing needed
             dependencies.
         ###
-        if parameter[parameter.length - 1] isnt Require
+        if parameters[parameters.length - 1] isnt Require
             # Save a copy if initially given dependencies.
-            parameter.push parameter[0].slice 0
+            parameters.push parameters[0].slice 0
             # Mark array as initialized.
-            parameter.push Require
-        parameter[0] = [parameter[0]] if typeof parameter[0] is 'string'
-        if parameter[0].length
+            parameters.push Require
+        parameters[0] = [parameters[0]] if typeof parameters[0] is 'string'
+        if parameters[0].length
             # Grab first needed dependency from given queue.
-            module = parameter[0].shift()
-            if(typeof(module) is 'object' and
-               self::_isModuleLoaded module)
+            module = parameters[0].shift()
+            if module instanceof window.Array and self::_isModuleLoaded module
                 ###
-                    If module is already there make a recursive call with
-                    one module dependency less.
+                    If module is already there make a recursive call with one
+                    module dependency less.
                 ###
-                self::_load.apply Require, parameter
-            else if (
+                self::_load.apply Require, parameters
+            else if(
                 typeof(module) is 'string' or
-                not self::_isLoadingInitialized module[0], parameter
+                not self::_isLoadingInitialized module[0], parameters
             )
                 ###
-                    If module is currently not loading put current function
-                    call initialize loading needed resource.
+                    If module is currently not loading initialize loading and
+                    save function call parameter.
                 ###
                 module = ['', module] if typeof(module) is 'string'
                 if self.passiv
                     self::_log(
                         "Prevent loading module \"#{module[0]}\" in passiv " +
-                        "mode.")
+                        'mode.')
                 else
-                    self::_initializeResourceLoading module, parameter
+                    self::_initializeResourceLoading module, parameters
         else
             ###
                 Call a given event handler (if provided as second argument)
                 when all dependencies are determined.
             ###
-            if parameter.length > 3
-                parameter[1].apply(
+            if parameters.length > 3
+                parameters[1].apply(
                     self.context, self::_generateLoadedHandlerArguments(
-                        parameter))
+                        parameters))
             ###
-                If other dependencies aren't determined yet try to
-                determine it now after a new dependency was loaded.
+                If other dependencies aren't determined yet try to determine it
+                now after a new dependency was loaded.
             ###
             if(self._callQueue.length and self::_isModuleLoaded(
                 self._callQueue[self._callQueue.length - 1])
             )
                 self::_load.apply Require, self._callQueue.pop()[1]
         self::_handleNoConflict()
-    _initializeResourceLoading: (module, parameter) ->
+    _initializeResourceLoading: (module, parameters, urls=[]) ->
         ###
             Initialize loading of needed resources.
-
-            **module {String[]}**    - A tuple (consisting of module indicator
-                                       and module file path) which should be
-                                       loaded.
-
-            **parameter {Object[]}** - Saves arguments indented to be given to
-                                       the on load function.
-
-            **returns {Require}**    - Returns the current function (class).
-        ###
-        isAsyncronRequest = false
-        shortcut = self.asyncronModulePatternHandling
-        for asyncronModulePattern, callback of shortcut
-            if new RegExp(asyncronModulePattern).test module[1]
-                if window.XMLHttpRequest
-                    ajaxObject = new XMLHttpRequest
-                else
-                    ajaxObject = new ActiveXObject 'Microsoft.XMLHTTP'
-                ajaxObject.open(
-                    'GET', self::_getScriptFilePath module[1], true)
-                ajaxObject.onreadystatechange = ->
-                    # NOTE: Internet explorer throws an exception here instead
-                    # of showing the error code in the "status" property.
-                    try
-                        readyState = ajaxObject.readyState
-                    catch error
-                        throw new Error(
-                            "Running resource \"#{module[1]}\" failed via " +
-                            "ajax cased by exception: \"#{error}\".")
-                    if readyState is 4 and ajaxObject.status in [0, 200]
-                        shortcut[asyncronModulePattern](
-                            ajaxObject.responseText, module, parameter)
-                        self::_scriptLoaded module, parameter
-                        # Delete event after passing it once.
-                        ajaxObject.onreadystatechange = null
-                    else if ajaxObject.status isnt 200
-                        self::_log(
-                            "Loading resource \"#{module[1]}\" failed " +
-                            "via ajax with status \"#{ajaxObject.status}" +
-                            "\" in state \"#{ajaxObject.readyState}\".")
-                ajaxObject.send null
-                isAsyncronRequest = true
-                break
-        if not isAsyncronRequest
-            self::_appendResourceDomNode(
-                self::_createScriptLoadingNode(module[1]), module, parameter)
-        type = 'header dom node'
-        if isAsyncronRequest
-            type = 'ajax'
-        self::_log "Initialized loading of \"#{module[1]}\" via #{type}."
-        self
-    _generateLoadedHandlerArguments: (parameters) ->
-        ###
-            Generates an array of arguments from initially given arguments to
-            the require constructor. The generated arguments are designed to
-            give loaded handler a useful scope
-
-            **parameters {Object[]}** - Initially given arguments.
-
-            **returns {Object[]}**    - Returns an array of arguments.
-        ###
-        additionalArguments = []
-        for index in [0..parameters[parameters.length - 2].length - 1]
-            if parameters[parameters.length - 2][index].length is 2
-                moduleObjects =
-                    parameters[parameters.length - 2][index][0].split '.'
-                query = self.context
-                for subIndex in [0..moduleObjects.length - 1]
-                    query = query[moduleObjects[subIndex]]
-                    additionalArguments.push query
-        parameters.slice(2, parameters.length - 2).concat(
-            additionalArguments, parameters[parameters.length - 2])
-    _appendResourceDomNode: (scriptNode, module, parameters) ->
-        ###
-            Appends a given script loading tag inside the dom tree.
-
-            **scriptNode {DomNode}**  - Dom node where to append script loading
-                                        node.
 
             **module {String[]}**     - A tuple (consisting of module indicator
                                         and module file path) which should be
@@ -569,69 +558,251 @@ class Require
             **parameters {Object[]}** - Saves arguments indented to be given to
                                         the on load function.
 
+            **urls {String[]}**       - A list of URLs to check for needed
+                                        resource.
+
             **returns {Require}**     - Returns the current function (class).
         ###
+        shortcut = self.asynchronModulePatternHandling
+        for asynchronModulePattern, callback of shortcut
+            if new window.RegExp(asynchronModulePattern).test module[1]
+                if window.XMLHttpRequest
+                    ajaxObject = new window.XMLHttpRequest
+                else
+                    ajaxObject = new window.ActiveXObject 'Microsoft.XMLHTTP'
+                urls = self::_getScriptFileURLs(module[1]) if not urls.length
+                url = urls.shift()
+                ajaxObject.open 'GET', url, true
+                ajaxObject.onreadystatechange = ->
+                    # NOTE: Internet explorer throws an exception here instead
+                    # of showing the error code in the "status" property.
+                    try
+                        readyState = ajaxObject.readyState
+                    catch error
+                        throw new window.Error(
+                            "Loading resource \"#{module[1]}\" failed via " +
+                            'asynchron request caused by exception: ' +
+                            "\"#{error}\".")
+                    if ajaxObject.readyState is 4
+                        if ajaxObject.status in [0, 200]
+                            if self.localStoragePathReminderPrefix
+                                window.localStorage[self
+                                    .localStoragePathReminderPrefix +
+                                    ":#{self._currentSessionTimestamp
+                                    .getTime()}:#{module[1]}"
+                                ] = url
+                            callback.apply this, [
+                                ajaxObject.responseText, url, module
+                            ].concat parameters
+                            self::_scriptLoaded module, parameters
+                            # Delete event after passing it once.
+                            ajaxObject.onreadystatechange = null
+                        else if ajaxObject.status isnt 200
+                            self::_log(
+                                "Loading resource \"#{module[1]}\" via " +
+                                "url \"#{url}\" failed with status " +
+                                "\"#{ajaxObject.status}\" in state " +
+                                "\"#{ajaxObject.readyState}\" via asynchron " +
+                                'request.')
+                            if urls.length
+                                self::_log "Retrying with url \"#{urls[0]}\"."
+                                self::_initializeResourceLoading(
+                                    module, parameters, urls)
+                            else
+                                self::_log(
+                                    'Loading resource failed with all known '
+                                    'base paths.')
+                ajaxObject.send null
+                type = 'asynchron request'
+                break
+        if not type?
+            self::_injectLoading module, parameters
+            type = 'header dom node'
+        self::_log "Initialized loading of \"#{module[1]}\" via #{type}."
+        self
+    _generateLoadedHandlerArguments: (parameters) ->
+        ###
+            Generates an array of arguments from initially given arguments to
+            the require constructor. The generated arguments are designed to
+            give the loaded handler a useful scope.
+            First all explicit additional arguments given to the require
+            constructor will be given. Then all needed dependencies with their
+            nested scopes will be appended. In the end the scope indicator
+            strings will be appended.
+
+            **parameters {Object[]}** - Initially given arguments.
+
+            **returns {Object[]}**    - Returns an array of arguments.
+        ###
+        scopeDependencyReferences = []
+        # NOTE: We ignore last value of parameters array, because the last one
+        # is the parameters initialized indicator. The second last one is the
+        # initial given scope dependency array.
+        for parameter in parameters[parameters.length - 2]
+            if parameter.length is 2
+                moduleObjects = parameter[0].split '.'
+                query = self.context
+                for moduleObject in moduleObjects
+                    query = query[moduleObject]
+                    # NOTE: We only add references as long they aren't
+                    # undefined.
+                    if query?
+                        scopeDependencyReferences.push query
+                    else
+                        break
+        # Merge additional initially given arguments with dependency
+        # references and scope indicator strings.
+        parameters.slice(2, parameters.length - 2).concat(
+            scopeDependencyReferences, parameters[1])
+    _getScriptFileURLs: (scriptFilePath, checkAgainExtension=false) ->
+        ###
+            Determines all urls for given script file.
+
+            **scriptFilePath {String}**       - Path pointing to the file
+                                                resource.
+
+            **checkAgainExtension {Boolean}** - Indicates weather the
+                                                javascript file extension
+                                                should be appended if no known
+                                                extension is present.
+
+            **returns {String}**        - The absolute path to needed resource.
+        ###
+        initialScriptFilePath = scriptFilePath
+        result = []
+        if new window.RegExp('^https?://.+').test scriptFilePath
+            result.push scriptFilePath
+        else if checkAgainExtension
+            hasExtension = false
+            for name, properties of self.includeTypes
+                if(scriptFilePath.substr(-".#{properties.extension}".length) is
+                   ".#{properties.extension}")
+                    hasExtension = true
+                    break
+            if not hasExtension
+                scriptFilePath += ".#{self.includeTypes.javaScript.extension}"
+        if self.appendTimeStamp
+            scriptFilePath += "?timestamp=#{(new window.Date).getTime()}"
+        extension = scriptFilePath.substring scriptFilePath.lastIndexOf(
+            '.'
+        ) + 1
+        basePaths = self.basePath.all
+        if self.basePath[extension] and self.basePath[extension].length
+            basePaths = self.basePath[extension]
+        cacheHit = false
+        if self.localStoragePathReminderPrefix
+            for key of window.localStorage
+                if(key.substring(
+                    0, self.localStoragePathReminderPrefix.length + 1
+                ) is "#{self.localStoragePathReminderPrefix}:" and
+                key.substring(key.lastIndexOf(':') + 1) is
+                initialScriptFilePath)
+                    cacheHit = key
+        for path in basePaths
+            fullScriptFilePath = path + scriptFilePath
+            if cacheHit and fullScriptFilePath is window.localStorage[cacheHit]
+                result.unshift window.localStorage[cacheHit]
+                delete window.localStorage[cacheHit]
+            else
+                result.push fullScriptFilePath
+        result
+    _injectLoading: (module, parameters, urls=[]) ->
+        ###
+            Injects new script loading dom nodes or initializes asynchron
+            loading processes.
+
+            **module {String[]}**     - A tuple of module name to indicate if a
+                                        module is presence and its file path
+                                        resource.
+
+            **parameters {Object[]}** - Saves arguments indented to be given
+                                        to the on load function.
+
+            **urls {String[]}**       - A list of URLs to check for needed
+                                        resource.
+
+            **returns {Require}**     - Returns the current function (class).
+        ###
+        urls = self::_getScriptFileURLs(module[1], true) if not urls.length
+        url = urls.shift()
+        for name, properties of self.includeTypes
+            if(url.substr(-"-#{properties.extension}".length) is
+               ".#{properties.extension}")
+                return self::_injectLoadingHelper(
+                    module, parameters, urls, url, properties)
+        self::_log(
+            "No known loading node type for \"#{module[1]}\" available. Using "
+            "default type \"#{self.defaultType}\".")
+        self::_injectLoadingHelper(
+            module, parameters, urls, url, self.includeTypes[self.defaultType])
+    _injectLoadingHelper: (module, parameters, urls, url, properties) ->
+        ###
+            Injects a new script loading dom node or initializes an asynchron
+            loading process.
+
+            **module {String[]}**     - A tuple of module name to indicate if a
+                                        module is presence and its file path
+                                        resource.
+
+            **parameters {Object[]}** - Saves arguments indented to be given
+                                        to the on load function.
+
+            **urls {String[]}**       - A list of URLs to check for needed
+                                        resource.
+
+            **returns {Require}**     - Returns the current function (class).
+        ###
+        domNode = document.createElement properties.domNodeName
+        domNode[properties.sourcePropertyName] = url
+        for name, value in properties.domNodeProperties
+            domNode[name] = value
         ###
             Internet explorer workaround for capturing event when
             script is loaded.
         ###
-        if scriptNode.readyState
-            scriptNode.onreadystatechange = ->
-                if(scriptNode.readyState is 'loaded' or
-                   scriptNode.readyState is 'complete')
+        onErrorCallback = ->
+            self::_log(
+                "Loading resource \"#{module[1]}\" via header dom " +
+                "node with url \"#{url}\" failed.")
+            if urls.length
+                self::_log "Retrying with url \"#{urls[0]}\"."
+                self::_injectLoading module, parameters, urls
+            else
+                self::_log(
+                    'Loading resource failed with all known base ' +
+                    'paths.')
+            # Delete event after passing it once.
+            domNode.onerror = null
+            domNode.parentElement.removeChild domNode
+        if domNode.readyState
+            domNode.onreadystatechange = ->
+                if(domNode.readyState is 'loaded' or
+                   domNode.readyState is 'complete')
                     self::_scriptLoaded module, parameters
                     # Delete event after passing it once.
-                    scriptNode.onreadystatechange = null
+                    domNode.onreadystatechange = null
+                else
+                    onErrorCallback()
         else
-            scriptNode.onload = ->
+            domNode.onload = ->
+                if self.localStoragePathReminderPrefix
+                    window.localStorage[self
+                        .localStoragePathReminderPrefix +
+                        ":#{self._currentSessionTimestamp
+                        .getTime()}:#{module[1]}"
+                    ] = url
                 self::_scriptLoaded module, parameters
                 # Delete event after passing it once.
-                scriptNode.onload = null
-        self.injectingNode.appendChild scriptNode
+                domNode.onload = null
+            domNode.onerror = onErrorCallback
+        self.injectingDomNode.appendChild domNode
         self
-    _getScriptFilePath: (scriptFilePath) ->
-        ###
-            Creates a new script loading tag.
-
-            **scriptFilePath {String}** - Path pointing to the file resource.
-
-            **returns {String}**        - The absolute path to needed resource.
-        ###
-        if scriptFilePath.substring(0, 'http://'.length) is 'http://'
-            return scriptFilePath
-        extension = scriptFilePath.substring(
-            scriptFilePath.lastIndexOf('.') + 1)
-        if self.basePath[extension]
-            return self.basePath[extension] + scriptFilePath
-        self.basePath.default + scriptFilePath
-    _createScriptLoadingNode: (scriptFilePath) ->
-        ###
-            Creates a new script loading tag.
-
-            **scriptFilePath {String}** - Path pointing to the file resource.
-
-            **returns {DomNode}**       - Returns script node needed to load
-                                          given script resource.
-        ###
-        scriptNode = document.createElement 'script'
-        scriptNode.src = self::_getScriptFilePath scriptFilePath
-        hasExtension = false
-        for extension, scriptType of self.scriptTypes
-            if scriptNode.src.substr(-extension.length) is extension
-                hasExtension = true
-                break
-        if not hasExtension
-            scriptNode.src += extension
-        scriptNode.type = scriptType
-        if self.appendTimeStamp
-            scriptNode.src += "?timestamp=#{(new Date).getTime()}"
-        scriptNode
     _scriptLoaded: (module, parameters) ->
         ###
             If script was loaded it will be deleted from the
             "initializedLoading" array. If all dependencies for this module are
             available the sequence could continue otherwise the current
-            sequence status (the parameter array) will be saved in a queue for
+            sequence status (the parameters array) will be saved in a queue for
             continue later.
 
             **module {String[]}**     - A tuple of module name to indicate if a
@@ -649,13 +820,13 @@ class Require
         self.scopeIndicator = ''
         if typeof parameters[2] is 'string'
             parameters[2] = [parameters[2]]
-        for value, key in parameters[2]
+        for value, index in parameters[2]
             if(not hasScopeIndicator and typeof value is 'string' and
                module[1] is value)
-                parameters[2][key] = module
-        for value, key in self.initializedLoadings
+                parameters[2][index] = module
+        for value, index in self.initializedLoadings
             if module[0] is value
-                self.initializedLoadings.splice key, 1
+                self.initializedLoadings.splice index, 1
                 break
         if self::_isModuleLoaded module
             self::_load.apply require, parameters
@@ -695,40 +866,40 @@ class Require
                                         loading "true" will be given back and
                                         "false" otherwise.
         ###
-        for key, value in self.initializedLoadings
+        for value in self.initializedLoadings
             if moduleName is value
                 self._callQueue.push [moduleName, parameters]
                 return true
-        if moduleName
-            self.initializedLoadings.push moduleName
+        self.initializedLoadings.push(moduleName) if moduleName
         false
     _isModuleLoaded: (module) ->
         ###
             Determines if the given "moduleObject" is present in the global
             (window) scope.
 
-            **module {String[]}** - A tuple of module name to indicate if a
-                                    module is presence and its file path.
+            **module {String[]}**        - A tuple of module name to indicate
+                                           if a module is presence and its file
+                                           path.
 
-            **returns {Boolean}** - If given module object is present this
-                                    method will return "true" and "false"
-                                    otherwise.
+            **returns {String|Boolean}** - If given module object is present
+                                           this method will return "true" and
+                                           "false" otherwise.
         ###
         query = self.context
+        moduleDescription = module[1]
         if module[0]
             moduleObjects = module[0].split '.'
-            for index in [0..moduleObjects.length - 1]
-                if query[moduleObjects[index]]
-                    query = query[moduleObjects[index]]
+            for moduleObject in moduleObjects
+                if query[moduleObject]
+                    query = query[moduleObject]
                 else
                     self::_log(
                         "\"#{module[0]}\" isn\'t available because \"" +
-                        "#{moduleObjects[index]}\" is missing in \"" +
+                        "#{moduleObject}\" is missing in \"" +
                         "#{query.toString()}\".")
                     return false
-            self::_log "\"#{module[0]}\" is loaded complete."
-        else
-            self::_log "\"#{module[1]}\" is loaded complete."
+            moduleDescription = module[0]
+        self::_log "\"#{moduleDescription}\" is loaded complete."
         true
     _log: (message) ->
         ###
@@ -752,5 +923,12 @@ class Require
     # endregion
 
 this.require = Require
+
+# endregion
+
+# region vim modline
+
+# vim: set tabstop=4 shiftwidth=4 expandtab:
+# vim: foldmethod=marker foldmarker=region,endregion:
 
 # endregion

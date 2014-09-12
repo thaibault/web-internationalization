@@ -1,23 +1,22 @@
-<!-- region modline
+<!-- !/usr/bin/env markdown
+-*- coding: utf-8 -*- -->
 
-vim: set tabstop=4 shiftwidth=4 expandtab:
-vim: foldmethod=marker foldmarker=region,endregion:
-
-endregion
-
-region header
+<!-- region header
 
 Copyright Torben Sickert 16.12.2012
 
 License
-   This library written by Torben Sickert stand under a creative commons
-   naming 3.0 unported license.
-   see http://creativecommons.org/licenses/by/3.0/deed.de
+-------
+
+This library written by Torben Sickert stand under a creative commons naming
+3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de
 
 endregion -->
 
-Use case<!--deDE:Einsatz--><!--frFR:Utilisier-->
-------------------------------------------------
+<!--|deDE:Einsatz-->
+<!--|frFR:Utilisier-->
+Use case
+--------
 
 A jQuery plugin to replace alternate version of text for client side
 internationalization.
@@ -30,7 +29,10 @@ internationalization.
     client l'internationalisation.
 -->
 
-### Usage<!--deDE:Verwendung--><!--frFR:Demande-->
+<!--|deDE:Verwendung-->
+<!--|frFR:Demande-->
+Usage
+-----
 
 To add two versions of a text string you can simply add your translation
 directly in markup. See how easy it is:
@@ -51,9 +53,7 @@ directly in markup. See how easy it is:
 
     <p>
         Your englisch version.
-        <!--deDE:
-            Ihre deutsche Variante.
-        -->
+        <!--deDE:Ihre deutsche Variante.-->
         <!--frFR:
             Sa version française.
         -->
@@ -83,22 +83,90 @@ translation node. In this case you can simple wrap a self defined dom node.
         Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
     -->
     <!--frFR:
-        Votre version englisch <strong>dom nodes</strong> à l'intérieur.
+        Votre version français <strong>dom nodes</strong> à l'intérieur.
     -->
+
+It is also possible to use an alternative replacement node.
+<!--deDE:Man kann auch einen alternative Ersetzungsknoten einsetzten.-->
+<!--frFR:
+    Donc, il est possible d'utiliser alternative à nœud de remplacement.
+-->
+
+<!--showExample-->
+
+    #!HTML
+
+    <langreplace>
+        Your englisch version with <strong>dom nodes</strong> inside.
+    </langreplace>
+    <langreplacement>deDE:
+        Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
+    </langreplacement>
+    <langreplacement>frFR:
+        Votre version français <strong>dom nodes</strong> à l'intérieur.
+    </langreplacement>
+
+Usually the language dom node precedes the text node to translate. It is
+possible to write a special syntax to use a replacement for the next dom node
+containing text.
+<!--deDE:
+    Normalerweise folgt der Sprach-DOM-Knoten auf den Textknoten der übersetzt
+    werden soll. Es ist mit einer speziellen Syntax möglich einen
+    Sprach-DOM-Knoten für den darauf folgenden DOM-Knoten anzuwenden.
+-->
+<!--frFR:
+    Normalement, le nœud DOM voix suit le nœud de texte de la traduction
+    devrait être. Il est doté d'une syntaxe spéciale possible une Nœud voix Dom
+    pour le nœud DOM prochaine à utiliser.
+-->
+
+<!--showExample-->
+
+    #!HTML
+
+    <!--|deDE:Ihre deutsche Variante.--><!--|frFR:Votre version français.-->
+    <p>Your englisch version.</p>
+
+Its possible to save one translation once if you specify the area with known
+translations.
+<!--deDE:
+    Es ist möglich eine Übersetzung an nur einem Ort zu speichern, sofern der
+    Bereich mit bekannten Übersetzungen markiert wird.
+-->
+<!--frFR:
+    Il est possible d'enregistrer une traduction en un seul endroit, à moins
+    que le Région est marquée avec des traductions connues.
+-->
+
+<!--showExample-->
+
+    #!HTML
+
+    <!--The "div.toc" selector defines the default known language area.-->
+    <div class="toc">
+      <ul>
+        <li><a href="title-1">title 1</a></li>
+          <ul>
+            <li><a href="title-2">title 2</a></li>
+          </ul>
+      </ul>
+    </div>
+    <h1 id="title-1">title 1<!--deDE:Titel 1--><!--frFR:titre 1--></h1>
+    <h2 id="title-2">title 2<!--deDE:Titel 2--><!--frFR:titre 2--></h2>
 
 With the below initialisation you can simple add this links everywhere in your
 page to switch language. On click you will switch the current language
 interactively. Try it by yourself:
 <!--deDE:
-    Mit der oben aufgezeigten Konfiguration können Sie einfach folgenden Links
+    Mit der unten aufgezeigten Konfiguration können Sie einfach folgenden Links
     an beliebiger Stelle im Markup plazieren. Beim Klicken auf die
     Sprach-Wechsel-Links wird die Sprache Ihrer Webseite entsprechend
     angepasst. Versuchen Sie selbst:
 -->
 <!--frFR:
-    Avec la configuration ci-dessus, vous pouvez simplement identifié les liens
-    suivants placer n'importe où dans le balisage. Lorsque vous cliquez sur l'
-    Langue échange de liens est la langue de votre site en conséquence
+    Avec la configuration au-dessous, vous pouvez simplement identifié les
+    liens suivants placer n'importe où dans le balisage. Lorsque vous cliquez
+    sur l' Langue échange de liens est la langue de votre site en conséquence
     ajustée. Essayez par vous-même:
 -->
 
@@ -124,7 +192,7 @@ to initialize the plugin with different configuration.
 
     #!HTML
 
-    <script type="text/javascript" src="distributionBundle/jquery-2.0.3.js"></script>
+    <script type="text/javascript" src="distributionBundle/jquery-2.1.0.js"></script>
     <script type="text/javascript" src="distributionBundle/jquery-tools-1.0.js"></script>
     <script type="text/javascript" src="distributionBundle/jquery-lang-1.0.js"></script>
     <script type="text/javascript">
@@ -133,26 +201,40 @@ to initialize the plugin with different configuration.
                 domNodeSelectorPrefix: 'body',
                 default: 'enUS',
                 domNodeClassPrefix: '',
+                templateDelimiter: {
+                    pre: '{{',
+                    post: '}}'
+                },
                 fadeEffect: true,
                 textNodeParent: {
-                    fadeIn: {duration: 'normal'},
-                    fadeOut: {duration: 'normal'}
+                    fadeIn: {duration: 'fast'},
+                    fadeOut: {duration: 'fast']
                 },
+                preReplacementLanguagePattern: '^\\|({1})$',
                 replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
                 currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
-                replacementDomNodeName: '#comment',
-                replaceDomNodeName: {'#text', 'langreplace'],
+                replacementDomNodeName: ['#comment', 'langreplacement'],
+                replaceDomNodeNames: ['#text', 'langreplace'],
                 toolsLockDescription: '{1}Switch',
                 languageHashPrefix: 'lang-',
                 currentLanguageIndicatorClassName: 'current',
                 cookieDescription: '{1}Last',
                 languageMapping: {
-                    deDE: ['de', 'de-de'],
+                    deDE: ['de', 'de-de', 'german', 'deutsch'],
                     enUS: ['en', 'en-us'],
-                    enEN: ['en-en'],
-                    frFR: ['fr', 'fr-fr']
-                },
-                onSwitched: $.noop()
+                    enEN: ['en-en', 'english'],
+                    frFR: ['fr', 'fr-fr', 'french']
+                }
+                onSwitched: $.noop(),
+                onSwitch: $.noop(),
+                domNode: {knownLanguage: 'div.toc'}
             });
         });
     </script>
+
+<!-- region modline
+
+vim: set tabstop=4 shiftwidth=4 expandtab:
+vim: foldmethod=marker foldmarker=region,endregion:
+
+endregion -->

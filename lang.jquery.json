@@ -16,7 +16,10 @@
         "jquery-tools": ">=1.0"
     },
     "description": "client side internationalisation",
-    "keywords": ["tools", "language", "lang", "internationalisation", "audience", "multilanguage"],
+    "keywords": [
+        "audience", "internationalisation", "lang", "language",
+        "multilanguage", "tools"
+    ],
     "homepage": "http://thaibault.github.com/jQuery-lang",
     "docs": "http://thaibault.github.com/jQuery-lang/api",
     "demo": "http://thaibault.github.com/jQuery-lang",

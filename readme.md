@@ -2,7 +2,6 @@
 -*- coding: utf-8 -*- -->
 
 <!-- region header
-
 Copyright Torben Sickert 16.12.2012
 
 License
@@ -10,7 +9,6 @@ License
 
 This library written by Torben Sickert stand under a creative commons naming
 3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de
-
 endregion -->
 
 <!--|deDE:Einsatz-->
@@ -28,6 +26,83 @@ internationalization.
     Un plugin jQuery pour remplacer version alternative de texte pour le côté
     client l'internationalisation.
 -->
+
+<!--|deDE:Inhalt-->
+Content
+-------
+
+<!--Place for automatic generated table of contents.-->
+[TOC]
+
+<!--|deDE:Installation-->
+Installation
+------------
+
+<!--|deDE:Klassische Dom-Integration-->
+### Classical dom injection
+
+You can simply download the compiled version as zip file here and inject it
+after needed dependencies:
+<!--deDE:
+    Du kannst einfach das Plugin als Zip-Archiv herunterladen und per
+    Script-Tag in deine Webseite integrieren:
+-->
+
+    #!HTML
+
+    <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+    <script src="http://torben.website/clientNode/data/distributionBundle/index.compiled.js"></script>
+    <!--Inject downloaded file:-->
+    <script src="/index.compiled.js"></script>
+    <!--Or integrate via cdn:
+    <script src="http://torben.website/internationalisation/data/distributionBundle/index.compiled.js"></script>
+    -->
+
+The compiled bundle supports AMD, commonjs, commonjs2 and variable injection
+into given context (UMD) as export format: You can use a module bundler if you
+want.
+<!--deDE:
+    Das kompilierte Bundle unterstützt AMD, commonjs, commonjs2 und
+    Variable-Injection in den gegebenen Context (UMD) als Export-Format:
+    Dadurch können verschiedene Module-Bundler genutzt werden.
+-->
+
+<!--|deDE:Paket-Management und Modul-Komposition-->
+### Package managed and module bundled
+
+If you are using npm as package manager you can simply add this tool to your
+**package.json** as dependency:
+<!--deDE:
+    Nutzt du npm als Paket-Manager, dann solltest du einfach deine
+    <strong>package.json</strong> erweitern:
+-->
+
+    #!JSON
+
+    ...
+    "dependencies": {
+        ...
+        "internationalisation": "latest",
+        ...
+    },
+    ...
+
+After updating your packages you can simply depend on this script and let
+a module bundler do the hard stuff or access it via a exported variable name
+into given context.
+<!--deDE:
+    Nach einem Update deiner Pakete kannst du dieses Plugin einfach in deine
+    JavaScript-Module importieren oder die exportierte Variable im gegebenen
+    Context referenzieren.
+-->
+
+    #!JavaScript
+
+    ...
+    $ = require('internationalisation')
+    ...
+    $.Language().isEquivalentDom('<div>', '<script>') // false
+    ...
 
 <!--|deDE:Verwendung-->
 <!--|frFR:Demande-->
@@ -174,9 +249,9 @@ interactively. Try it by yourself:
 
     #!HTML
 
-    <a href="#lang-deDE">de</a>
-    <a href="#lang-enUS">en</a>
-    <a href="#lang-frFR">fr</a>
+    <a href="#language-deDE">de</a>
+    <a href="#language-enUS">en</a>
+    <a href="#language-frFR">fr</a>
 
 Here you can see a complete initialisation example with all available options
 to initialize the plugin with different configuration.
@@ -192,49 +267,45 @@ to initialize the plugin with different configuration.
 
     #!HTML
 
-    <script type="text/javascript" src="distributionBundle/jquery-2.1.1.js"></script>
-    <script type="text/javascript" src="distributionBundle/jquery-tools-1.0.js"></script>
-    <script type="text/javascript" src="distributionBundle/jquery-lang-1.0.js"></script>
-    <script type="text/javascript">
-        $(function($) {
-            $.Lang({
-                domNodeSelectorPrefix: 'body',
-                default: 'enUS',
-                domNodeClassPrefix: '',
-                templateDelimiter: {
-                    pre: '{{',
-                    post: '}}'
-                },
-                fadeEffect: true,
-                textNodeParent: {
-                    fadeIn: {duration: 'fast'},
-                    fadeOut: {duration: 'fast']
-                },
-                preReplacementLanguagePattern: '^\\|({1})$',
-                replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
-                currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
-                replacementDomNodeName: ['#comment', 'langreplacement'],
-                replaceDomNodeNames: ['#text', 'langreplace'],
-                toolsLockDescription: '{1}Switch',
-                languageHashPrefix: 'lang-',
-                currentLanguageIndicatorClassName: 'current',
-                cookieDescription: '{1}Last',
-                languageMapping: {
-                    deDE: ['de', 'de-de', 'german', 'deutsch'],
-                    enUS: ['en', 'en-us'],
-                    enEN: ['en-en', 'english'],
-                    frFR: ['fr', 'fr-fr', 'french']
-                }
-                onSwitched: $.noop(),
-                onSwitch: $.noop(),
-                domNode: {knownLanguage: 'div.toc'}
-            });
-        });
+    <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+    <script src="http://torben.website/clientNode/data/distributionBundle/index.compiled.js"></script>
+    <script src="http://torben.website/internationalisation/data/distributionBundle/index.compiled.js"></script>
+    <script>
+        $(($) => $.Language({
+            domNodeSelectorPrefix: 'body',
+            default: 'enUS',
+            allowedLanguages: [],
+            initial: null,
+            templateDelimiter: {pre: '{{', post: '}}'},
+            fadeEffect: true,
+            textNodeParent: {
+                showAnimation: [{opacity: 1}, {duration: 'fast'}],
+                hideAnimation: [{opacity: 0}, {duration: 'fast'}]
+            },
+            preReplacementLanguagePattern: '^\\|({1})$',
+            replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
+            currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
+            replacementDomNodeName: ['#comment', 'langreplacement'],
+            replaceDomNodeNames: ['#text', 'langreplace'],
+            toolsLockDescription: '{1}Switch',
+            languageHashPrefix: 'language-',
+            currentLanguageIndicatorClassName: 'current',
+            sessionDescription: '{1}',
+            languageMapping: {
+                deDE: ['de', 'de_de', 'de-de', 'german', 'deutsch'],
+                enUS: ['en', 'en_us', 'en-us'],
+                enEN: ['en_en', 'en-en', 'english'],
+                frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
+            },
+            onSwitched: $.noop(),
+            onEnsured: $.noop(),
+            onSwitch: $.noop(),
+            onEnsure: $.noop(),
+            domNode: {knownTranslation: 'div.toc'}
+        }))
     </script>
 
 <!-- region modline
-
 vim: set tabstop=4 shiftwidth=4 expandtab:
 vim: foldmethod=marker foldmarker=region,endregion:
-
 endregion -->

@@ -2,6 +2,22 @@
 
 ## Generic
 
+# Generated documentations
+documentation/build
+apiDocumentation/
+
+# Temporary compile files
+*.compiled.*
+*.compiled
+!/api/**/*
+*Bundle.*
+!/data/**/*
+.dynamicConfiguration-*.json
+*.dll-manifest.json
+
+# Profiling data.
+*.profile
+
 # Packages
 *.egg
 *.egg-info
@@ -17,6 +33,9 @@ develop-eggs
 lib
 lib64
 .sass-cache
+
+# Ignore docker nested bash generated files.
+/.bash_history
 
 # Unit test / coverage reports
 .coverage
@@ -34,6 +53,7 @@ nosetests.xml
 # Vim temporary file
 *.swp
 .ropeproject
+.viminfo
 
 # PHPStorm and other IDE Files
 *.idea
@@ -45,9 +65,22 @@ nosetests.xml
 # Gedit autosave backups.
 *~
 
-# region vim modline
+# Temporary fuse files
+**/.fuse_hidden*
 
+# Temporary windows files
+*Thumbs.db
+
+# Node Modules
+node_modules/
+.npm/
+.v8flags.*
+/.cache
+/.config
+.npm-debug.log
+npm-debug.log
+
+# region vim modline
 # vim: set tabstop=4 shiftwidth=4 expandtab:
 # vim: foldmethod=marker foldmarker=region,endregion:
-
 # endregion

@@ -2,6 +2,11 @@
   "name": "internationalisation",
   "version": "1.0.4",
   "description": "Expand your audience",
+  "documentationWebsite": {
+    "tagline": "Expand your audience<!--deDE:Erweitern Sie Ihr Publikum--><!--frFR:Élargir votre audience-->",
+    "trackingCode": "UA-40192634-6",
+    "languags": ["deDE", "enUS", "frFR"]
+    },
   "keywords": [
     "lang",
     "language",
@@ -18,20 +23,9 @@
   "main": "index.compiled.js",
   "webOptimizer": {
     "injection": {
-      "externalAliases": {
-        "clientnode": "$.Tools"
-      },
-      "implicitExternalExcludePattern": [
-        {
-          "__evaluate__": "/^weboptimizer\\/browserAPI(?:\\.compiled)?(?:\\.js)?$/"
-        },
-        {
+      "implicitExternalExcludePattern": {"__append__": {
           "__evaluate__": "/^clientnode\\/test(?:\\.compiled)?(?:\\.js)?$/"
-        },
-        {
-          "__evaluate__": "/\\/webpack\\/buildin\\/module\\.js$/"
-        }
-      ],
+      }},
       "internal": {
         "vendor": {
           "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'testInBrowser', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['clientnode'].concat(self.givenCommandLineArguments[2] === 'serve' ? [] : ['script!qunitjs', 'weboptimizer/browserAPI']) : []"
@@ -44,10 +38,7 @@
       },
       "preprocessor": {
         "babel": {
-          "presets": [
-            "latest",
-            "stage-0"
-          ]
+          "presets": {"__remove__": "babili"}
         }
       },
       "skipParseRegularExpression": {
@@ -60,6 +51,7 @@
     "buildDLL": "webOptimizer buildDLL",
     "clear": "webOptimizer clear",
     "document": "webOptimizer document",
+    "export": "webOptimizer build '{module:{preprocessor:{babel:{plugins:{__remove__:\"transform-runtime\"}}}}}'",
     "lint": "webOptimizer typeCheck && webOptimizer lint",
     "prepublish": "npm run build",
     "serve": "webOptimizer serve",
@@ -67,6 +59,7 @@
     "test": "webOptimizer test",
     "testInBrowser": "webOptimizer testInBrowser",
     "update": "npm version patch && npm publish",
+    "updateDocumentation": "documentationWebsite --log-level info",
     "watch": "webOptimizer build --watch",
     "watchDLL": "webOptimizer buildDLL --watch"
   },
@@ -76,6 +69,7 @@
     "jquery": "latest"
   },
   "devDependencies": {
+    "documentation-website": "latest",
     "jsdom": "latest",
     "qunitjs": "latest",
     "qunit-cli": "latest",

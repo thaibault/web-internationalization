@@ -51,9 +51,9 @@ after needed dependencies:
     #!HTML
 
     <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
-    <script src="http://torben.website/clientnode/data/distributionBundle/index.compiled.js"></script>
+    <script src="http://torben.website/clientNode/data/distributionBundle/index.compiled.js"></script>
     <!--Inject downloaded file:-->
-    <script src="/index.compiled.js"></script>
+    <script src="index.compiled.js"></script>
     <!--Or integrate via cdn:
     <script src="http://torben.website/internationalisation/data/distributionBundle/index.compiled.js"></script>
     -->
@@ -88,8 +88,8 @@ If you are using npm as package manager you can simply add this tool to your
     ...
 
 After updating your packages you can simply depend on this script and let
-a module bundler do the hard stuff or access it via a exported variable name
-into given context.
+a module bundler do the hard stuff or access it via an exported variable name
+in given context.
 <!--deDE:
     Nach einem Update deiner Pakete kannst du dieses Plugin einfach in deine
     JavaScript-Module importieren oder die exportierte Variable im gegebenen
@@ -99,9 +99,19 @@ into given context.
     #!JavaScript
 
     ...
-    $ = require('internationalisation')
-    ...
-    $.Language().isEquivalentDom('<div>', '<script>') // false
+    import Language from 'internationalisation'
+    class SpecialLanguage extends Language...
+    Language({options..})
+    // or
+    import {$} from 'internationalisation'
+    $.Language()
+    class SpecialLanguage extends $.Language.class ...
+    // or
+    Language = require('internationalisation').default
+    value instanceof Language
+    // or
+    $ = require('internationalisation').$
+    $.Language()
     ...
 
 <!--|deDE:Verwendung-->
@@ -268,13 +278,13 @@ to initialize the plugin with different configuration.
     #!HTML
 
     <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
-    <script src="http://torben.website/clientnode/data/distributionBundle/index.compiled.js"></script>
+    <script src="http://torben.website/clientNode/data/distributionBundle/index.compiled.js"></script>
     <script src="http://torben.website/internationalisation/data/distributionBundle/index.compiled.js"></script>
     <script>
         $(($) => $.Language({
             domNodeSelectorPrefix: 'body',
             default: 'enUS',
-            allowedLanguages: [],
+            selection: [],
             initial: null,
             templateDelimiter: {pre: '{{', post: '}}'},
             fadeEffect: true,

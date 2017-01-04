@@ -5,13 +5,9 @@
   "description": "Expand your audience",
   "homepage": "http://torben.website/internationalisation",
   "documentationWebsite": {
+    "languages": ["deDE", "enUS", "frFR"],
     "tagline": "Expand your audience<!--deDE:Erweitern Sie Ihr Publikum--><!--frFR:Élargir votre audience-->",
-    "trackingCode": "UA-40192634-6",
-    "languages": [
-      "deDE",
-      "enUS",
-      "frFR"
-    ]
+    "trackingCode": "UA-40192634-6"
   },
   "keywords": [
     "lang",
@@ -49,9 +45,6 @@
   },
   "devDependencies": {
     "documentation-website": "latest",
-    "jsdom": "latest",
-    "qunitjs": "latest",
-    "qunit-cli": "latest",
     "source-map-support": "latest",
     "weboptimizer": "latest"
   },

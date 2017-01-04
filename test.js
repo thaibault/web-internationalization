@@ -17,6 +17,11 @@
 // region imports
 import type {$DomNode} from 'clientnode'
 import registerTest from 'clientnode/test'
+// NOTE: Only needed for debugging this file.
+try {
+    module.require('source-map-support/register')
+} catch (error) {}
+
 import type Language from './index'
 // endregion
 registerTest(async function(
@@ -152,7 +157,7 @@ registerTest(async function(
             language._switchCurrentLanguageIndicator('deDE'), language))
     // / endregion
     // endregion
-}, ['withJQuery'])
+}, ['full'])
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
 // vim: foldmethod=marker foldmarker=region,endregion:

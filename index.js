@@ -38,9 +38,16 @@ export type Replacement = {
 /**
  * This plugin holds all needed methods to extend a website for
  * internationalisation.
- * @extends tools:Tools
  * @property static:_name - Defines this class name to allow retrieving them
  * after name mangling.
+ *
+ * @property currentLanguage - Saves the current language.
+ * @property knowntranslations - Saves a mapping of known language strings and
+ * their corresponding translations, to boost language replacements or saves
+ * redundant replacements in dom tree.
+ *
+ * @property _$domNodeToFade - Saves all $-extended dom nodes which should be
+ * animated.
  * @property _options - Options extended by the options given to the
  * initializer method.
  * @property _options.domNodeSelectorPrefix {string} - Selector prefix for all
@@ -98,27 +105,19 @@ export type Replacement = {
  * before a language switch should be ensured.
  * @property _options.domNode {Object.<string, string>} - A mapping of needed
  * internal dom node descriptions to their corresponding selectors.
- * @property currentLanguage - Saves the current language.
- * @property knowntranslations - Saves a mapping of known language strings and
- * their corresponding translations, to boost language replacements or saves
- * redundant replacements in dom tree.
- * @property _$domNodeToFade - Saves all $-extended dom nodes which should be
- * animated.
  * @property _replacements - Saves all text nodes which should be replaced.
  * @property _textNodesWithKnownTranslation - Saves a mapping of known text
  * snippets to their corresponding $-extended dom nodes.
  */
 export default class Language extends $.Tools.class {
-    // region static properties
     static _name:string = 'Language'
-    // endregion
-    // region dynamic properties
+
     currentLanguage:string
     knownTranslations:{[key:string]:string}
+
     _$domNodeToFade:?$DomNode
     _replacements:Array<Replacement>
-    _textNodesWithKnownTranslation:{[key:string]:$DomNode};
-    // endregion
+    _textNodesWithKnownTranslation:{[key:string]:$DomNode}
     // region public methods
     // / region special
     /* eslint-disable jsdoc/require-description-complete-sentence */
@@ -187,9 +186,9 @@ export default class Language extends $.Tools.class {
                 this._options.replacementLanguagePattern.substr(
                     1, this._options.replacementLanguagePattern.length - 2))
         this._options.toolsLockDescription = this.constructor.stringFormat(
-            this._options.toolsLockDescription, this.constructor._name)
+            this._options.toolsLockDescription, this.constructor.name)
         this._options.sessionDescription = this.constructor.stringFormat(
-            this._options.sessionDescription, this.constructor._name)
+            this._options.sessionDescription, this.constructor.name)
         this.$domNodes = this.grabDomNode(this._options.domNode)
         this.$domNodes.switchLanguageButtons = $(
             `a[href^="#${this._options.languageHashPrefix}"]`)

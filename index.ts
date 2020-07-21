@@ -20,7 +20,7 @@
 import Tools, {BoundTools, $} from 'clientnode'
 import {$DomNode, HTMLItem, Mapping} from 'clientnode/type'
 
-import {Options, Replacement} from './type'
+import {$DomNodes, Options, Replacement} from './type'
 // endregion
 // region plugins/classes
 /**
@@ -30,7 +30,7 @@ import {Options, Replacement} from './type'
  * after name mangling.
  *
  * @property currentLanguage - Saves the current language.
- * @property knowntranslations - Saves a mapping of known language strings and
+ * @property knownTranslations - Saves a mapping of known language strings and
  * their corresponding translations, to boost language replacements or saves
  * redundant replacements in dom tree.
  *
@@ -38,61 +38,59 @@ import {Options, Replacement} from './type'
  * animated.
  * @property _options - Options extended by the options given to the
  * initializer method.
- * @property _options.domNodeSelectorPrefix {string} - Selector prefix for all
- * nodes to take into account.
- * @property _options.default {string} - Initial language to use.
- * @property _options.selection {Array.<string>} - List of all supported
- * languages.
- * @property _options.initial {string} - Initial set language (if omitted it
- * will be guest.
- * @property _options.templateDelimiter {Object.<string, string>} - Template
- * delimiter to recognize dynamic content.
- * @property _options.templateDelimiter.pre {string} - Delimiter which
- * introduces a dynamic expression.
- * @property _options.templateDelimiter.post {string} - Delimiter which
- * finishes a dynamic expression.
- * @property _options.fadeEffect {boolean} - Indicates whether a fade effect
- * should be performed.
- * @property _options.textNodeParent {Object.<string, Object>} - Saves
- * informations how parent dom nodes should be animated when containing text
- * will be switched.
- * @property _options.textNodeParent.showAnimation {Object} - Fade in options
- * when a new text should appear.
- * @property _options.textNodeParent.hideAnimation {Object} - Fade out effect
- * options when a text node should be removed before switching them.
- * @property _options.preReplacementLanguagePattern {string} - Pattern to
- * introduce a pre replacement language node.
- * @property _options.replacementLanguagePattern {string} - Text pattern to
- * introduce a post replacement node.
- * @property _options.currentLanguagePattern {string} - Saves a pattern to
- * recognize current language marker.
- * @property _options.replacementDomNodeName {Array.<string>} - Dom node tag
- * name which should be interpreted as a hidden alternate language node
- * (contains text in another language).
- * @property _options.replaceDomNodeNames {Array.<string>} - Tag names which
- * indicates dom nodes which should be replaced.
- * @property _options.toolsLockDescription {string} - Lock description for the
- * locking mechanism provided by the extended tools class.
- * @property _options.languageHashPrefix {string} - Hash prefix to determine
- * current active language by url.
- * @property _options.currentLanguageIndicatorClassName {string} - Class name
- * which marks current language switcher button or link.
- * @property _options.sessionDescription {string} - Name to use for saving
- * preferred language in local storage for current session.
- * @property _options.languageMapping {Object.<string, Array.<string>>} - A
- * mapping of alternate language descriptions.
- * @property _options.onSwitched {Function} - Callback which will be triggered
- * after a language switch has been finished.
- * @property _options.onEnsured {Function} - Callback which will be triggered
- * after a language check has been performed. Needed if some nodes have another
+ * @property _options.domNodeSelectorPrefix - Selector prefix for all nodes to
+ * take into account.
+ * @property _options.default - Initial language to use.
+ * @property _options.selection - List of all supported languages.
+ * @property _options.initial - Initial set language (if omitted it will be
+ * determined based on environment informations).
+ * @property _options.templateDelimiter - Template delimiter to recognize
+ * dynamic content.
+ * @property _options.templateDelimiter.pre - Delimiter which introduces a
+ * dynamic expression.
+ * @property _options.templateDelimiter.post - Delimiter which finishes a
+ * dynamic expression.
+ * @property _options.fadeEffect - Indicates whether a fade effect should be
+ * performed.
+ * @property _options.textNodeParent - Saves informations how parent dom nodes
+ * should be animated when containing text will be switched.
+ * @property _options.textNodeParent.showAnimation - Fade in options when a new
+ * text should appear.
+ * @property _options.textNodeParent.hideAnimation - Fade out effect options
+ * when a text node should be removed before switching them.
+ * @property _options.preReplacementLanguagePattern - Pattern to introduce a
+ * pre replacement language node.
+ * @property _options.replacementLanguagePattern - Text pattern to introduce a
+ * post replacement node.
+ * @property _options.currentLanguagePattern - Saves a pattern to recognize
+ * current language marker.
+ * @property _options.replacementDomNodeName - Dom node tag name which should
+ * be interpreted as a hidden alternate language node (contains text in another
+ * language).
+ * @property _options.replaceDomNodeNames - Tag names which indicates dom nodes
+ * which should be replaced.
+ * @property _options.toolsLockDescription - Lock description for the locking
+ * mechanism provided by the extended tools class.
+ * @property _options.languageHashPrefix - Hash prefix to determine current
+ * active language by url.
+ * @property _options.currentLanguageIndicatorClassName - Class name which
+ * marks current language switcher button or link.
+ * @property _options.sessionDescription - Name to use for saving preferred
+ * language in local storage for current session.
+ * @property _options.languageMapping - A mapping of alternate language
+ * descriptions.
+ * @property _options.onSwitched - Callback which will be triggered after a
+ * language switch has been finished.
+ * @property _options.onEnsured - Callback which will be triggered after a
+ * language check has been performed. Needed if some nodes have another
  * language active then others. Useful if only some parts of the dom tree was
  * updated and a full language update isn't required.
- * @property _options.onSwitch {Function} - Callback which should be called
- * before a language switch should be performed.
- * @property _options.onEnsure {Function} - Callback which should be called
- * before a language switch should be ensured.
- * @property _options.domNode {Object.<string, string>} - A mapping of needed
- * internal dom node descriptions to their corresponding selectors.
+ * @property _options.onSwitch - Callback which should be called before a
+ * language switch should be performed.
+ * @property _options.onEnsure - Callback which should be called before a
+ * language switch should be ensured.
+ * @property _options.domNode - A mapping of needed internal dom node
+ * descriptions to their corresponding selectors.
  * @property _replacements - Saves all text nodes which should be replaced.
  * @property _textNodesWithKnownTranslation - Saves a mapping of known text
  * snippets to their corresponding $-extended dom nodes.
@@ -101,7 +99,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
     extends BoundTools<TElement> {
     static readonly _name:'Internationalisation' = 'Internationalisation'
 
-    $domNodes:Mapping<$DomNode> = {}
+    $domNodes:$DomNodes = null as unknown as $DomNodes
     currentLanguage:string = 'enUS'
     knownTranslations:Mapping = {}
     readonly self:typeof Internationalisation = Internationalisation
@@ -163,8 +161,8 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
             this._options.sessionDescription, this.self._name
         )
         this.$domNodes = this.grabDomNode(
-            this._options.domNode as Mapping<string>, this.$domNode
-        )
+            this._options.domNode as Mapping, this.$domNode
+        ) as $DomNodes
         this.$domNodes.switchLanguageButtons = $(
             `a[href^="#${this._options.languageHashPrefix}"]`
         )
@@ -721,7 +719,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
 export default Internationalisation
 // endregion
 // region handle $ extending
-if ('fn' in $)
+if ($.fn)
     $.fn.Internationalisation = function<TElement = HTMLElement>(
         ...parameter:Array<any>
     ):$DomNode<TElement> {

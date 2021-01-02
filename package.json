@@ -83,6 +83,16 @@
         ]
       }
     },
+    "#": "Only reasonable if have a linked clientnode repository next to this one and updates their should be propagated directly in development mode.",
+    "development": {
+      "server": {
+        "contentBase": {
+          "__append__": {
+            "__evaluate__": "path.resolve(self.path.base, '../clientnode')"
+          }
+        }
+      }
+    },
     "target:export": {
       "module": {
         "preprocessor": {
@@ -93,6 +103,19 @@
               }
             }
           }
+        }
+      }
+    },
+    "webpack": {
+      "watchOptions": {
+        "ignored": {
+          "__prepend__": [
+            "**/node_modules/**/node_modules",
+            "**/node_modules/**/*.jsx",
+            "**/node_modules/**/*.ts",
+            "**/node_modules/**/*.tsx"
+          ],
+          "__remove__": "**/node_modules"
         }
       }
     }

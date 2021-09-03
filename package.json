@@ -19,10 +19,10 @@
     "internationalisation"
   ],
   "files": [
-    "index.ts",
-    "type.ts"
+    "index.d.ts",
+    "index.js",
+    "type.d.ts"
   ],
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/thaibault/internationalisation"
@@ -46,18 +46,18 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "*",
     "@babel/plugin-transform-proto-to-assign": "*",
     "@types/ejs": "*",
     "@types/html-minifier": "*",
     "@types/jest": "*",
     "@types/jquery": "*",
     "@types/jsdom": "*",
-    "@types/loader-utils": "*",
     "@types/node": "*",
+    "@types/rimraf": "*",
     "@types/workbox-webpack-plugin": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
-    "babel-eslint": "*",
     "clientnode": "*",
     "documentation-website": "*",
     "eslint": "*",

@@ -36,7 +36,7 @@ export interface Scope<TElement = HTMLElement> extends BaseScope<TElement> {
 declare global {
     interface JQuery<TElement = HTMLElement> extends Scope<TElement> {}
 }
-export type Replacement = {
+export interface Replacement {
     $textNodeToTranslate:$DomNode<HTMLItem>
     $nodeToReplace:$DomNode<HTMLItem>
     textToReplace:string
@@ -48,7 +48,7 @@ export type DomNodes<Type = string> =
 export type $DomNodes =
     $BaseDomNodes &
     {switchLanguageButtons:$DomNode<HTMLLinkElement>}
-export type Options = RecursivePartial<BaseOptions> & {
+export interface DefaultOptions {
     currentLanguageIndicatorClassName:string
     currentLanguagePattern:string
     default:string
@@ -57,6 +57,7 @@ export type Options = RecursivePartial<BaseOptions> & {
     initial:null|string
     languageHashPrefix:string
     languageMapping:Mapping<Array<string>>
+    name:string
     onSwitched:Function
     onEnsured:Function
     onSwitch:Function
@@ -77,6 +78,7 @@ export type Options = RecursivePartial<BaseOptions> & {
     }
     toolsLockDescription:string
 }
+export type Options = BaseOptions & DefaultOptions
 // endregion
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:

@@ -17,37 +17,39 @@
 */
 // region imports
 import {
-    $DomNode,
-    $DomNodes as $BaseDomNodes,
     DomNodes as BaseDomNodes,
     HTMLItem,
     Mapping,
     Options as BaseOptions,
-    RecursivePartial,
-    Scope as BaseScope
+    UnknownFunction,
+    $DomNodes as $BaseDomNodes,
+    $T
 } from 'clientnode/type'
 // endregion
 // region exports
 export type InternationalisationFunction<TElement = HTMLElement> =
-    (...parameter:Array<any>) => $DomNode<TElement>
-export interface Scope<TElement = HTMLElement> extends BaseScope<TElement> {
-    Internationalisation:InternationalisationFunction<TElement>
-}
+    (..._parameters:Array<unknown>) => $T<TElement>
+
 declare global {
-    interface JQuery<TElement = HTMLElement> extends Scope<TElement> {}
+    interface JQuery<TElement = HTMLElement> {
+        Internationalisation:InternationalisationFunction<TElement>
+    }
 }
+
 export interface Replacement {
-    $textNodeToTranslate:$DomNode<HTMLItem>
-    $nodeToReplace:$DomNode<HTMLItem>
+    $textNodeToTranslate:$T<HTMLItem>
+    $nodeToReplace:$T<HTMLItem>
     textToReplace:string
-    $currentLanguageDomNode:null|$DomNode<HTMLItem>
+    $currentLanguageDomNode:null|$T<HTMLItem>
 }
+
 export type DomNodes<Type = string> =
     BaseDomNodes &
     {knownTranslation:Type}
 export type $DomNodes =
     $BaseDomNodes &
-    {switchLanguageButtons:$DomNode<HTMLLinkElement>}
+    {switchLanguageButtons:$T<HTMLLinkElement>}
+
 export interface DefaultOptions {
     currentLanguageIndicatorClassName:string
     currentLanguagePattern:string
@@ -57,11 +59,12 @@ export interface DefaultOptions {
     initial:null|string
     languageHashPrefix:string
     languageMapping:Mapping<Array<string>>
+    lockDescription:string
     name:string
-    onSwitched:Function
-    onEnsured:Function
-    onSwitch:Function
-    onEnsure:Function
+    onSwitched:UnknownFunction
+    onEnsured:UnknownFunction
+    onSwitch:UnknownFunction
+    onEnsure:UnknownFunction
     preReplacementLanguagePattern:string
     replaceDomNodeNames:Array<string>
     replacementDomNodeName:Array<string>
@@ -76,7 +79,6 @@ export interface DefaultOptions {
         hideAnimation:[Mapping<number|string>, Mapping<number|string>]
         showAnimation:[Mapping<number|string>, Mapping<number|string>]
     }
-    toolsLockDescription:string
 }
 export type Options = BaseOptions & DefaultOptions
 // endregion

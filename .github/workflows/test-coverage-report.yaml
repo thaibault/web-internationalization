@@ -1,16 +1,17 @@
-name: Check types
+name: Test coverage and report
+
 on:
   # NOTE: Runs on branch to tag creation.
   create:
     branches: [ master ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
 jobs:
-  check-types:
+  test-coverage-report:
     runs-on: ubuntu-latest
     container: node:latest
     steps:
-      - uses: thaibault/install-npm-package-dependencies-action@main
-
-      - name: Check-types
-        run: yarn check:types
+      - uses: thaibault/test-send-coveralls-npm-package-action@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

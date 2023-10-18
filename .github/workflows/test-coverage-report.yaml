@@ -3,9 +3,15 @@ name: Test coverage and report
 on:
   # NOTE: Runs on branch to tag creation.
   create:
-    branches: [ main ]
+    branches:
+      - main
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      debug:
+        description: Sets "NODE_ENV" to "debug".
+        default: false
+        type: boolean
 
 jobs:
   test-coverage-report:
@@ -14,4 +20,5 @@ jobs:
     steps:
       - uses: thaibault/test-send-coveralls-npm-package-action@main
         with:
+          debug: ${{ inputs.debug }}
           github-token: ${{ secrets.GITHUB_TOKEN }}

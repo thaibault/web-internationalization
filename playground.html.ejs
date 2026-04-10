@@ -1,0 +1,94 @@
+<!doctype html>
+<%_ /*
+    region header
+    Copyright Torben Sickert (info["~at~"]torben.website) 16.12.2012
+
+    License
+    -------
+
+    This library written by Torben Sickert stand under a creative commons
+    naming 3.0 unported license.
+    See https://creativecommons.org/licenses/by/3.0/deed.de
+    endregion
+*/ _%>
+<html lang="en">
+    <!--region head-->
+    <head>
+        <meta charset="utf-8">
+        <!--Prevent browser caching-->
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="expires" content="0">
+        <meta http-equiv="pragma" content="no-cache">
+        <title>playground</title>
+        <%-_.include('web-component-wrapper/polyfill.html') %>
+        <!--region script-->
+        <script>
+            window.onload = function() {
+                internationalisation.index.api.register()
+            }
+        </script>
+        <!--endregion-->
+    </head>
+    <!--endregion-->
+    <body>
+        <web-internationalization>
+            <a href="#lang-deDE">de</a>
+            <br />
+            <a href="#lang-enUS">en</a>
+            <br />
+            <a href="#lang-frFR">fr</a>
+
+            <p>
+                Your englisch version.
+                <!--deDE:Ihre deutsche Variante.-->
+                <!--frFR:
+                    Sa version française.
+                -->
+            </p>
+
+            <p>
+                <lang-replace>
+                    Your englisch version with <strong>dom nodes</strong> inside.
+                </lang-replace>
+                <!--deDE:
+                    Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
+                -->
+                <!--frFR:
+                    Votre version français <strong>dom nodes</strong> à l'intérieur.
+                -->
+            </p>
+
+            <p>
+                <lang-replace>
+                    Your englisch version with <strong>dom nodes</strong> inside.
+                </lang-replace>
+                <lang-replacement>deDE:
+                    Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
+                </lang-replacement>
+                <lang-replacement>frFR:
+                    Votre version français <strong>dom nodes</strong> à l'intérieur.
+                </lang-replacement>
+            </p>
+
+            <div>
+                <!--|deDE:Ihre englische Version mit „pre replacement Syntax“.-->
+                <!--|frFR:Votre version en anglais avec la « syntaxe de pré-remplacement ».-->
+                <p>Your englisch version with "pre replacement syntax".</p>
+            </div>
+
+            <div>
+                <!--The "div.toc" selector defines the default known language area.-->
+                <div class="toc">
+                    <ul>
+                        <li><a href="title-1">title 1</a></li>
+                        <ul>
+                            <li><a href="title-2">title 2</a></li>
+                        </ul>
+                    </ul>
+                </div>
+                <h1 id="title-1">title 1<!--deDE:Titel 1--><!--frFR:titre 1--></h1>
+                <h2 id="title-2">title 2<!--deDE:Titel 2--><!--frFR:titre 2--></h2>
+            </div>
+        </web-internationalization>
+    </body>
+<html>

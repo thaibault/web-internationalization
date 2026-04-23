@@ -163,17 +163,17 @@ export class WebInternationalization<
         super.onUpdateAttribute(name, newValue)
 
         if (name === 'options')
-            this.options = extend<Options>(
-                true, {}, this.self._defaultOptions, this.options
-            )
+            this._extendOptions()
     }
     /**
-     * Initializes the component. Current language is set and later needed dom
-     * nodes are grabbed.
+     * Updates controlled dom elements.
+     * @param reason - Why an update has been triggered.
      */
-    connectedCallback(): void {
+    async render(reason?: string): Promise<void> {
+        await super.render(reason)
+
         if (Object.keys(this.options).length === 0)
-            this.onUpdateAttribute('options', '{}')
+            this._extendOptions()
 
         this.options.preReplacementLanguagePattern = format(
             this.options.preReplacementLanguagePattern,
@@ -230,7 +230,7 @@ export class WebInternationalization<
             return
         }
 
-        void this.switch(newLanguage, true)
+        await this.switch(newLanguage, true)
     }
     /// endregion
     /**
@@ -303,6 +303,14 @@ export class WebInternationalization<
     }
     /// endregion
     // region protected methods
+    /**
+     * Extends given options by default options.
+     */
+    _extendOptions() {
+        this.options = extend<Options>(
+            true, {}, this.self._defaultOptions, this.options
+        )
+    }
     /**
      * Depending on activated switching effect this method initialized the
      * effect of replace all text string directly.

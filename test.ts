@@ -24,10 +24,9 @@ import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter'
 import WebInternationalization, {api} from './index'
 // endregion
 describe('WebInternationalization', (): void => {
-    // region mockup
     let root: WebInternationalization
 
-    beforeAll((): void => {
+    beforeAll(async () => {
         if (Object.prototype.hasOwnProperty.call(
             globalContext.window, 'localStorage'
         ))
@@ -39,8 +38,9 @@ describe('WebInternationalization', (): void => {
         root = document.createElement('web-internationalization') as
             WebInternationalization
         document.body.appendChild(root)
+
+        await root.renderState.promise
     })
-    // endregion
     // region tests
     /// region public methods
     test('switch', async (): Promise<void> => {
@@ -48,6 +48,7 @@ describe('WebInternationalization', (): void => {
 
         root.innerHTML = '<div>english<!--deDE:german--></div>'
         await root.switch('deDE')
+
         expect(isEquivalent(
             root.innerHTML.replace(/[ \n]+/g, ' '),
             (

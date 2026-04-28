@@ -156,6 +156,20 @@ export class WebInternationalization<
     // region public methods
     /// region live-cycle
     /**
+     * Defines dynamic getter and setter interface and resolves configuration
+     * object. Initializes the map implementation.
+     */
+    constructor() {
+        super()
+        /*
+            Babels property declaration transformation overwrites defined
+            properties at the end of an implicit constructor. So we have to
+            redefined them as long as we want to declare expected component
+            interface properties to enable static type checks.
+        */
+        this.defineGetterAndSetterInterface()
+    }
+    /**
      * Triggered when ever a given attribute has changed and triggers to update
      * configured dom content.
      * @param name - Attribute name which was updates.
@@ -170,9 +184,15 @@ export class WebInternationalization<
     /**
      * Updates controlled dom elements.
      * @param reason - Why an update has been triggered.
+     * @param resolveRendering - Indicates whether rendering should be resolved
+     * finally. Should be set to "false" via super calls in inherited render
+     * methods which do further dom manipulations afterwards and resolve the
+     * rendering process by their own.
+     * @returns A promise resolving when rendering has finished. A promise may
+     * be needed for classes inheriting from this class.
      */
-    async render(reason?: string): Promise<void> {
-        await super.render(reason)
+    async render(reason = 'unknown', resolveRendering = true): Promise<void> {
+        await super.render(reason, false)
 
         if (Object.keys(this.options).length === 0)
             this._extendOptions()
@@ -188,9 +208,12 @@ export class WebInternationalization<
         this.options.sessionDescription =
             format(this.options.sessionDescription, this.self._name)
 
-        this.switchLanguageButtonDomNodes = this.root.querySelectorAll(
-            `a[href^="#${this.options.languageHashPrefix}"]`
-        )
+        await this.waitForNestedComponentRendering()
+
+        this.switchLanguageButtonDomNodes =
+            this.rootDomNode.querySelectorAll(
+                `a[href^="#${this.options.languageHashPrefix}"]`
+            )
 
         this._movePreReplacementNodes()
 
@@ -226,13 +249,12 @@ export class WebInternationalization<
             this.addSecureEventListener(domNode, 'click', handler)
         }
 
-        if (this.currentLanguage === newLanguage) {
+        if (this.currentLanguage === newLanguage)
             this._switchCurrentLanguageIndicator(newLanguage)
+        else
+            await this.switch(newLanguage, true)
 
-            return
-        }
-
-        await this.switch(newLanguage, true)
+        await this.resolveRenderingPromiseIfSet(reason, resolveRendering)
     }
     /// endregion
     /**
@@ -309,8 +331,13 @@ export class WebInternationalization<
      * Extends given options by default options.
      */
     _extendOptions() {
-        this.options = extend<Options>(
-            true, {}, this.self._defaultOptions, this.options
+        /*
+            NOTE: Using the internal setter avoids to trigger an additinal
+            rendering.
+        */
+        this.setPropertyValue(
+            'options',
+            extend<Options>(true, {}, this.self._defaultOptions, this.options)
         )
     }
     /**
@@ -361,7 +388,7 @@ export class WebInternationalization<
      * text to use the same translation algorithm for both.
      */
     _movePreReplacementNodes(): void {
-        for (const domNode of getAll(this.root)) {
+        for (const domNode of getAll(this.rootDomNode)) {
             const nodeName: string = domNode.nodeName.toLowerCase()
 
             if (this.options.replacementDomNodeNames.includes(nodeName)) {
@@ -409,7 +436,7 @@ export class WebInternationalization<
 
         this.knownTranslations = {}
 
-        for (const domNode of getAll(this.root)) {
+        for (const domNode of getAll(this.rootDomNode)) {
             const nodeName: string = domNode.nodeName.toLowerCase()
             const nodeTextContent = getText(domNode)
 
@@ -484,7 +511,7 @@ export class WebInternationalization<
     _registerKnownTextNodes(): void {
         this._textNodesWithKnownTranslation = {}
 
-        for (const domNode of this.root.querySelectorAll(
+        for (const domNode of this.rootDomNode.querySelectorAll(
             this.options.selectors.knownTranslation
         ))
             for (const node of getAll(domNode)) {
@@ -768,7 +795,7 @@ export class WebInternationalization<
      * @param language - The new language to switch to.
      */
     _switchCurrentLanguageIndicator(language: string) {
-        for (const domNode of this.root.querySelectorAll(
+        for (const domNode of this.rootDomNode.querySelectorAll(
             `a[href="#${this.options.languageHashPrefix}` +
             `${this.currentLanguage}"].` +
             this.options.currentLanguageIndicatorClassName
@@ -777,7 +804,7 @@ export class WebInternationalization<
                 this.options.currentLanguageIndicatorClassName
             )
 
-        for (const domNode of this.root.querySelectorAll(
+        for (const domNode of this.rootDomNode.querySelectorAll(
             `a[href="#${this.options.languageHashPrefix}${language}"]`
         ))
             domNode.classList.add(

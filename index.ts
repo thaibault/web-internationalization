@@ -11,7 +11,7 @@
     License
     -------
 
-    This library written by Torben Sickert stand under a creative commons
+    This library written by Torben Sickert stands under a creative commons
     naming 3.0 unported license.
     See https://creativecommons.org/licenses/by/3.0/deed.de
     endregion
@@ -43,7 +43,7 @@ import {DefaultOptions, Options, Replacement} from './type'
 export const log = new Logger({name: 'web-internationalization'})
 // region plugins/classes
 /**
- * This plugin holds all needed methods to extend a website for
+ * This plugin holds all necessary methods to extend a website for
  * internationalization.
  * @property _defaultOptions - Options extended by the options given to the
  * initializer method.
@@ -62,23 +62,24 @@ export const log = new Logger({name: 'web-internationalization'})
  * descriptions.
  * @property _defaultOptions.lockDescription - Lock description.
  * @property _defaultOptions.preReplacementLanguagePattern - Pattern to
- * introduce a pre replacement language node.
+ * introduce a pre-replacement language node.
  * @property _defaultOptions.replaceDomNodeNames - Tag names which indicates
  * dom nodes which should be replaced.
  * @property _defaultOptions.replacementDomNodeNames - Dom node tag name which
  * should be interpreted as a hidden alternate language node (contains text in
  * another language).
  * @property _defaultOptions.replacementLanguagePattern - Text pattern to
- * introduce a post replacement node.
+ * introduce a post-replacement node.
  * @property _defaultOptions.selection - List of all supported languages.
- * @property _defaultOptions.selectors - Mapping of needed dom node selectors.
+ * @property _defaultOptions.selectors - Mapping of necessary dom node
+ * selectors.
  * @property _defaultOptions.selectors.knownTranslation - Selector to find
  * known translation sections.
  * @property _defaultOptions.sessionDescription - Description to save current
  * language in session storage.
  * @property _defaultOptions.templateDelimiter - Template delimiter to
  * recognize dynamic content.
- * @property _defaultOptions.templateDelimiter.pre - Delimiter which introduces
+ * @property _defaultOptions.templateDelimiter.pre - Delimiter that introduces
  * a dynamic expression.
  * @property _defaultOptions.templateDelimiter.post - Delimiter which finishes
  * a dynamic expression.
@@ -86,10 +87,10 @@ export const log = new Logger({name: 'web-internationalization'})
  * @property currentLanguage - Saves the current language.
  * @property knownTranslations - Saves a mapping of known language strings and
  * their corresponding translations, to boost language replacements or saves
- * redundant replacements in dom tree.
+ * redundant replacements in a dom tree.
  * @property lock - Lock instance when updating dom noes.
- * @property _domNodesToFade - Saves all dom nodes which should be animated.
- * @property _replacements - Saves all text nodes which should be replaced.
+ * @property _domNodesToFade - Saves all dom nodes that should be animated.
+ * @property _replacements - Saves all text nodes that should be replaced.
  * @property _textNodesWithKnownTranslation - Saves a mapping of known text
  * snippets to their corresponding $-extended dom nodes.
  */
@@ -156,15 +157,15 @@ export class WebInternationalization<
     // region public methods
     /// region live-cycle
     /**
-     * Defines dynamic getter and setter interface and resolves configuration
+     * Defines dynamic getter and setter interface and resolves a configuration
      * object. Initializes the map implementation.
      */
     constructor() {
         super()
         /*
-            Babels property declaration transformation overwrites defined
+            Babel property declaration transformation overwrites defined
             properties at the end of an implicit constructor. So we have to
-            redefined them as long as we want to declare expected component
+            redefine them as long as we want to declare expected component
             interface properties to enable static type checks.
         */
         this.defineGetterAndSetterInterface()
@@ -174,9 +175,10 @@ export class WebInternationalization<
      * configured dom content.
      * @param name - Attribute name which was updates.
      * @param newValue - New updated value.
+     * @returns Returns when attribute has been updated.
      */
-    onUpdateAttribute(name: string, newValue: string) {
-        super.onUpdateAttribute(name, newValue)
+    async onUpdateAttribute(name: string, newValue: string): Promise<void> {
+        await super.onUpdateAttribute(name, newValue)
 
         if (name === 'options')
             this._extendOptions()
@@ -186,7 +188,7 @@ export class WebInternationalization<
      * @param reason - Why an update has been triggered.
      * @param resolveRendering - Indicates whether rendering should be resolved
      * finally. Should be set to "false" via super calls in inherited render
-     * methods which do further dom manipulations afterwards and resolve the
+     * methods which do further dom manipulations afterward and resolve the
      * rendering process by their own.
      * @returns A promise resolving when rendering has finished. A promise may
      * be needed for classes inheriting from this class.
@@ -258,11 +260,11 @@ export class WebInternationalization<
     }
     /// endregion
     /**
-     * Switches the current language to given language. This method is mutual
-     * synchronized.
+     * Switches the current language to a given language. This method is
+     * mutually synchronized.
      * @param language - New language as string or "true". If set to "true" it
      * indicates that the dom tree should be checked again current language to
-     * ensure every text node has right content.
+     * ensure every text node has the right content.
      * @param ensure - Indicates if a switch effect should be avoided.
      * @returns Returns the current instance wrapped in a promise.
      */
@@ -332,7 +334,7 @@ export class WebInternationalization<
      */
     _extendOptions() {
         /*
-            NOTE: Using the internal setter avoids to trigger an additinal
+            NOTE: Using the internal setter avoids triggering an additional
             rendering.
         */
         this.setPropertyValue(
@@ -384,8 +386,8 @@ export class WebInternationalization<
         void this.lock.release(this.options.lockDescription)
     }
     /**
-     * Moves pre replacement dom nodes into next dom node behind translation
-     * text to use the same translation algorithm for both.
+     * Moves pre-replacement dom nodes into the next dom node behind the
+     * translation text to use the same translation algorithm for both.
      */
     _movePreReplacementNodes(): void {
         for (const domNode of getAll(this.hostDomNode)) {
@@ -425,7 +427,7 @@ export class WebInternationalization<
         }
     }
     /**
-     * Collects all text nodes which should be replaced later.
+     * Collects all text nodes that should be replaced later.
      * @param language - New language to use.
      * @param ensure - Indicates if the whole dom should be checked again
      * current language to ensure every text node has right content.
@@ -623,7 +625,7 @@ export class WebInternationalization<
         return result
     }
     /**
-     * Registers a text node to change its content with given replacement.
+     * Registers a text node to change its content with a given replacement.
      * @param currentTextNodeToTranslate - Text node with content to
      * translate.
      * @param currentDomNode - A comment node with replacement content.
@@ -650,8 +652,8 @@ export class WebInternationalization<
             })
     }
     /**
-     * Checks if last text node has a language indication comment node. This
-     * function is called after each parsed dom text node.
+     * Checks if the last text node has a language indication comment node.
+     * This function is called after each parsed dom text node.
      * @param lastTextNodeToTranslate - Last text node to check.
      * @param lastLanguageDomNode - A potential given language indication
      * commend node.
@@ -685,7 +687,7 @@ export class WebInternationalization<
         return lastLanguageDomNode
     }
     /**
-     * Performs the low level text replacements for switching to given
+     * Performs the low-level text replacements for switching to a given
      * language.
      * @param language - The new language to switch to.
      */

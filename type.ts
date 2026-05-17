@@ -10,7 +10,7 @@
     License
     -------
 
-    This library written by Torben Sickert stand under a creative commons
+    This library written by Torben Sickert stands under a creative commons
     naming 3.0 unported license.
     See https://creativecommons.org/licenses/by/3.0/deed.de
     endregion
@@ -40,7 +40,10 @@ export interface DefaultOptions {
     replacementDomNodeNames: Array<string>
     replacementLanguagePattern: string
     selection: Array<string>
-    selectors: {knownTranslation: string}
+    selectors: {
+        knownTranslation: string
+        hideClassName: string
+    }
     sessionDescription: string
     templateDelimiter: (
         null |

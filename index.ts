@@ -415,7 +415,10 @@ export class WebInternationalization<
                         for (const subDomNode of getAll(
                             domNode.parentElement
                         )) {
-                            if (selfFound && getText(subDomNode).length > 0) {
+                            if (
+                                selfFound &&
+                                getText(subDomNode, true).length > 0
+                            ) {
                                 subDomNode.appendChild(domNode)
 
                                 break
@@ -443,7 +446,7 @@ export class WebInternationalization<
 
         for (const domNode of getAll(this.hostDomNode)) {
             const nodeName: string = domNode.nodeName.toLowerCase()
-            const nodeTextContent = getText(domNode)
+            const nodeTextContent = getText(domNode, true)
 
             // NOTE: We skip empty and nested nodes.
             if (
@@ -476,7 +479,8 @@ export class WebInternationalization<
                     if (Array.isArray(match) && match[1] === language) {
                         // Save known text translations.
                         this.knownTranslations[
-                            getText(currentTextNodeToTranslate).join(' ')
+                            getText(currentTextNodeToTranslate, true)
+                                .join(' ')
                         ] = match[2].trim()
 
                         currentLanguageDomNode =

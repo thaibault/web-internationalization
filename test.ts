@@ -8,7 +8,7 @@
     License
     -------
 
-    This library written by Torben Sickert stand under a creative commons
+    This library written by Torben Sickert stands under a creative commons
     naming 3.0 unported license.
     See https://creativecommons.org/licenses/by/3.0/deed.de
     endregion
@@ -87,6 +87,7 @@ describe('WebInternationalization', (): void => {
             <div>english<!--deDE:german--></div>
         `
         await root.switch('de')
+
         expect(isEquivalent(
             root.hostDomNode.innerHTML.replace(/[ \n]+/g, ' '),
             ' <div class="web-internationalization-generated-content"> ' +

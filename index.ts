@@ -123,7 +123,8 @@ export class WebInternationalization<
         replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
         selection: [],
         selectors: {
-            knownTranslation: '.web-internationalization-generated-content'
+            knownTranslation: '.web-internationalization-generated-content',
+            hideClassName: 'wi-hide'
         },
         sessionDescription: '{1}',
         templateDelimiter: {pre: '{{', post: '}}'}
@@ -396,7 +397,9 @@ export class WebInternationalization<
             if (this.options.replacementDomNodeNames.includes(nodeName)) {
                 if (!['#comment', '#text'].includes(nodeName))
                     // NOTE: Hide replacement dom nodes.
-                    (domNode as HTMLElement).style.visibility = 'hidden'
+                    (domNode as HTMLElement).classList.add(
+                        this.options.selectors.hideClassName
+                    )
 
                 const regularExpression =
                     new RegExp(this.options.preReplacementLanguagePattern)
@@ -694,11 +697,8 @@ export class WebInternationalization<
     _switchLanguage(language: string): void {
         for (const replacement of this._replacements) {
             const currentText: string =
-                Object.prototype.hasOwnProperty.call(
-                    replacement.textNodeToTranslate, 'innerHTML'
-                ) ?
-                    (replacement.textNodeToTranslate as HTMLElement)
-                        .innerHTML :
+                'innerHTML' in replacement.textNodeToTranslate ?
+                    replacement.textNodeToTranslate.innerHTML :
                     replacement.textNodeToTranslate.textContent
 
             const trimmedText: string = currentText.trim()
@@ -755,8 +755,8 @@ export class WebInternationalization<
                         (globalContext.document as Document).createElement(
                             nodeName
                         )
-                    newNode.textContent = `${currentLanguage}:${currentText}`
-                    newNode.style.visibility = 'hidden'
+                    newNode.innerHTML = `${currentLanguage}:${currentText}`
+                    newNode.classList.add(this.options.selectors.hideClassName)
                     replacement.textNodeToTranslate.after(newNode)
                 }
 

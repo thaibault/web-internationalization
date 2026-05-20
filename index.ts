@@ -302,7 +302,7 @@ export class WebInternationalization<
             this._switchCurrentLanguageIndicator(language)
 
             if (ensure)
-                await this.onEnsure(this.currentLanguage)
+                await this.onEnsure(language)
             else
                 await this.onSwitch(this.currentLanguage, language)
 
@@ -314,9 +314,6 @@ export class WebInternationalization<
 
             return
         }
-
-        if (ensure)
-            await this.onEnsure(language)
 
         log.debug(`"${language}" is already current selected language.`)
 

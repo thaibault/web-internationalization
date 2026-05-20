@@ -19,11 +19,11 @@
 // region imports
 import {
     camelCaseToDelimited,
+    closest,
     extend,
     fadeIn,
     fadeOut,
     getAll,
-    getParents,
     getText,
     globalContext,
     HTMLItem,
@@ -456,10 +456,11 @@ export class WebInternationalization<
                     ((domNode as Comment).nodeValue || '').trim() === ''
                 ) ||
                 currentTextNodeToTranslate?.contains(domNode) ||
-                getParents(domNode).some((domNode) =>
+                closest(
+                    domNode,
                     this.options.replaceDomNodeNames
                         .concat(this.options.replacementDomNodeNames)
-                        .includes(domNode.nodeName.toLowerCase())
+                        .join(',')
                 )
             )
                 continue
@@ -531,9 +532,8 @@ export class WebInternationalization<
                     !this.options.replaceDomNodeNames.includes(
                         node.nodeName.toLowerCase()
                     ) &&
-                    !getParents(node).some((domNode) =>
-                        this.options.replaceDomNodeNames
-                            .includes(domNode.nodeName.toLowerCase())
+                    !closest(
+                        node, this.options.replaceDomNodeNames.join(',')
                     ) &&
                     Object.prototype.hasOwnProperty.call(
                         this.knownTranslations, content

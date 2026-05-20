@@ -3518,12 +3518,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^25.9.0":
-  version: 25.9.0
-  resolution: "@types/node@npm:25.9.0"
+"@types/node@npm:^25.9.1":
+  version: 25.9.1
+  resolution: "@types/node@npm:25.9.1"
   dependencies:
     undici-types: "npm:>=7.24.0 <7.24.7"
-  checksum: 10c0/1845f0ce5471213a4f0c887845c50993968ea863c03bb355282b59bdcc877d009a2785f0f506cfc40b8ce7548a21e33ac826e998be62d42b000bfd9ccdc6c910
+  checksum: 10c0/9a04682842bebbcf21a1779dfeab9aa733d7bd7bbc0a0edb641ab3a9a3d43eac543225acf669c334f458f1956443ebc072bc3c72840c543b8b356cab5c82d456
   languageName: node
   linkType: hard
 
@@ -5990,9 +5990,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^4.0.1399":
-  version: 4.0.1399
-  resolution: "clientnode@npm:4.0.1399"
+"clientnode@npm:^4.0.1400":
+  version: 4.0.1400
+  resolution: "clientnode@npm:4.0.1400"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/prop-types": "*"
@@ -6007,7 +6007,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/1af6e9e1cafe50647225f7f6efd3dc32e550ea3aa5a82b82168ce115f7a753d6b55af456533b788ab4aac02fb4ae663adc66d4bee38576e669b867ae9a6a5ae9
+  checksum: 10c0/beb5244908360c6096d592fc3dba6a7001a821eeab6fc543f7d5fa3ac885f268ae6f0fddf10536684159ce0849dfb70f202ce1c5767c3ff6a7d5d6f6c5814830
   languageName: node
   linkType: hard
 
@@ -6820,9 +6820,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^62.9.0":
-  version: 62.9.0
-  resolution: "eslint-plugin-jsdoc@npm:62.9.0"
+"eslint-plugin-jsdoc@npm:^63.0.0":
+  version: 63.0.0
+  resolution: "eslint-plugin-jsdoc@npm:63.0.0"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.86.0"
     "@es-joy/resolve.exports": "npm:1.2.0"
@@ -6835,12 +6835,12 @@ __metadata:
     html-entities: "npm:^2.6.0"
     object-deep-merge: "npm:^2.0.0"
     parse-imports-exports: "npm:^0.2.4"
-    semver: "npm:^7.7.4"
+    semver: "npm:^7.8.0"
     spdx-expression-parse: "npm:^4.0.0"
     to-valid-identifier: "npm:^1.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
-  checksum: 10c0/c3a9abbe3a5dacf585dba8953f155910f9d69341d432cb0edd1fcb3ed9762e642a95f8b4aac24603a2319d5d892a2fba875b55c50367e8dd2330c4caefb115c0
+  checksum: 10c0/c6e6142c7a17ff15a42c8b00d12f1e666d59f33cb59c88e52aca09de610bdf207586701a1f87cbc32e88d4d6b930df069fb0859be161ad72b5a181d8194308ce
   languageName: node
   linkType: hard
 
@@ -11098,12 +11098,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.7.4":
-  version: 7.7.4
-  resolution: "semver@npm:7.7.4"
+"semver@npm:^7.8.0":
+  version: 7.8.0
+  resolution: "semver@npm:7.8.0"
   bin:
     semver: bin/semver.js
-  checksum: 10c0/5215ad0234e2845d4ea5bb9d836d42b03499546ddafb12075566899fc617f68794bb6f146076b6881d755de17d6c6cc73372555879ec7dce2c2feee947866ad2
+  checksum: 10c0/8f096ca9b80ffd47b308d03f9ce8c873e27e2983f36023c559cdc92c51e8433fc23ebbfe57ec9623fc155636a6961ee989501099841ae4bb1babc8d2b3f048cd
   languageName: node
   linkType: hard
 
@@ -12350,12 +12350,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-documentation@npm:^1.0.14":
-  version: 1.0.14
-  resolution: "web-documentation@npm:1.0.14"
+"web-documentation@npm:^1.0.15":
+  version: 1.0.15
+  resolution: "web-documentation@npm:1.0.15"
   bin:
     web-documentation: build/deploy.js
-  checksum: 10c0/fedbf390f8af9ac5ad509f1a33a918d27e89a3c05edd3bc018be61940d05327bc34128278ec2e855d7a8b22333697cfb0339164d0ce5200d8e8c2bee5d656e7c
+  checksum: 10c0/9fcb50846e55a97c7123a3122ed58935a547c6e49f7003c2b28b2e44caa21bf2a9cbb4fb7cd5c79e9d54dacceb0ffe11fa751f3aa9c2820a77ee713f94596c3b
   languageName: node
   linkType: hard
 
@@ -12372,15 +12372,15 @@ __metadata:
     "@types/html-minifier": "npm:^4.0.6"
     "@types/imagemin": "npm:^9.0.1"
     "@types/jsdom": "npm:^28.0.3"
-    "@types/node": "npm:^25.9.0"
+    "@types/node": "npm:^25.9.1"
     "@types/webpack-env": "npm:^1.18.8"
     "@typescript-eslint/eslint-plugin": "npm:^8.59.4"
     "@typescript-eslint/parser": "npm:^8.59.4"
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
-    clientnode: "npm:^4.0.1399"
+    clientnode: "npm:^4.0.1400"
     eslint: "npm:^10.4.0"
     eslint-config-google: "npm:^0.14.0"
-    eslint-plugin-jsdoc: "npm:^62.9.0"
+    eslint-plugin-jsdoc: "npm:^63.0.0"
     favicons-webpack-plugin: "npm:^6.0.1"
     image-minimizer-webpack-plugin: "npm:^5.0.0"
     jest: "npm:^30.4.2"
@@ -12388,7 +12388,7 @@ __metadata:
     prop-types: "npm:^15.8.1"
     typescript-eslint: "npm:^8.59.4"
     web-component-wrapper: "npm:^0.0.591"
-    web-documentation: "npm:^1.0.14"
+    web-documentation: "npm:^1.0.15"
     weboptimizer: "npm:^3.0.24"
     webpack-dev-server: "npm:^5.2.4"
   peerDependencies:

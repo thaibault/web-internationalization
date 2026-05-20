@@ -316,7 +316,7 @@ export class WebInternationalization<
         }
 
         if (ensure)
-            await this.onEnsure(this.currentLanguage)
+            await this.onEnsure(language)
 
         log.debug(`"${language}" is already current selected language.`)
 

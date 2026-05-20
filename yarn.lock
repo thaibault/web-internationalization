@@ -5990,9 +5990,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^4.0.1400":
-  version: 4.0.1400
-  resolution: "clientnode@npm:4.0.1400"
+"clientnode@npm:^4.0.1405":
+  version: 4.0.1405
+  resolution: "clientnode@npm:4.0.1405"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/prop-types": "*"
@@ -6007,7 +6007,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/beb5244908360c6096d592fc3dba6a7001a821eeab6fc543f7d5fa3ac885f268ae6f0fddf10536684159ce0849dfb70f202ce1c5767c3ff6a7d5d6f6c5814830
+  checksum: 10c0/09a512a68b7d23006bf9db281506f3a212e5e76c6b2da304f9790e016f26f43dab622cc46da6d362b5bbaf341533a99131b6cab8873bff91aea579718142f374
   languageName: node
   linkType: hard
 
@@ -12325,9 +12325,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-component-wrapper@npm:^0.0.591":
-  version: 0.0.591
-  resolution: "web-component-wrapper@npm:0.0.591"
+"web-component-wrapper@npm:^0.0.592":
+  version: 0.0.592
+  resolution: "web-component-wrapper@npm:0.0.592"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/react": "*"
@@ -12346,16 +12346,16 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/ce1832660119a7f97ec5660bef954b1305ff5562c78d42b3660db55f75e1c4433abd202a35da4a2b415756c3d56f06f4ccc108dd70558d715faf2c87dc3aee45
+  checksum: 10c0/134c3410f849952d09a32aa4f003da89fb3bd17b8030730ff51576813e4820d3ac4413a87a4d4c6c48d1d56969d51b2b1c2135dba0d417fa7622b948d47f702c
   languageName: node
   linkType: hard
 
-"web-documentation@npm:^1.0.15":
-  version: 1.0.15
-  resolution: "web-documentation@npm:1.0.15"
+"web-documentation@npm:^1.0.16":
+  version: 1.0.16
+  resolution: "web-documentation@npm:1.0.16"
   bin:
     web-documentation: build/deploy.js
-  checksum: 10c0/9fcb50846e55a97c7123a3122ed58935a547c6e49f7003c2b28b2e44caa21bf2a9cbb4fb7cd5c79e9d54dacceb0ffe11fa751f3aa9c2820a77ee713f94596c3b
+  checksum: 10c0/c54af0cab65cd8bd270214d347cf72adb53fa1bceaf96eda14e5150bde72c1d9764dfa77bd9efd827f41e4dbe3eab278b130bac4acd0423dc0ba0b8b42c154b7
   languageName: node
   linkType: hard
 
@@ -12377,7 +12377,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^8.59.4"
     "@typescript-eslint/parser": "npm:^8.59.4"
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
-    clientnode: "npm:^4.0.1400"
+    clientnode: "npm:^4.0.1405"
     eslint: "npm:^10.4.0"
     eslint-config-google: "npm:^0.14.0"
     eslint-plugin-jsdoc: "npm:^63.0.0"
@@ -12387,8 +12387,8 @@ __metadata:
     jsdoc: "npm:^4.0.5"
     prop-types: "npm:^15.8.1"
     typescript-eslint: "npm:^8.59.4"
-    web-component-wrapper: "npm:^0.0.591"
-    web-documentation: "npm:^1.0.15"
+    web-component-wrapper: "npm:^0.0.592"
+    web-documentation: "npm:^1.0.16"
     weboptimizer: "npm:^3.0.24"
     webpack-dev-server: "npm:^5.2.4"
   peerDependencies:

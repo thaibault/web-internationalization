@@ -315,6 +315,9 @@ export class WebInternationalization<
             return
         }
 
+        if (ensure)
+            await this.onEnsure(this.currentLanguage)
+
         log.debug(`"${language}" is already current selected language.`)
 
         void this.lock.release(this.options.lockDescription)

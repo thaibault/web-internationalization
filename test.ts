@@ -51,33 +51,19 @@ describe('WebInternationalization', (): void => {
 
         expect(isEquivalent(
             root.hostDomNode.innerHTML.replace(/[ \n]+/g, ' '),
-            (
-                '<div style="' +
-                    'visibility: visible; ' +
-                    'opacity: 1; ' +
-                    'transition: opacity 200ms linear;' +
-                '">german<!--deDE--><!--enUS:english--></div>'
-            )
+            '<div>german<!--deDE--><!--enUS:english--></div>'
         )).toStrictEqual(true)
 
         await root.switch('deDE')
         expect(isEquivalent(
             root.hostDomNode.innerHTML.replace(/[ \n]+/g, ' '),
-            '<div style="' +
-                'visibility: visible; ' +
-                'opacity: 1; ' +
-                'transition: opacity 200ms linear;' +
-            '">german<!--deDE--><!--enUS:english--></div>'
+            '<div>german<!--deDE--><!--enUS:english--></div>'
         )).toStrictEqual(true)
 
         await root.switch('en')
         expect(isEquivalent(
             root.hostDomNode.innerHTML.replace(/[ \n]+/g, ' '),
-            '<div style="' +
-                'visibility: visible; ' +
-                'opacity: 1; ' +
-                'transition: opacity 200ms linear;' +
-            '">english<!--enUS--><!--deDE:german--></div>'
+            '<div>english<!--enUS--><!--deDE:german--></div>'
         )).toStrictEqual(true)
 
         root.hostDomNode.innerHTML = `
@@ -91,21 +77,9 @@ describe('WebInternationalization', (): void => {
         expect(isEquivalent(
             root.hostDomNode.innerHTML.replace(/[ \n]+/g, ' '),
             ' <div class="web-internationalization-generated-content"> ' +
-                '<ul>' +
-                    '<li style="' +
-                        'visibility: visible; ' +
-                        'opacity: 1; ' +
-                        'transition: opacity 200ms linear;' +
-                    '">' +
-                        '<a href="#">german</a>' +
-                    '</li>' +
-                '</ul>' +
+                '<ul><li><a href="#">german</a></li></ul>' +
             ' </div>' +
-            ' <div style="' +
-                'visibility: visible; ' +
-                'opacity: 1; ' +
-                'transition: opacity 200ms linear;' +
-            '">german<!--deDE--><!--enUS:english--></div> '
+            ' <div>german<!--deDE--><!--enUS:english--></div> '
         )).toStrictEqual(true)
     })
     test('refresh', (): Promise<void> =>

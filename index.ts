@@ -361,13 +361,23 @@ export class WebInternationalization<
             this._domNodesToFade.length > 0
         ) {
             await Promise.all(
-                this._domNodesToFade.map((domNode) => fadeOut(domNode))
+                this._domNodesToFade.map((domNode) => {
+                    const handler = fadeOut(domNode)
+                    return handler.then(() => {
+                        handler.resetStyles()
+                    })
+                })
             )
 
             this._switchLanguage(language)
 
             await Promise.all(
-                this._domNodesToFade.map((domNode) => fadeIn(domNode))
+                this._domNodesToFade.map((domNode) => {
+                    const handler = fadeIn(domNode)
+                    return handler.then(() => {
+                        handler.resetStyles()
+                    })
+                })
             )
 
             this.onSwitched(oldLanguage, language)
@@ -460,7 +470,8 @@ export class WebInternationalization<
                     domNode,
                     this.options.replaceDomNodeNames
                         .concat(this.options.replacementDomNodeNames)
-                        .join(',')
+                        .join(','),
+                    true
                 )
             )
                 continue
@@ -533,7 +544,9 @@ export class WebInternationalization<
                         node.nodeName.toLowerCase()
                     ) &&
                     !closest(
-                        node, this.options.replaceDomNodeNames.join(',')
+                        node,
+                        this.options.replaceDomNodeNames.join(','),
+                        true
                     ) &&
                     Object.prototype.hasOwnProperty.call(
                         this.knownTranslations, content

@@ -63,7 +63,7 @@
     "@typescript-eslint/eslint-plugin": "^8.59.4",
     "@typescript-eslint/parser": "^8.59.4",
     "@webcomponents/webcomponentsjs": "^2.8.0",
-    "clientnode": "^4.0.1405",
+    "clientnode": "^4.0.1411",
     "eslint": "^10.4.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jsdoc": "^63.0.0",
@@ -74,7 +74,7 @@
     "prop-types": "^15.8.1",
     "typescript-eslint": "^8.59.4",
     "web-component-wrapper": "^0.0.592",
-    "web-documentation": "^1.0.16",
+    "web-documentation": "^1.0.18",
     "weboptimizer": "^3.0.24",
     "webpack-dev-server": "^5.2.4"
   },

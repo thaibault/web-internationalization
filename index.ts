@@ -505,7 +505,7 @@ export class WebInternationalization<
                         this._registerTextNodeToChange(
                             currentTextNodeToTranslate,
                             domNode as HTMLItem,
-                            match,
+                            match[2],
                             currentLanguageDomNode
                         )
 
@@ -646,28 +646,28 @@ export class WebInternationalization<
     }
     /**
      * Registers a text node to change its content with a given replacement.
-     * @param currentTextNodeToTranslate - Text node with content to
+     * @param textNodeToTranslate - Text node with content to
      * translate.
-     * @param currentDomNode - A comment node with replacement content.
-     * @param match - A matching array of replacement's text content.
+     * @param nodeToReplaceWith - A node with replacement content.
+     * @param textToReplaceWith - Text content to use as replacement.
      * @param currentLanguageDomNode - A potential given text node indicating
      * the language of given text node.
      */
     _registerTextNodeToChange(
-        currentTextNodeToTranslate: HTMLItem,
-        currentDomNode: HTMLItem | null,
-        match: Array<string>,
+        textNodeToTranslate: HTMLItem,
+        nodeToReplaceWith: HTMLItem | null,
+        textToReplaceWith: string,
         currentLanguageDomNode: HTMLItem | null
     ) {
         this._domNodesToFade.push(
-            currentTextNodeToTranslate.parentElement as HTMLElement
+            textNodeToTranslate.parentElement as HTMLElement
         )
 
-        if (currentDomNode)
+        if (nodeToReplaceWith)
             this._replacements.push({
-                textNodeToTranslate: currentTextNodeToTranslate,
-                nodeToReplaceWith: currentDomNode,
-                textToReplaceWith: match[2],
+                textNodeToTranslate,
+                nodeToReplaceWith,
+                textToReplaceWith,
                 currentLanguageDomNode
             })
     }

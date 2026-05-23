@@ -759,23 +759,31 @@ export class WebInternationalization<
                         'translation language as it already is.'
                     )
 
+                // Move markup to be replaced next its parent node.
                 const nodeName: string =
                     replacement.nodeToReplaceWith.nodeName.toLowerCase()
+                let newNode
                 if (nodeName === '#comment')
-                    replacement.textNodeToTranslate.after(
+                    newNode =
                         (globalContext.document as Document).createComment(
                             `${currentLanguage}:${currentText}`
                         )
-                    )
                 else {
-                    const newNode =
+                    newNode =
                         (globalContext.document as Document).createElement(
                             nodeName
                         )
-                    newNode.innerHTML = `${currentLanguage}:${currentText}`
+                    newNode.appendChild((globalContext.document as Document)
+                        .createTextNode(`${currentLanguage}:`)
+                    )
                     newNode.classList.add(this.options.selectors.hideClassName)
-                    replacement.textNodeToTranslate.after(newNode)
+                    // NOTE: We need to use "Array.from" to copy the list.
+                    for (const childNode of Array.from(
+                        replacement.textNodeToTranslate.childNodes
+                    ))
+                        newNode.appendChild(childNode)
                 }
+                replacement.textNodeToTranslate.after(newNode)
 
                 replacement.textNodeToTranslate.after(
                     (globalContext.document as Document)
@@ -783,8 +791,28 @@ export class WebInternationalization<
                 )
 
                 if ('innerHTML' in replacement.textNodeToTranslate)
-                    replacement.textNodeToTranslate.innerHTML =
-                        replacement.textToReplaceWith
+                    if (
+                        replacement.nodeToReplaceWith.nodeName.toLowerCase() ===
+                        '#comment'
+                    )
+                        replacement.textNodeToTranslate.innerHTML =
+                            replacement.textToReplaceWith
+                    else {
+                        let languageRemoved = false
+                        // NOTE: We need to use "Array.from" to copy the list.
+                        for (const childNode of Array.from(
+                            replacement.nodeToReplaceWith.childNodes
+                        )) {
+                            if (!languageRemoved) {
+                                childNode.textContent =
+                                    (childNode.textContent as string)
+                                        .replace(/^[a-z]{2}[A-Z]{2}:/, '')
+                                languageRemoved = true
+                            }
+                            replacement.textNodeToTranslate
+                                .appendChild(childNode)
+                        }
+                    }
                 else
                     replacement.textNodeToTranslate.textContent =
                         replacement.textToReplaceWith

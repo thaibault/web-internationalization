@@ -134,7 +134,7 @@ describe('WebInternationalization', (): void => {
         root._registerTextNodeToChange(
             root,
             root.children[0] as HTMLItem,
-            ['1', '2', '3'],
+            '2',
             root.children[0] as HTMLElement
         )
 

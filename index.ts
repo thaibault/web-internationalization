@@ -118,6 +118,7 @@ export class WebInternationalization<
         },
         lockDescription: '{1}Switch',
         preReplacementLanguagePattern: '^\\|({1})$',
+        alternativeDomNodeNames: ['lang-alternative'],
         replaceDomNodeNames: ['#text', 'lang-replace'],
         replacementDomNodeNames: ['#comment', 'lang-replacement'],
         replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
@@ -476,10 +477,26 @@ export class WebInternationalization<
             )
                 continue
 
-            if (this.options.replaceDomNodeNames.includes(nodeName))
+            if (
+                this.options.replaceDomNodeNames.includes(nodeName) ||
+                this.options.alternativeDomNodeNames.includes(nodeName) &&
+                !domNode.hasAttribute('lang')
+            )
                 currentTextNodeToTranslate = domNode as HTMLItem
             else if (currentTextNodeToTranslate) {
-                if (this.options.replacementDomNodeNames.includes(nodeName)) {
+                if (
+                    this.options.alternativeDomNodeNames.includes(nodeName) &&
+                    domNode.getAttribute('lang') === language
+                )
+                    this._registerTextNodeToChange(
+                        currentTextNodeToTranslate,
+                        domNode as HTMLItem,
+                        domNode.innerHTML,
+                        currentLanguageDomNode
+                    )
+                else if (this.options.replacementDomNodeNames.includes(
+                    nodeName
+                )) {
                     const content = nodeName === '#comment' ?
                         domNode.textContent :
                         (domNode as HTMLElement).innerHTML
@@ -713,6 +730,8 @@ export class WebInternationalization<
      */
     _switchLanguage(language: string): void {
         for (const replacement of this._replacements) {
+            // TODO deal with lang-alternative
+
             const currentText: string =
                 'innerHTML' in replacement.textNodeToTranslate ?
                     replacement.textNodeToTranslate.innerHTML :

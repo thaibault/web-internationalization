@@ -27,7 +27,7 @@
         </script>
         <!--endregion-->
         <style>
-            lang-replacement, .wi-hide {
+            lang-replacement, .wi-hide, lang-alternative[lang] {
                 display: none;
             }
         </style>
@@ -51,26 +51,55 @@
 
             <p>
                 <lang-replace>
-                    Your englisch version with <strong>dom nodes</strong> inside.
+                    Your englisch version with <strong>dom nodes</strong>
+                    inside and translations in comments.
                 </lang-replace>
                 <!--deDE:
-                    Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
+                    Ihre deutsche Variante mit eingebetteten
+                    <strong>dom Knoten</strong>.
                 -->
                 <!--frFR:
-                    Votre version français <strong>dom nodes</strong> à l'intérieur.
+                    Votre version français <strong>dom nodes</strong> à
+                    l'intérieur.
                 -->
             </p>
 
             <p>
                 <lang-replace>
-                    Your englisch version with <strong>dom nodes</strong> inside.
+                    Your englisch version with <strong>dom nodes</strong>
+                    and invisible translations in special dom nodes to replace
+                    content with.
                 </lang-replace>
                 <lang-replacement>deDE:
-                    Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
+                    Ihre englische Version mit <strong>DOM-Knoten</strong>
+                    und versteckten Übersetzungen in speziellen DOM-Knoten,
+                    durch die der Inhalt ersetzt werden soll.
                 </lang-replacement>
                 <lang-replacement>frFR:
-                    Votre version français <strong>dom nodes</strong> à l'intérieur.
+                    Votre version en anglais avec <strong>nœuds DOM</strong>
+                    et des traductions masquées dans des nœuds DOM spécifiques
+                    pour remplacer le contenu.
                 </lang-replacement>
+            </p>
+
+            <p>
+                <lang-alternative>
+                    Your englisch version with <strong>dom nodes</strong>
+                    inside and invisible translations in special but stable dom
+                    nodes to make visible mutual exclusively.
+                </lang-alternative>
+                <lang-alternative lang="deDE">
+                    Ihre englische Version mit <strong>DOM-Knoten</strong>
+                    im Inneren und unsichtbaren Übersetzungen in speziellen,
+                    aber stabilen DOM-Knoten, um sie gegenseitig sichtbar zu
+                    machen.
+                </lang-alternative>
+                <lang-alternative lang="frFR">
+                    Votre version anglaise avec <strong>nœuds DOM</strong>
+                    à l'intérieur et des traductions invisibles dans des nœuds
+                    DOM spéciaux mais stables, afin de rendre visibles
+                    uniquement l'une ou l'autre.
+                </lang-alternative>
             </p>
 
             <div>

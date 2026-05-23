@@ -118,6 +118,7 @@ export class WebInternationalization<
         },
         lockDescription: '{1}Switch',
         preReplacementLanguagePattern: '^\\|({1})$',
+        alternativeDomNodeNames: ['lang-alternative'],
         replaceDomNodeNames: ['#text', 'lang-replace'],
         replacementDomNodeNames: ['#comment', 'lang-replacement'],
         replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
@@ -478,8 +479,49 @@ export class WebInternationalization<
 
             if (this.options.replaceDomNodeNames.includes(nodeName))
                 currentTextNodeToTranslate = domNode as HTMLItem
-            else if (currentTextNodeToTranslate) {
-                if (this.options.replacementDomNodeNames.includes(nodeName)) {
+            else if (
+                this.options.alternativeDomNodeNames.includes(nodeName) &&
+                (domNode as Element).getAttribute('lang') === language
+            ) {
+                let currentTextNodeToTranslate: HTMLElement | null = null
+                for (const candidate of ((
+                    domNode as Element
+                ).parentElement as Element).querySelectorAll(
+                    this.options.alternativeDomNodeNames.join(',')
+                ))
+                    if (
+                        candidate.hasAttribute('active') ||
+                        !candidate.hasAttribute('lang')
+                    ) {
+                        currentTextNodeToTranslate = candidate as HTMLElement
+                        break
+                    }
+
+                if (!currentTextNodeToTranslate)
+                    continue
+
+                if (!currentTextNodeToTranslate.hasAttribute('active'))
+                    currentTextNodeToTranslate.setAttribute('active', '')
+                if (!currentTextNodeToTranslate.hasAttribute('lang')) {
+                    let currentLocalLanguage: string = this.currentLanguage
+                    if (ensure)
+                        currentLocalLanguage =
+                            this.options.default || this.currentLanguage
+                    currentTextNodeToTranslate.setAttribute(
+                        'lang', currentLocalLanguage
+                    )
+                }
+
+                this._registerTextNodeToChange(
+                    currentTextNodeToTranslate,
+                    domNode as HTMLItem,
+                    (domNode as HTMLElement).innerHTML,
+                    currentLanguageDomNode
+                )
+            } else if (currentTextNodeToTranslate) {
+                if (this.options.replacementDomNodeNames.includes(
+                    nodeName
+                )) {
                     const content = nodeName === '#comment' ?
                         domNode.textContent :
                         (domNode as HTMLElement).innerHTML
@@ -763,7 +805,13 @@ export class WebInternationalization<
                 const nodeName: string =
                     replacement.nodeToReplaceWith.nodeName.toLowerCase()
                 let newNode
-                if (nodeName === '#comment')
+                if (this.options.alternativeDomNodeNames.includes(nodeName)) {
+                    ;(replacement.nodeToReplaceWith as Element)
+                        .setAttribute('active', '')
+                    ;(replacement.textNodeToTranslate as Element)
+                        .removeAttribute('active')
+                    continue
+                } else if (nodeName === '#comment')
                     newNode =
                         (globalContext.document as Document).createComment(
                             `${currentLanguage}:${currentText}`
@@ -792,7 +840,8 @@ export class WebInternationalization<
 
                 if ('innerHTML' in replacement.textNodeToTranslate)
                     if (
-                        replacement.nodeToReplaceWith.nodeName.toLowerCase() ===
+                        replacement.nodeToReplaceWith.nodeName
+                            .toLowerCase() ===
                         '#comment'
                     )
                         replacement.textNodeToTranslate.innerHTML =

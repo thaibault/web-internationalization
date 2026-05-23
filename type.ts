@@ -36,6 +36,7 @@ export interface DefaultOptions {
     languageMapping: Mapping<Array<string>>
     lockDescription: string
     preReplacementLanguagePattern: string
+    alternativeDomNodeNames: Array<string>
     replaceDomNodeNames: Array<string>
     replacementDomNodeNames: Array<string>
     replacementLanguagePattern: string

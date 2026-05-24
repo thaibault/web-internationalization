@@ -290,10 +290,8 @@ export class WebInternationalization<
         } else
             language = this._normalizeLanguage(language)
 
-        if (
-            ensure && language !== this.options.default ||
-            this.currentLanguage !== language
-        ) {
+
+        if (ensure || this.currentLanguage !== language) {
             let actionDescription = 'Switch to'
             if (ensure)
                 actionDescription = 'Ensure'
@@ -467,16 +465,21 @@ export class WebInternationalization<
 
             if (this.options.replaceDomNodeNames.includes(nodeName))
                 currentDomNodeToTranslate = domNode as HTMLItem
-            else if (
-                this.options.alternativeDomNodeNames.includes(nodeName) &&
-                (domNode as Element).getAttribute('lang') === language
-            ) {
-                this._processAlternativeDomNode(
-                    domNode as HTMLItem,
-                    language,
-                    ensure,
-                    currentLanguageDomNode
+            else if (this.options.alternativeDomNodeNames.includes(nodeName)) {
+                if (!(domNode as Element).hasAttribute('lang'))
+                    this._initializeCurrentLanguageDomNode(
+                        domNode as Element, ensure
+                    )
+                else if (
+                    (domNode as Element).getAttribute('lang') ===
+                        language
                 )
+                    this._processAlternativeDomNode(
+                        domNode as HTMLItem,
+                        language,
+                        ensure,
+                        currentLanguageDomNode
+                    )
             } else if (currentDomNodeToTranslate) {
                 if (this.options.replacementDomNodeNames.includes(nodeName)) {
                     ;({
@@ -511,7 +514,7 @@ export class WebInternationalization<
      * @returns Returns true if the node should be skipped.
      */
     _shouldSkipDomNode(
-        domNode: HTMLItem,
+        domNode: Node,
         nodeTextContent: Array<string>,
         currentDomNodeToTranslate: HTMLItem | null
     ): boolean {
@@ -549,10 +552,9 @@ export class WebInternationalization<
         currentLanguageDomNode: HTMLItem | null
     ): void {
         /*
-            When dealing with alternative dom nodes we do not rely on
-            dom node positions to keep them stable. Therefore, we
-            identify the current dom node to translate by going through
-            all siblings.
+            When dealing with alternative dom nodes we do not rely on dom node
+            positions to keep them stable. Therefore, we identify the current
+            dom node to translate by going through all siblings.
          */
         let activeSibling: HTMLElement | null = null
         for (const candidate of ((
@@ -571,15 +573,7 @@ export class WebInternationalization<
         if (!activeSibling)
             return
 
-        if (!activeSibling.hasAttribute('active'))
-            activeSibling.setAttribute('active', '')
-        if (!activeSibling.hasAttribute('lang')) {
-            let currentLocalLanguage: string = this.currentLanguage
-            if (ensure)
-                currentLocalLanguage =
-                    this.options.default || this.currentLanguage
-            activeSibling.setAttribute('lang', currentLocalLanguage)
-        }
+        this._initializeCurrentLanguageDomNode(activeSibling, ensure)
 
         this._registerTextNodeToChange(
             activeSibling,
@@ -588,9 +582,20 @@ export class WebInternationalization<
             currentLanguageDomNode
         )
     }
+    _initializeCurrentLanguageDomNode(domNode: Element, ensure: boolean) {
+        if (!domNode.hasAttribute('active'))
+            domNode.setAttribute('active', '')
+        if (!domNode.hasAttribute('lang'))
+            domNode.setAttribute(
+                'lang',
+                ensure ?
+                    (this.options.default || this.currentLanguage) :
+                    this.currentLanguage
+            )
+    }
     /**
-     * Processes a replacement dom node (e.g. comment or lang-replacement
-     * element), updating translation state accordingly.
+     * Processes a replacement dom node like comment or lang-replacement
+     * element and updates translation state accordingly.
      * @param domNode - The replacement dom node.
      * @param nodeName - Lowercase node name of the replacement node.
      * @param language - New language to use.
@@ -619,7 +624,7 @@ export class WebInternationalization<
             (domNode as unknown as HTMLElement).innerHTML
 
         const match: Array<string> | null | undefined =
-            content?.match(new RegExp(this.options.replacementLanguagePattern))
+            content.match(new RegExp(this.options.replacementLanguagePattern))
 
         if (Array.isArray(match) && match[1] === language) {
             // Save known text translations.
@@ -644,10 +649,10 @@ export class WebInternationalization<
             return {domNodeToTranslate: null, languageDomNode: null}
         }
 
-        if (domNode.textContent?.match(
+        if (domNode.textContent.match(
             new RegExp(this.options.currentLanguagePattern)
         ))
-            currentLanguageDomNode = domNode as unknown as HTMLElement
+            currentLanguageDomNode = domNode
 
         return {
             domNodeToTranslate: currentDomNodeToTranslate,

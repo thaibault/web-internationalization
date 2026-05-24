@@ -138,7 +138,7 @@ describe('WebInternationalization', (): void => {
             root.children[0] as HTMLElement
         )
 
-        expect(root._replacements[0].textNodeToTranslate)
+        expect(root._replacements[0].domNodeToTranslate)
             .toStrictEqual(root)
 
         expect(root._replacements).toHaveLength(1)

@@ -20,8 +20,8 @@ import {HTMLItem, Mapping} from 'clientnode'
 // endregion
 // region exports
 export interface Replacement {
-    textNodeToTranslate: HTMLItem
-    nodeToReplaceWith: HTMLItem
+    domNodeToTranslate: HTMLItem
+    domNodeToReplaceWith: HTMLItem
     textToReplaceWith: string
     currentLanguageDomNode: HTMLItem | null
 }

@@ -91,7 +91,7 @@ export const log = new Logger({name: 'web-internationalization'})
  * @property lock - Lock instance when updating dom noes.
  * @property _domNodesToFade - Saves all dom nodes that should be animated.
  * @property _replacements - Saves all text nodes that should be replaced.
- * @property _textNodesWithKnownTranslation - Saves a mapping of known text
+ * @property _domNodesWithKnownTranslation - Saves a mapping of known text
  * snippets to their corresponding $-extended dom nodes.
  */
 export class WebInternationalization<
@@ -155,7 +155,7 @@ export class WebInternationalization<
 
     _domNodesToFade: Array<HTMLElement> = []
     _replacements: Array<Replacement> = []
-    _textNodesWithKnownTranslation: Mapping<Array<HTMLItem>> = {}
+    _domNodesWithKnownTranslation: Mapping<Array<HTMLItem>> = {}
     // region public methods
     /// region live-cycle
     /**
@@ -254,7 +254,7 @@ export class WebInternationalization<
         }
 
         if (this.currentLanguage === newLanguage)
-            await this.refresh(newLanguage, true)
+            await this.refresh()
         else
             await this.switch(newLanguage, true)
 
@@ -290,10 +290,8 @@ export class WebInternationalization<
         } else
             language = this._normalizeLanguage(language)
 
-        if (
-            ensure && language !== this.options.default ||
-            this.currentLanguage !== language
-        ) {
+
+        if (ensure || this.currentLanguage !== language) {
             let actionDescription = 'Switch to'
             if (ensure)
                 actionDescription = 'Ensure'
@@ -309,7 +307,7 @@ export class WebInternationalization<
 
             this._domNodesToFade = []
             this._replacements = []
-            this._collectTextNodesToReplace(language, ensure)
+            this._collectDomNodesToReplace(language, ensure)
 
             await this._handleSwitchEffect(language, ensure)
 
@@ -449,8 +447,8 @@ export class WebInternationalization<
      * @param ensure - Indicates if the whole dom should be checked again
      * current language to ensure every text node has right content.
      */
-    _collectTextNodesToReplace(language: string, ensure: boolean): void {
-        let currentTextNodeToTranslate: HTMLItem | null = null
+    _collectDomNodesToReplace(language: string, ensure: boolean): void {
+        let currentDomNodeToTranslate: HTMLItem | null = null
         let currentLanguageDomNode: HTMLItem | null = null
 
         this.knownTranslations = {}
@@ -460,114 +458,46 @@ export class WebInternationalization<
             const nodeTextContent = getText(domNode, true)
 
             // NOTE: We skip empty and nested nodes.
-            if (
-                nodeTextContent.length === 0 &&
-                (
-                    domNode.nodeType !== Node.COMMENT_NODE ||
-                    ((domNode as Comment).nodeValue || '').trim() === ''
-                ) ||
-                currentTextNodeToTranslate?.contains(domNode) ||
-                closest(
-                    domNode,
-                    this.options.replaceDomNodeNames
-                        .concat(this.options.replacementDomNodeNames)
-                        .join(','),
-                    true
-                )
-            )
+            if (this._shouldSkipDomNode(
+                domNode, nodeTextContent, currentDomNodeToTranslate
+            ))
                 continue
 
             if (this.options.replaceDomNodeNames.includes(nodeName))
-                currentTextNodeToTranslate = domNode as HTMLItem
-            else if (
-                this.options.alternativeDomNodeNames.includes(nodeName) &&
-                (domNode as Element).getAttribute('lang') === language
-            ) {
-                /*
-                    When dealing with alternative dom nodes we do not rely on
-                    dom node positions to keep them stable. Therefore, we
-                    identify the current dom node to translate by going through
-                    all siblings.
-                 */
-                let currentTextNodeToTranslate: HTMLElement | null = null
-                for (const candidate of ((
-                    domNode as Element
-                ).parentElement as Element).querySelectorAll(
-                    this.options.alternativeDomNodeNames.join(',')
-                ))
-                    if (
-                        candidate.hasAttribute('active') ||
-                        !candidate.hasAttribute('lang')
-                    ) {
-                        currentTextNodeToTranslate = candidate as HTMLElement
-                        break
-                    }
-
-                if (!currentTextNodeToTranslate)
-                    continue
-
-                if (!currentTextNodeToTranslate.hasAttribute('active'))
-                    currentTextNodeToTranslate.setAttribute('active', '')
-                if (!currentTextNodeToTranslate.hasAttribute('lang')) {
-                    let currentLocalLanguage: string = this.currentLanguage
-                    if (ensure)
-                        currentLocalLanguage =
-                            this.options.default || this.currentLanguage
-                    currentTextNodeToTranslate.setAttribute(
-                        'lang', currentLocalLanguage
+                currentDomNodeToTranslate = domNode as HTMLItem
+            else if (this.options.alternativeDomNodeNames.includes(nodeName)) {
+                if (!(domNode as Element).hasAttribute('lang'))
+                    this._initializeCurrentLanguageDomNode(
+                        domNode as Element, ensure
                     )
-                }
-
-                this._registerTextNodeToChange(
-                    currentTextNodeToTranslate,
-                    domNode as HTMLItem,
-                    (domNode as HTMLElement).innerHTML,
-                    currentLanguageDomNode
+                else if (
+                    (domNode as Element).getAttribute('lang') ===
+                        language
                 )
-            } else if (currentTextNodeToTranslate) {
-                if (this.options.replacementDomNodeNames.includes(
-                    nodeName
-                )) {
-                    const content = nodeName === '#comment' ?
-                        domNode.textContent :
-                        (domNode as HTMLElement).innerHTML
-
-                    const match: Array<string> | null | undefined =
-                        content?.match(new RegExp(
-                            this.options.replacementLanguagePattern
-                        ))
-                    if (Array.isArray(match) && match[1] === language) {
-                        // Save known text translations.
-                        this.knownTranslations[
-                            getText(currentTextNodeToTranslate, true)
-                                .join(' ')
-                        ] = match[2].trim()
-
-                        currentLanguageDomNode =
-                            this._ensureLastTextNodeHavingLanguageIndicator(
-                                currentTextNodeToTranslate,
-                                currentLanguageDomNode,
-                                ensure
-                            )
-
-                        this._registerTextNodeToChange(
-                            currentTextNodeToTranslate,
-                            domNode as HTMLItem,
-                            match[2],
-                            currentLanguageDomNode
-                        )
-
-                        currentTextNodeToTranslate = null
-                        currentLanguageDomNode = null
-                    } else if (domNode.textContent?.match(
-                        new RegExp(this.options.currentLanguagePattern)
+                    this._processAlternativeDomNode(
+                        domNode as HTMLItem,
+                        language,
+                        ensure,
+                        currentLanguageDomNode
+                    )
+            } else if (currentDomNodeToTranslate) {
+                if (this.options.replacementDomNodeNames.includes(nodeName)) {
+                    ;({
+                        domNodeToTranslate: currentDomNodeToTranslate,
+                        languageDomNode: currentLanguageDomNode
+                    } = this._processReplacementDomNode(
+                        domNode as HTMLItem,
+                        nodeName,
+                        language,
+                        ensure,
+                        currentDomNodeToTranslate,
+                        currentLanguageDomNode
                     ))
-                        currentLanguageDomNode = domNode as HTMLElement
 
                     continue
                 }
 
-                currentTextNodeToTranslate = null
+                currentDomNodeToTranslate = null
                 currentLanguageDomNode = null
             }
         }
@@ -575,10 +505,165 @@ export class WebInternationalization<
         this._registerKnownTextNodes()
     }
     /**
+     * Determines whether a given dom node should be skipped during
+     * translation collection.
+     * @param domNode - The dom node to evaluate.
+     * @param nodeTextContent - Pre-computed text content of the node.
+     * @param currentDomNodeToTranslate - The currently tracked translation
+     * ancestor node.
+     * @returns Returns true if the node should be skipped.
+     */
+    _shouldSkipDomNode(
+        domNode: Node,
+        nodeTextContent: Array<string>,
+        currentDomNodeToTranslate: HTMLItem | null
+    ): boolean {
+        return (
+            nodeTextContent.length === 0 &&
+            (
+                domNode.nodeType !== Node.COMMENT_NODE ||
+                ((domNode as Comment).nodeValue || '').trim() === ''
+            ) ||
+            Boolean(currentDomNodeToTranslate?.contains(domNode)) ||
+            Boolean(closest(
+                domNode,
+                this.options.replaceDomNodeNames
+                    .concat(this.options.replacementDomNodeNames)
+                    .join(','),
+                true
+            ))
+        )
+    }
+    /**
+     * Processes an alternative dom node by finding its active sibling,
+     * ensuring it has the necessary attributes and registering it for
+     * replacement.
+     * @param domNode - The alternative language dom node.
+     * @param language - New language to use.
+     * @param ensure - Indicates if current language should be ensured again
+     * every text node content.
+     * @param currentLanguageDomNode - The currently tracked language indicator
+     * node.
+     */
+    _processAlternativeDomNode(
+        domNode: HTMLItem,
+        language: string,
+        ensure: boolean,
+        currentLanguageDomNode: HTMLItem | null
+    ): void {
+        /*
+            When dealing with alternative dom nodes we do not rely on dom node
+            positions to keep them stable. Therefore, we identify the current
+            dom node to translate by going through all siblings.
+         */
+        let activeSibling: HTMLElement | null = null
+        for (const candidate of ((
+            domNode as unknown as Element
+        ).parentElement as Element).querySelectorAll(
+            this.options.alternativeDomNodeNames.join(',')
+        ))
+            if (
+                candidate.hasAttribute('active') ||
+                !candidate.hasAttribute('lang')
+            ) {
+                activeSibling = candidate as HTMLElement
+                break
+            }
+
+        if (!activeSibling)
+            return
+
+        this._initializeCurrentLanguageDomNode(activeSibling, ensure)
+
+        this._registerTextNodeToChange(
+            activeSibling,
+            domNode,
+            (domNode as unknown as HTMLElement).innerHTML,
+            currentLanguageDomNode
+        )
+    }
+    _initializeCurrentLanguageDomNode(domNode: Element, ensure: boolean) {
+        if (!domNode.hasAttribute('active'))
+            domNode.setAttribute('active', '')
+        if (!domNode.hasAttribute('lang'))
+            domNode.setAttribute(
+                'lang',
+                ensure ?
+                    (this.options.default || this.currentLanguage) :
+                    this.currentLanguage
+            )
+    }
+    /**
+     * Processes a replacement dom node like comment or lang-replacement
+     * element and updates translation state accordingly.
+     * @param domNode - The replacement dom node.
+     * @param nodeName - Lowercase node name of the replacement node.
+     * @param language - New language to use.
+     * @param ensure - Indicates if current language should be ensured again
+     * every text node content.
+     * @param currentDomNodeToTranslate - The currently tracked node whose
+     * content is to be replaced.
+     * @param currentLanguageDomNode - The currently tracked language indicator
+     * node.
+     * @returns Updated references for the tracked translation and language
+     * indicator nodes.
+     */
+    _processReplacementDomNode(
+        domNode: HTMLItem,
+        nodeName: string,
+        language: string,
+        ensure: boolean,
+        currentDomNodeToTranslate: HTMLItem,
+        currentLanguageDomNode: HTMLItem | null
+    ): {
+        domNodeToTranslate: HTMLItem | null
+        languageDomNode: HTMLItem | null
+    } {
+        const content = nodeName === '#comment' ?
+            domNode.textContent :
+            (domNode as unknown as HTMLElement).innerHTML
+
+        const match: Array<string> | null | undefined =
+            content.match(new RegExp(this.options.replacementLanguagePattern))
+
+        if (Array.isArray(match) && match[1] === language) {
+            // Save known text translations.
+            this.knownTranslations[
+                getText(currentDomNodeToTranslate, true).join(' ')
+            ] = match[2].trim()
+
+            currentLanguageDomNode =
+                this._ensureLastTextNodeHavingLanguageIndicator(
+                    currentDomNodeToTranslate,
+                    currentLanguageDomNode,
+                    ensure
+                )
+
+            this._registerTextNodeToChange(
+                currentDomNodeToTranslate,
+                domNode,
+                match[2],
+                currentLanguageDomNode
+            )
+
+            return {domNodeToTranslate: null, languageDomNode: null}
+        }
+
+        if (domNode.textContent.match(
+            new RegExp(this.options.currentLanguagePattern)
+        ))
+            currentLanguageDomNode = domNode
+
+        return {
+            domNodeToTranslate: currentDomNodeToTranslate,
+            languageDomNode: currentLanguageDomNode
+        }
+    }
+    /**
      * Iterates all text nodes in language known area with known translations.
      */
     _registerKnownTextNodes(): void {
-        this._textNodesWithKnownTranslation = {}
+        this._domNodesWithKnownTranslation = {}
 
         for (const domNode of this.hostDomNode.querySelectorAll(
             this.options.selectors.knownTranslation
@@ -606,15 +691,15 @@ export class WebInternationalization<
 
                     if (
                         Object.prototype.hasOwnProperty.call(
-                            this._textNodesWithKnownTranslation,
+                            this._domNodesWithKnownTranslation,
                             this.knownTranslations[content]
                         )
                     )
-                        this._textNodesWithKnownTranslation[
+                        this._domNodesWithKnownTranslation[
                             this.knownTranslations[content]
                         ].push(node as HTMLItem)
                     else
-                        this._textNodesWithKnownTranslation[
+                        this._domNodesWithKnownTranslation[
                             this.knownTranslations[content]
                         ] = [node as HTMLItem]
                 }
@@ -694,27 +779,27 @@ export class WebInternationalization<
     }
     /**
      * Registers a text node to change its content with a given replacement.
-     * @param textNodeToTranslate - Text node with content to
+     * @param domNodeToTranslate - Text node with content to
      * translate.
-     * @param nodeToReplaceWith - A node with replacement content.
+     * @param domNodeToReplaceWith - A node with replacement content.
      * @param textToReplaceWith - Text content to use as replacement.
      * @param currentLanguageDomNode - A potential given text node indicating
      * the language of given text node.
      */
     _registerTextNodeToChange(
-        textNodeToTranslate: HTMLItem,
-        nodeToReplaceWith: HTMLItem | null,
+        domNodeToTranslate: HTMLItem,
+        domNodeToReplaceWith: HTMLItem | null,
         textToReplaceWith: string,
         currentLanguageDomNode: HTMLItem | null
     ) {
         this._domNodesToFade.push(
-            textNodeToTranslate.parentElement as HTMLElement
+            domNodeToTranslate.parentElement as HTMLElement
         )
 
-        if (nodeToReplaceWith)
+        if (domNodeToReplaceWith)
             this._replacements.push({
-                textNodeToTranslate,
-                nodeToReplaceWith,
+                domNodeToTranslate,
+                domNodeToReplaceWith,
                 textToReplaceWith,
                 currentLanguageDomNode
             })
@@ -762,9 +847,9 @@ export class WebInternationalization<
     _switchLanguage(language: string): void {
         for (const replacement of this._replacements) {
             const currentText: string =
-                'innerHTML' in replacement.textNodeToTranslate ?
-                    replacement.textNodeToTranslate.innerHTML :
-                    replacement.textNodeToTranslate.textContent
+                'innerHTML' in replacement.domNodeToTranslate ?
+                    replacement.domNodeToTranslate.innerHTML :
+                    replacement.domNodeToTranslate.textContent
 
             const trimmedText: string = currentText.trim()
             if (
@@ -782,7 +867,7 @@ export class WebInternationalization<
                     currentLanguageDomNode = document.body
                     let currentDomNodeFound = false
                     for (const domNode of getAll(
-                        replacement.textNodeToTranslate.parentElement as
+                        replacement.domNodeToTranslate.parentElement as
                             HTMLElement
                     )) {
                         if (currentDomNodeFound) {
@@ -793,7 +878,7 @@ export class WebInternationalization<
                             break
                         }
 
-                        if (domNode === replacement.textNodeToTranslate)
+                        if (domNode === replacement.domNodeToTranslate)
                             currentDomNodeFound = true
                     }
                 }
@@ -809,12 +894,12 @@ export class WebInternationalization<
 
                 // Move markup to be replaced next its parent node.
                 const nodeName: string =
-                    replacement.nodeToReplaceWith.nodeName.toLowerCase()
+                    replacement.domNodeToReplaceWith.nodeName.toLowerCase()
                 let newNode
                 if (this.options.alternativeDomNodeNames.includes(nodeName)) {
-                    ;(replacement.nodeToReplaceWith as Element)
+                    ;(replacement.domNodeToReplaceWith as Element)
                         .setAttribute('active', '')
-                    ;(replacement.textNodeToTranslate as Element)
+                    ;(replacement.domNodeToTranslate as Element)
                         .removeAttribute('active')
                     continue
                 } else if (nodeName === '#comment')
@@ -833,30 +918,30 @@ export class WebInternationalization<
                     newNode.classList.add(this.options.selectors.hideClassName)
                     // NOTE: We need to use "Array.from" to copy the list.
                     for (const childNode of Array.from(
-                        replacement.textNodeToTranslate.childNodes
+                        replacement.domNodeToTranslate.childNodes
                     ))
                         newNode.appendChild(childNode)
                 }
-                replacement.textNodeToTranslate.after(newNode)
+                replacement.domNodeToTranslate.after(newNode)
 
-                replacement.textNodeToTranslate.after(
+                replacement.domNodeToTranslate.after(
                     (globalContext.document as Document)
                         .createComment(language)
                 )
 
-                if ('innerHTML' in replacement.textNodeToTranslate)
+                if ('innerHTML' in replacement.domNodeToTranslate)
                     if (
-                        replacement.nodeToReplaceWith.nodeName
+                        replacement.domNodeToReplaceWith.nodeName
                             .toLowerCase() ===
                         '#comment'
                     )
-                        replacement.textNodeToTranslate.innerHTML =
+                        replacement.domNodeToTranslate.innerHTML =
                             replacement.textToReplaceWith
                     else {
                         let languageRemoved = false
                         // NOTE: We need to use "Array.from" to copy the list.
                         for (const childNode of Array.from(
-                            replacement.nodeToReplaceWith.childNodes
+                            replacement.domNodeToReplaceWith.childNodes
                         )) {
                             if (!languageRemoved) {
                                 childNode.textContent =
@@ -864,22 +949,22 @@ export class WebInternationalization<
                                         .replace(/^[a-z]{2}[A-Z]{2}:/, '')
                                 languageRemoved = true
                             }
-                            replacement.textNodeToTranslate
+                            replacement.domNodeToTranslate
                                 .appendChild(childNode)
                         }
                     }
                 else
-                    replacement.textNodeToTranslate.textContent =
+                    replacement.domNodeToTranslate.textContent =
                         replacement.textToReplaceWith
 
                 currentLanguageDomNode.remove()
-                replacement.nodeToReplaceWith.remove()
+                replacement.domNodeToReplaceWith.remove()
             }
         }
 
         // Translate registered known text nodes.
         for (const [content, domNodes] of Object.entries(
-            this._textNodesWithKnownTranslation
+            this._domNodesWithKnownTranslation
         ))
             for (const domNode of domNodes)
                 domNode.textContent = content

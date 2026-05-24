@@ -254,7 +254,7 @@ export class WebInternationalization<
         }
 
         if (this.currentLanguage === newLanguage)
-            await this.refresh(newLanguage, true)
+            await this.refresh()
         else
             await this.switch(newLanguage, true)
 
@@ -450,7 +450,7 @@ export class WebInternationalization<
      * current language to ensure every text node has right content.
      */
     _collectTextNodesToReplace(language: string, ensure: boolean): void {
-        let currentTextNodeToTranslate: HTMLItem | null = null
+        let currentDomNodeToTranslate: HTMLItem | null = null
         let currentLanguageDomNode: HTMLItem | null = null
 
         this.knownTranslations = {}
@@ -466,7 +466,7 @@ export class WebInternationalization<
                     domNode.nodeType !== Node.COMMENT_NODE ||
                     ((domNode as Comment).nodeValue || '').trim() === ''
                 ) ||
-                currentTextNodeToTranslate?.contains(domNode) ||
+                currentDomNodeToTranslate?.contains(domNode) ||
                 closest(
                     domNode,
                     this.options.replaceDomNodeNames
@@ -478,7 +478,7 @@ export class WebInternationalization<
                 continue
 
             if (this.options.replaceDomNodeNames.includes(nodeName))
-                currentTextNodeToTranslate = domNode as HTMLItem
+                currentDomNodeToTranslate = domNode as HTMLItem
             else if (
                 this.options.alternativeDomNodeNames.includes(nodeName) &&
                 (domNode as Element).getAttribute('lang') === language
@@ -489,7 +489,7 @@ export class WebInternationalization<
                     identify the current dom node to translate by going through
                     all siblings.
                  */
-                let currentTextNodeToTranslate: HTMLElement | null = null
+                let currentDomNodeToTranslate: HTMLElement | null = null
                 for (const candidate of ((
                     domNode as Element
                 ).parentElement as Element).querySelectorAll(
@@ -499,32 +499,32 @@ export class WebInternationalization<
                         candidate.hasAttribute('active') ||
                         !candidate.hasAttribute('lang')
                     ) {
-                        currentTextNodeToTranslate = candidate as HTMLElement
+                        currentDomNodeToTranslate = candidate as HTMLElement
                         break
                     }
 
-                if (!currentTextNodeToTranslate)
+                if (!currentDomNodeToTranslate)
                     continue
 
-                if (!currentTextNodeToTranslate.hasAttribute('active'))
-                    currentTextNodeToTranslate.setAttribute('active', '')
-                if (!currentTextNodeToTranslate.hasAttribute('lang')) {
+                if (!currentDomNodeToTranslate.hasAttribute('active'))
+                    currentDomNodeToTranslate.setAttribute('active', '')
+                if (!currentDomNodeToTranslate.hasAttribute('lang')) {
                     let currentLocalLanguage: string = this.currentLanguage
                     if (ensure)
                         currentLocalLanguage =
                             this.options.default || this.currentLanguage
-                    currentTextNodeToTranslate.setAttribute(
+                    currentDomNodeToTranslate.setAttribute(
                         'lang', currentLocalLanguage
                     )
                 }
 
                 this._registerTextNodeToChange(
-                    currentTextNodeToTranslate,
+                    currentDomNodeToTranslate,
                     domNode as HTMLItem,
                     (domNode as HTMLElement).innerHTML,
                     currentLanguageDomNode
                 )
-            } else if (currentTextNodeToTranslate) {
+            } else if (currentDomNodeToTranslate) {
                 if (this.options.replacementDomNodeNames.includes(
                     nodeName
                 )) {
@@ -539,25 +539,25 @@ export class WebInternationalization<
                     if (Array.isArray(match) && match[1] === language) {
                         // Save known text translations.
                         this.knownTranslations[
-                            getText(currentTextNodeToTranslate, true)
+                            getText(currentDomNodeToTranslate, true)
                                 .join(' ')
                         ] = match[2].trim()
 
                         currentLanguageDomNode =
                             this._ensureLastTextNodeHavingLanguageIndicator(
-                                currentTextNodeToTranslate,
+                                currentDomNodeToTranslate,
                                 currentLanguageDomNode,
                                 ensure
                             )
 
                         this._registerTextNodeToChange(
-                            currentTextNodeToTranslate,
+                            currentDomNodeToTranslate,
                             domNode as HTMLItem,
                             match[2],
                             currentLanguageDomNode
                         )
 
-                        currentTextNodeToTranslate = null
+                        currentDomNodeToTranslate = null
                         currentLanguageDomNode = null
                     } else if (domNode.textContent?.match(
                         new RegExp(this.options.currentLanguagePattern)
@@ -567,7 +567,7 @@ export class WebInternationalization<
                     continue
                 }
 
-                currentTextNodeToTranslate = null
+                currentDomNodeToTranslate = null
                 currentLanguageDomNode = null
             }
         }
@@ -694,27 +694,27 @@ export class WebInternationalization<
     }
     /**
      * Registers a text node to change its content with a given replacement.
-     * @param textNodeToTranslate - Text node with content to
+     * @param domNodeToTranslate - Text node with content to
      * translate.
-     * @param nodeToReplaceWith - A node with replacement content.
+     * @param domNodeToReplaceWith - A node with replacement content.
      * @param textToReplaceWith - Text content to use as replacement.
      * @param currentLanguageDomNode - A potential given text node indicating
      * the language of given text node.
      */
     _registerTextNodeToChange(
-        textNodeToTranslate: HTMLItem,
-        nodeToReplaceWith: HTMLItem | null,
+        domNodeToTranslate: HTMLItem,
+        domNodeToReplaceWith: HTMLItem | null,
         textToReplaceWith: string,
         currentLanguageDomNode: HTMLItem | null
     ) {
         this._domNodesToFade.push(
-            textNodeToTranslate.parentElement as HTMLElement
+            domNodeToTranslate.parentElement as HTMLElement
         )
 
-        if (nodeToReplaceWith)
+        if (domNodeToReplaceWith)
             this._replacements.push({
-                textNodeToTranslate,
-                nodeToReplaceWith,
+                domNodeToTranslate,
+                domNodeToReplaceWith,
                 textToReplaceWith,
                 currentLanguageDomNode
             })
@@ -762,9 +762,9 @@ export class WebInternationalization<
     _switchLanguage(language: string): void {
         for (const replacement of this._replacements) {
             const currentText: string =
-                'innerHTML' in replacement.textNodeToTranslate ?
-                    replacement.textNodeToTranslate.innerHTML :
-                    replacement.textNodeToTranslate.textContent
+                'innerHTML' in replacement.domNodeToTranslate ?
+                    replacement.domNodeToTranslate.innerHTML :
+                    replacement.domNodeToTranslate.textContent
 
             const trimmedText: string = currentText.trim()
             if (
@@ -782,7 +782,7 @@ export class WebInternationalization<
                     currentLanguageDomNode = document.body
                     let currentDomNodeFound = false
                     for (const domNode of getAll(
-                        replacement.textNodeToTranslate.parentElement as
+                        replacement.domNodeToTranslate.parentElement as
                             HTMLElement
                     )) {
                         if (currentDomNodeFound) {
@@ -793,7 +793,7 @@ export class WebInternationalization<
                             break
                         }
 
-                        if (domNode === replacement.textNodeToTranslate)
+                        if (domNode === replacement.domNodeToTranslate)
                             currentDomNodeFound = true
                     }
                 }
@@ -809,12 +809,12 @@ export class WebInternationalization<
 
                 // Move markup to be replaced next its parent node.
                 const nodeName: string =
-                    replacement.nodeToReplaceWith.nodeName.toLowerCase()
+                    replacement.domNodeToReplaceWith.nodeName.toLowerCase()
                 let newNode
                 if (this.options.alternativeDomNodeNames.includes(nodeName)) {
-                    ;(replacement.nodeToReplaceWith as Element)
+                    ;(replacement.domNodeToReplaceWith as Element)
                         .setAttribute('active', '')
-                    ;(replacement.textNodeToTranslate as Element)
+                    ;(replacement.domNodeToTranslate as Element)
                         .removeAttribute('active')
                     continue
                 } else if (nodeName === '#comment')
@@ -833,30 +833,30 @@ export class WebInternationalization<
                     newNode.classList.add(this.options.selectors.hideClassName)
                     // NOTE: We need to use "Array.from" to copy the list.
                     for (const childNode of Array.from(
-                        replacement.textNodeToTranslate.childNodes
+                        replacement.domNodeToTranslate.childNodes
                     ))
                         newNode.appendChild(childNode)
                 }
-                replacement.textNodeToTranslate.after(newNode)
+                replacement.domNodeToTranslate.after(newNode)
 
-                replacement.textNodeToTranslate.after(
+                replacement.domNodeToTranslate.after(
                     (globalContext.document as Document)
                         .createComment(language)
                 )
 
-                if ('innerHTML' in replacement.textNodeToTranslate)
+                if ('innerHTML' in replacement.domNodeToTranslate)
                     if (
-                        replacement.nodeToReplaceWith.nodeName
+                        replacement.domNodeToReplaceWith.nodeName
                             .toLowerCase() ===
                         '#comment'
                     )
-                        replacement.textNodeToTranslate.innerHTML =
+                        replacement.domNodeToTranslate.innerHTML =
                             replacement.textToReplaceWith
                     else {
                         let languageRemoved = false
                         // NOTE: We need to use "Array.from" to copy the list.
                         for (const childNode of Array.from(
-                            replacement.nodeToReplaceWith.childNodes
+                            replacement.domNodeToReplaceWith.childNodes
                         )) {
                             if (!languageRemoved) {
                                 childNode.textContent =
@@ -864,16 +864,16 @@ export class WebInternationalization<
                                         .replace(/^[a-z]{2}[A-Z]{2}:/, '')
                                 languageRemoved = true
                             }
-                            replacement.textNodeToTranslate
+                            replacement.domNodeToTranslate
                                 .appendChild(childNode)
                         }
                     }
                 else
-                    replacement.textNodeToTranslate.textContent =
+                    replacement.domNodeToTranslate.textContent =
                         replacement.textToReplaceWith
 
                 currentLanguageDomNode.remove()
-                replacement.nodeToReplaceWith.remove()
+                replacement.domNodeToReplaceWith.remove()
             }
         }
 

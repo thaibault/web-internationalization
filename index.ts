@@ -855,11 +855,11 @@ export class WebInternationalization<
                 !trimmedText.endsWith(this.options.templateDelimiter.post) &&
                 this.options.templateDelimiter.post
             ) {
-                const currentLanguageDomNode: HTMLItem | null =
+                const currentLanguageDomNode: HTMLItem =
                     this._resolveCurrentLanguageDomNode(replacement)
 
-                const currentLanguage: null | string =
-                    currentLanguageDomNode?.textContent ?? null
+                const currentLanguage: string =
+                    currentLanguageDomNode.textContent
                 if (currentLanguage && language === currentLanguage)
                     log.warn(
                         `Text node "${replacement.textToReplaceWith}" is`,
@@ -875,6 +875,7 @@ export class WebInternationalization<
                         .setAttribute('active', '')
                     ;(replacement.domNodeToTranslate as Element)
                         .removeAttribute('active')
+
                     continue
                 }
 
@@ -893,7 +894,7 @@ export class WebInternationalization<
 
                 this._applyTextReplacement(replacement)
 
-                currentLanguageDomNode?.remove()
+                currentLanguageDomNode.remove()
                 replacement.domNodeToReplaceWith.remove()
             }
         }
@@ -926,7 +927,7 @@ export class WebInternationalization<
      * resolved.
      * @returns The resolved language indicator dom node or null.
      */
-    _resolveCurrentLanguageDomNode(replacement: Replacement): HTMLItem | null {
+    _resolveCurrentLanguageDomNode(replacement: Replacement): HTMLItem {
         if (replacement.currentLanguageDomNode)
             return replacement.currentLanguageDomNode
 
@@ -934,15 +935,14 @@ export class WebInternationalization<
             Language dom node wasn't present initially. So we have to
             determine it now.
         */
-        let currentLanguageDomNode: HTMLItem =
-            document.body as unknown as HTMLItem
+        let currentLanguageDomNode = document.body
         let currentDomNodeFound = false
         for (const domNode of getAll(
             replacement.domNodeToTranslate.parentElement as HTMLElement
         )) {
             if (currentDomNodeFound) {
                 replacement.currentLanguageDomNode =
-                    currentLanguageDomNode = domNode as HTMLItem
+                    currentLanguageDomNode = domNode as HTMLElement
 
                 break
             }
@@ -966,7 +966,7 @@ export class WebInternationalization<
      */
     _createBackupNode(
         nodeName: string,
-        currentLanguage: string | null,
+        currentLanguage: string,
         currentText: string,
         domNodeToTranslate: HTMLItem
     ): Comment | HTMLElement {

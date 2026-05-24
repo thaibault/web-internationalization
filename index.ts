@@ -483,6 +483,12 @@ export class WebInternationalization<
                 this.options.alternativeDomNodeNames.includes(nodeName) &&
                 (domNode as Element).getAttribute('lang') === language
             ) {
+                /*
+                    When dealing with alternative dom nodes we do not rely on
+                    dom node positions to keep them stable. Therefore, we
+                    identify the current dom node to translate by going through
+                    all siblings.
+                 */
                 let currentTextNodeToTranslate: HTMLElement | null = null
                 for (const candidate of ((
                     domNode as Element

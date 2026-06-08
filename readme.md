@@ -36,7 +36,7 @@ Use case
 A WebComponent to replace alternate version of text for client side
 internationalization.
 <!--deDE:
-    Eine Web-Komponente zum klientseitigem Ersetzten von verschiedenen
+    Eine Web-Komponente zum klientseitigem ersetzten von verschiedenen
     Textversionen. Perfekt für die Internationalisierung Ihres Webprojekts.
 -->
 <!--frFR:
@@ -172,9 +172,7 @@ translation node. In this case you can simply wrap a self defined dom node.
 <!--deDE:
     Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
 -->
-<!--frFR:
-    Votre version français <strong>dom nodes</strong> à l'intérieur.
--->
+<!--frFR:Votre version français <strong>dom nodes</strong> à l'intérieur.-->
 ```
 
 It is also possible to use an alternative replacement node.
@@ -245,7 +243,7 @@ translations.
 <h2 id="title-2">title 2<!--deDE:Titel 2--><!--frFR:titre 2--></h2>
 ```
 
-With the below initialization you can simple add this links everywhere in your
+With the below initialization you can simply add this links everywhere in your
 page to switch language. On click, you will switch the current language
 interactively. Try it by yourself:
 <!--deDE:

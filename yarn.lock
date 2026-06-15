@@ -3539,12 +3539,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^25.9.2":
-  version: 25.9.2
-  resolution: "@types/node@npm:25.9.2"
+"@types/node@npm:^25.9.3":
+  version: 25.9.3
+  resolution: "@types/node@npm:25.9.3"
   dependencies:
     undici-types: "npm:>=7.24.0 <7.24.7"
-  checksum: 10c0/f14c0d56361febb985eccc45cf0834ee6e2f07c4389a636f3e1a55ebde320077a80bface18c9afd3092f5fa295925502c1a9d55f805efa813f634aa9c941cbac
+  checksum: 10c0/72d3aece9d42c2c641bcd3f3cb2dc2828b4bd384dfcbd910c404b8859a68bd69d50c4769ce7defd4ff5e049768e23e615f09407ea2cbbb5f44b90d75a7c6b8ca
   languageName: node
   linkType: hard
 
@@ -6011,9 +6011,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^4.0.1422":
-  version: 4.0.1422
-  resolution: "clientnode@npm:4.0.1422"
+"clientnode@npm:^4.0.1423":
+  version: 4.0.1423
+  resolution: "clientnode@npm:4.0.1423"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/prop-types": "*"
@@ -6028,7 +6028,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/218f7acd6cf9b3c7330f5f3e585ea7e1c03d5bc483617b52fd76866326cab4a7d194b7d068c1542d6d30a12f32d809e05c5fc04499cb21a3804d93706a387b83
+  checksum: 10c0/d239a017d1d40852f02a91b0458d41048a7b730cfee4d68d4e2cbc615de59c1415afb028479f6e7cce676fe12757465947abacf37aa660c4d2e9bf5f288613f9
   languageName: node
   linkType: hard
 
@@ -6922,9 +6922,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^10.4.1":
-  version: 10.4.1
-  resolution: "eslint@npm:10.4.1"
+"eslint@npm:^10.5.0":
+  version: 10.5.0
+  resolution: "eslint@npm:10.5.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.8.0"
     "@eslint-community/regexpp": "npm:^4.12.2"
@@ -6963,7 +6963,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 10c0/c5e6bb5158fb0d62f090c8e2671de5c98283bbb37a58b6d871bada63af3018e683483c96c1a92272fedc8f4e5279a273a0451acf0da67c487406639daa05aedb
+  checksum: 10c0/e1f7a1d442027e5478945cb07b6a382adc3f149fbfd3dbc14951a7a9fa312546b27fb35b0556897ca1d04539ad16ee85bda75ad9f724873e1153d1fbca0d6145
   languageName: node
   linkType: hard
 
@@ -12346,9 +12346,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-component-wrapper@npm:^0.0.596":
-  version: 0.0.596
-  resolution: "web-component-wrapper@npm:0.0.596"
+"web-component-wrapper@npm:^0.0.602":
+  version: 0.0.602
+  resolution: "web-component-wrapper@npm:0.0.602"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/react": "*"
@@ -12367,16 +12367,16 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/23ea79ff06362af4fd5de4b4bb2eee04d3a59b14ddc5714753d93bf6683942c98a254f29bcc1e10efdc9677e0c4676b87b6a79da4dffc16a746e88b64112746e
+  checksum: 10c0/8aeb6886aa4fdd08a33ad8eb64ba83afad643924b96b71cec3344b62b5708e9acfa4c67f6b94f2ac73c6c1490b10cb3045c8fc6e5a4b6244bdd1d7b0b53793f0
   languageName: node
   linkType: hard
 
-"web-documentation@npm:^1.0.34":
-  version: 1.0.34
-  resolution: "web-documentation@npm:1.0.34"
+"web-documentation@npm:^1.0.39":
+  version: 1.0.39
+  resolution: "web-documentation@npm:1.0.39"
   bin:
     web-documentation: build/deploy.js
-  checksum: 10c0/348ca467b53fcd733945cdf97e9a15547e9fd51033ceb9ad8506f96020e694065cb9090acc31308a5f2aac4b52eabd166a450b40acff66353f45fa455fddc060
+  checksum: 10c0/e7723389e1781ae91edd4f30e3a5cafb65846ba1c4a001e1fb81e80bb72f8751f1511e25e10773732b1663d6ed09fd938577293da680ad47c5a8b1220df7dc88
   languageName: node
   linkType: hard
 
@@ -12393,13 +12393,13 @@ __metadata:
     "@types/html-minifier": "npm:^4.0.6"
     "@types/imagemin": "npm:^9.0.1"
     "@types/jsdom": "npm:^28.0.3"
-    "@types/node": "npm:^25.9.2"
+    "@types/node": "npm:^25.9.3"
     "@types/webpack-env": "npm:^1.18.8"
     "@typescript-eslint/eslint-plugin": "npm:^8.61.0"
     "@typescript-eslint/parser": "npm:^8.61.0"
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
-    clientnode: "npm:^4.0.1422"
-    eslint: "npm:^10.4.1"
+    clientnode: "npm:^4.0.1423"
+    eslint: "npm:^10.5.0"
     eslint-config-google: "npm:^0.14.0"
     eslint-plugin-jsdoc: "npm:^63.0.2"
     favicons-webpack-plugin: "npm:^6.0.1"
@@ -12408,10 +12408,10 @@ __metadata:
     jsdoc: "npm:^4.0.5"
     prop-types: "npm:^15.8.1"
     typescript-eslint: "npm:^8.61.0"
-    web-component-wrapper: "npm:^0.0.596"
-    web-documentation: "npm:^1.0.34"
+    web-component-wrapper: "npm:^0.0.602"
+    web-documentation: "npm:^1.0.39"
     weboptimizer: "npm:^3.0.24"
-    webpack-dev-server: "npm:^5.2.4"
+    webpack-dev-server: "npm:^5.2.5"
   peerDependencies:
     "@babel/runtime": "*"
     clientnode: "*"
@@ -12630,9 +12630,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-dev-server@npm:^5.2.4":
-  version: 5.2.4
-  resolution: "webpack-dev-server@npm:5.2.4"
+"webpack-dev-server@npm:^5.2.5":
+  version: 5.2.5
+  resolution: "webpack-dev-server@npm:5.2.5"
   dependencies:
     "@types/bonjour": "npm:^3.5.13"
     "@types/connect-history-api-fallback": "npm:^1.5.4"
@@ -12671,7 +12671,7 @@ __metadata:
       optional: true
   bin:
     webpack-dev-server: bin/webpack-dev-server.js
-  checksum: 10c0/42f8afe11b7bfe65d72e30d861ddf1e4d05f27202c4c1162d204cb41a4a858dffc91c5a02bf44ec08acc8c02b4a57aaf46924ec12a5e5b97c307991379282669
+  checksum: 10c0/8963b3533197ebd820456f3cb14d9234ba4dff10412eb11200b8099c501559abf7a700e9a5d4136f17929374b61c1af5c6ef597471ea45b97ba6ca69a12e5ca8
   languageName: node
   linkType: hard
 

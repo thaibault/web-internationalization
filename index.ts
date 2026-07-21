@@ -17,6 +17,11 @@
     endregion
 */
 // region imports
+import type {HTMLItem, Mapping} from 'clientnode'
+import type {WebComponentAPI} from 'web-component-wrapper/type'
+
+import type {DefaultOptions, Options, Replacement} from './type'
+
 import {
     camelCaseToDelimited,
     closest,
@@ -26,19 +31,14 @@ import {
     getAll,
     getText,
     globalContext,
-    HTMLItem,
     Lock,
     Logger,
-    Mapping,
     NOOP,
     format
 } from 'clientnode'
 import {func, object} from 'clientnode/property-types'
 import {property} from 'web-component-wrapper/decorator'
-import {WebComponentAPI} from 'web-component-wrapper/type'
 import {Web} from 'web-component-wrapper/Web'
-
-import {DefaultOptions, Options, Replacement} from './type'
 // endregion
 export const log = new Logger({name: 'web-internationalization'})
 // region plugins/classes

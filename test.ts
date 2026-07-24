@@ -14,8 +14,10 @@
     endregion
 */
 // region imports
+import type {HTMLItem} from 'clientnode'
+
 import {
-    createDomNodes, FirstParameter, globalContext, HTMLItem, isEquivalent
+    createDomNodes, FirstParameter, globalContext, isEquivalent
 } from 'clientnode'
 
 import {beforeAll, describe, expect, test} from '@jest/globals'

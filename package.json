@@ -63,8 +63,8 @@
     "@typescript-eslint/eslint-plugin": "^8.65.0",
     "@typescript-eslint/parser": "^8.65.0",
     "@webcomponents/webcomponentsjs": "^2.8.0",
-    "clientnode": "^4.0.1469",
-    "eslint": "^10.7.0",
+    "clientnode": "^4.0.1472",
+    "eslint": "^10.8.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jsdoc": "^63.2.2",
     "favicons-webpack-plugin": "^6.0.1",
@@ -73,9 +73,9 @@
     "jsdoc": "^4.0.5",
     "prop-types": "^15.8.1",
     "typescript-eslint": "^8.65.0",
-    "web-component-wrapper": "^0.0.605",
+    "web-component-wrapper": "^0.0.606",
     "web-documentation": "^1.0.42",
-    "weboptimizer": "^4.0.36",
+    "weboptimizer": "^4.0.37",
     "webpack-dev-server": "^6.0.0"
   },
   "peerDependencies": {

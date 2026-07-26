@@ -5440,7 +5440,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:4.0.1473, clientnode@npm:^4.0.1473":
+"clientnode@npm:4.0.1473":
   version: 4.0.1473
   resolution: "clientnode@npm:4.0.1473"
   peerDependencies:
@@ -5455,6 +5455,24 @@ __metadata:
     prop-types:
       optional: true
   checksum: 10c0/d282d9ee76b8ed2e11d348292772f7a2f8f363455669150446b68aafd4139a2d0b57d5573fe467af1873917ccd4342cf428eef14186723caee0cd703a8731022
+  languageName: node
+  linkType: hard
+
+"clientnode@npm:^4.0.1474":
+  version: 4.0.1474
+  resolution: "clientnode@npm:4.0.1474"
+  peerDependencies:
+    "@types/prop-types": "*"
+    node-fetch: "*"
+    prop-types: "*"
+  peerDependenciesMeta:
+    "@types/prop-types":
+      optional: true
+    node-fetch:
+      optional: true
+    prop-types:
+      optional: true
+  checksum: 10c0/8f19bc31091d4a8ad32efe21702d3f81acdea6450c988c618ba1cb777992a16b074b0774a7bf96df444d3f04dda27a1876fac61336bccefc89a1f0cf288e9a34
   languageName: node
   linkType: hard
 
@@ -11136,9 +11154,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-component-wrapper@npm:^0.0.607":
-  version: 0.0.607
-  resolution: "web-component-wrapper@npm:0.0.607"
+"web-component-wrapper@npm:^0.0.608":
+  version: 0.0.608
+  resolution: "web-component-wrapper@npm:0.0.608"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/react": "*"
@@ -11157,7 +11175,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/8213ff72d2e416c0476e94209a81359e9f32c939c8fbc94792b68c896f9c328597ff54f50e29d0199467a1d5c7b37ed5ce2e0b93fb6ef6c344915667418c183a
+  checksum: 10c0/c5f8c10a1f80291b5deae154550b93eb6c057e440e610d7238c1d4953076602631ac93ca7dbfc63bda3689570bfcc81613028f98781c0c3ba4cc2c449c036acc
   languageName: node
   linkType: hard
 
@@ -11188,7 +11206,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^8.65.0"
     "@typescript-eslint/parser": "npm:^8.65.0"
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
-    clientnode: "npm:^4.0.1473"
+    clientnode: "npm:^4.0.1474"
     eslint: "npm:^10.8.0"
     eslint-config-google: "npm:^0.14.0"
     eslint-plugin-jsdoc: "npm:^63.3.0"
@@ -11198,7 +11216,7 @@ __metadata:
     jsdoc: "npm:^4.0.5"
     prop-types: "npm:^15.8.1"
     typescript-eslint: "npm:^8.65.0"
-    web-component-wrapper: "npm:^0.0.607"
+    web-component-wrapper: "npm:^0.0.608"
     web-documentation: "npm:^1.0.43"
     weboptimizer: "npm:^4.0.41"
     webpack-dev-server: "npm:^6.0.0"

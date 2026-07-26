@@ -11161,12 +11161,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-documentation@npm:^1.0.42":
-  version: 1.0.42
-  resolution: "web-documentation@npm:1.0.42"
+"web-documentation@npm:^1.0.43":
+  version: 1.0.43
+  resolution: "web-documentation@npm:1.0.43"
   bin:
     web-documentation: build/deploy.js
-  checksum: 10c0/65dc08c579a1aa03a7c6deabe0ff5cd3c025daee77e47abb32cb8aba622582da6f8eecec60a25f9a2da148eba4fec550b9ebe793a70a584e9fb40adc336ea88f
+  checksum: 10c0/b73c604417117633b968b80a1070ed39348db91de95b570051d8b9825051a17431f903eb143e14555a27441a56b10c2bc5f103722c0b688c9c88230cb60805e5
   languageName: node
   linkType: hard
 
@@ -11199,8 +11199,8 @@ __metadata:
     prop-types: "npm:^15.8.1"
     typescript-eslint: "npm:^8.65.0"
     web-component-wrapper: "npm:^0.0.607"
-    web-documentation: "npm:^1.0.42"
-    weboptimizer: "npm:^4.0.39"
+    web-documentation: "npm:^1.0.43"
+    weboptimizer: "npm:^4.0.40"
     webpack-dev-server: "npm:^6.0.0"
   peerDependencies:
     "@babel/runtime": "*"
@@ -11220,9 +11220,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^4.0.39":
-  version: 4.0.39
-  resolution: "weboptimizer@npm:4.0.39"
+"weboptimizer@npm:^4.0.40":
+  version: 4.0.40
+  resolution: "weboptimizer@npm:4.0.40"
   dependencies:
     "@babel/core": "npm:^8.0.1"
     "@babel/plugin-proposal-decorators": "npm:^8.0.2"
@@ -11370,7 +11370,7 @@ __metadata:
       optional: true
   bin:
     weboptimizer: index.js
-  checksum: 10c0/31f5949418bb1b840b95a95fc61830ef69957213d91d99b3cc201734b37f7ff535c58353e2d2b8b344dbae938d665b6044ea445ccee14591acbce4bfb8a08a0f
+  checksum: 10c0/91cf08ff83426fb2395c6723893611f6a055a7d5d747dd92820bbf8d376090c225c42f75da5ffd65bbb0925b05f95382f65e4956548dd7566f3d93dc896a45aa
   languageName: node
   linkType: hard
 

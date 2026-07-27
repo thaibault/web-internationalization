@@ -5458,9 +5458,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^4.0.1474":
-  version: 4.0.1474
-  resolution: "clientnode@npm:4.0.1474"
+"clientnode@npm:^4.0.1475":
+  version: 4.0.1475
+  resolution: "clientnode@npm:4.0.1475"
   peerDependencies:
     "@types/prop-types": "*"
     node-fetch: "*"
@@ -5472,7 +5472,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/8f19bc31091d4a8ad32efe21702d3f81acdea6450c988c618ba1cb777992a16b074b0774a7bf96df444d3f04dda27a1876fac61336bccefc89a1f0cf288e9a34
+  checksum: 10c0/f6ff3b382eb5dba952883c0d8ff07218bb830ae4de99f0cb8dc7e97de8a6412b159f733a63adc141f9b00f46793276c5f79937ee286560914dcb2c6571a4a679
   languageName: node
   linkType: hard
 
@@ -6224,9 +6224,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^63.3.0":
-  version: 63.3.0
-  resolution: "eslint-plugin-jsdoc@npm:63.3.0"
+"eslint-plugin-jsdoc@npm:^63.3.1":
+  version: 63.3.1
+  resolution: "eslint-plugin-jsdoc@npm:63.3.1"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.90.0"
     "@es-joy/resolve.exports": "npm:1.2.0"
@@ -6244,7 +6244,7 @@ __metadata:
     to-valid-identifier: "npm:^1.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
-  checksum: 10c0/0e409fa2c77939d9aeb1ad389d8457b5cfd2eccddd46ba276ef80a0ab29a4299ff7e1b181cb515c19a18a732b66b805c11a994bbd2f8662cede85b549cd58b20
+  checksum: 10c0/e27da2ae00599c0ce70354e4aff06d6dcacf56cde2c405fcd52ecaa6fe5b61a7d90becbdcdc8a3516c27bf8ebc55eacb62dc1e24067df9c5ecc5ccf955a9ddbf
   languageName: node
   linkType: hard
 
@@ -11206,10 +11206,10 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^8.65.0"
     "@typescript-eslint/parser": "npm:^8.65.0"
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
-    clientnode: "npm:^4.0.1474"
+    clientnode: "npm:^4.0.1475"
     eslint: "npm:^10.8.0"
     eslint-config-google: "npm:^0.14.0"
-    eslint-plugin-jsdoc: "npm:^63.3.0"
+    eslint-plugin-jsdoc: "npm:^63.3.1"
     favicons-webpack-plugin: "npm:^6.0.1"
     image-minimizer-webpack-plugin: "npm:^5.0.0"
     jest: "npm:^30.4.2"

@@ -129,6 +129,7 @@
         "options": {
           "sources": {
             "urlFilter": {
+              "#": "Do not process any referenced resource in HTML.",
               "__evaluate__": "() => false"
             }
           }

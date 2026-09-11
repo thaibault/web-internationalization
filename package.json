@@ -1,6 +1,6 @@
 {
-  "version": "2.0.50",
   "name": "web-internationalization",
+  "version": "2.0.50",
   "description": "Expand your audience",
   "keywords": [
     "lang",
@@ -14,19 +14,21 @@
   },
   "license": "CC-BY-3.0",
   "author": {
-    "name": "Torben Sickert",
     "email": "info@torben.website",
+    "name": "Torben Sickert",
     "url": "https://torben.website"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thaibault/web-internationalization"
+  },
+  "type": "module",
   "files": [
     "index.d.ts",
     "index.js",
     "type.d.ts"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/thaibault/web-internationalization"
-  },
+  "sideEffects": false,
   "scripts": {
     "build": "yarn build:types; yarn build:plain",
     "build:bundle": "yarn build:types; yarn build:bundle:plain",
@@ -49,33 +51,33 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^8.0.1",
+    "@babel/eslint-parser": "^8.0.5",
     "@babel/plugin-transform-proto-to-assign": "^8.0.1",
-    "@babel/runtime": "^8.0.0",
+    "@babel/runtime": "^8.0.5",
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/ejs": "^3.1.5",
     "@types/html-minifier": "^4.0.6",
     "@types/imagemin": "^9.0.1",
-    "@types/jsdom": "^28.0.3",
-    "@types/node": "^26.1.2",
+    "@types/jsdom": "^30.0.0",
+    "@types/node": "^26.5.1",
     "@types/webpack-env": "^1.18.8",
-    "@typescript-eslint/eslint-plugin": "^8.65.0",
-    "@typescript-eslint/parser": "^8.65.0",
+    "@typescript-eslint/eslint-plugin": "^8.70.0",
+    "@typescript-eslint/parser": "^8.70.0",
     "@webcomponents/webcomponentsjs": "^2.8.0",
-    "clientnode": "^4.0.1481",
-    "eslint": "^10.8.0",
+    "clientnode": "^4.0.1516",
+    "eslint": "^10.10.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jsdoc": "^63.3.2",
+    "eslint-plugin-jsdoc": "^64.3.9",
     "favicons-webpack-plugin": "^6.0.1",
     "image-minimizer-webpack-plugin": "^5.0.0",
-    "jest": "^30.4.2",
+    "jest": "^30.5.1",
     "jsdoc": "^4.0.5",
     "prop-types": "^15.8.1",
-    "typescript-eslint": "^8.65.0",
-    "web-component-wrapper": "^0.0.610",
-    "web-documentation": "^1.0.44",
-    "weboptimizer": "^4.0.47",
+    "typescript-eslint": "^8.70.0",
+    "web-component-wrapper": "^0.0.612",
+    "web-documentation": "^1.0.52",
+    "weboptimizer": "^4.0.81",
     "webpack-dev-server": "^6.0.0"
   },
   "peerDependencies": {
@@ -89,19 +91,17 @@
       "optional": true
     }
   },
-  "engines": {
-    "node": ">=24",
-    "npm": ">=11",
-    "yarn": ">=4"
-  },
   "resolutions": {
     "colors": "1.4.0",
-    "globals@npm:^14.0.0": "patch:globals@npm%3A11.12.0#~/.yarn/patches/globals-npm-11.12.0-1fa7f41a6c.patch",
     "globals@npm:^11.1.0": "patch:globals@npm%3A11.12.0#~/.yarn/patches/globals-npm-11.12.0-1fa7f41a6c.patch",
+    "globals@npm:^14.0.0": "patch:globals@npm%3A11.12.0#~/.yarn/patches/globals-npm-11.12.0-1fa7f41a6c.patch",
     "globals@npm:^9.18.0": "patch:globals@npm%3A11.12.0#~/.yarn/patches/globals-npm-11.12.0-1fa7f41a6c.patch"
   },
-  "sideEffects": false,
-  "type": "module",
+  "engines": {
+    "node": ">=26",
+    "npm": ">=12",
+    "yarn": ">=4"
+  },
   "webDocumentation": {
     "languages": [
       "deDE",
@@ -129,6 +129,7 @@
         "options": {
           "sources": {
             "urlFilter": {
+              "#": "Do not process any referenced resource in HTML.",
               "__evaluate__": "() => false"
             }
           }
@@ -178,5 +179,5 @@
       }
     }
   },
-  "packageManager": "yarn@4.14.1+sha512.64df448055b2d37ba269d7db535a469b8da93f8ef1140c25fd7a83c00a8fbaacb214ca0e02553b92a2c54cef78bb67d0b4817fab02001df0e24fac0faccc3b42"
+  "packageManager": "yarn@4.18.0"
 }

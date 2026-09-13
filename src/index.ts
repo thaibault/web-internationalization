@@ -147,6 +147,7 @@ export class WebInternationalization<
         onSwitched: (oldLanguage: string, newLanguage: string) => void = NOOP
     // endregion
     switchLanguageButtonDomNodes: NodeListOf<HTMLAnchorElement> | null = null
+    languageButtonEventHandler: Array<() => void> = []
 
     currentLanguage = 'enUS'
     knownTranslations: Mapping = {}
@@ -214,11 +215,6 @@ export class WebInternationalization<
 
         await this.waitForNestedComponentRendering()
 
-        this.switchLanguageButtonDomNodes =
-            this.hostDomNode.querySelectorAll(
-                `a[href^="#${this.options.languageHashPrefix}"]`
-            )
-
         this._movePreReplacementNodes()
 
         this.currentLanguage = this._normalizeLanguage(this.options.default)
@@ -228,7 +224,27 @@ export class WebInternationalization<
         */
         const newLanguage: string = this._determineUsefulLanguage()
 
+        this.refreshLanguageButtonDomNodesBinding()
+
+        if (this.currentLanguage === newLanguage)
+            await this.refresh()
+        else
+            await this.switch(newLanguage, true)
+
+        await this.resolveRenderingPromiseIfSet(reason, resolveRendering)
+    }
+    /// endregion
+    refreshLanguageButtonDomNodesBinding(): void {
+        this.switchLanguageButtonDomNodes =
+            this.hostDomNode.querySelectorAll(
+                `a[href^="#${this.options.languageHashPrefix}"]`
+            )
+
         const determineSelection = this.options.selection.length === 0
+
+        for (const deregister of this.languageButtonEventHandler)
+            deregister()
+        this.languageButtonEventHandler = []
 
         for (const domNode of this.switchLanguageButtonDomNodes) {
             if (determineSelection)
@@ -250,17 +266,11 @@ export class WebInternationalization<
                         this.options.languageHashPrefix.length + 1
                     ))
             }
-            this.addSecureEventListener(domNode, 'click', handler)
+            this.languageButtonEventHandler.push(
+                this.addSecureEventListener(domNode, 'click', handler)
+            )
         }
-
-        if (this.currentLanguage === newLanguage)
-            await this.refresh()
-        else
-            await this.switch(newLanguage, true)
-
-        await this.resolveRenderingPromiseIfSet(reason, resolveRendering)
     }
-    /// endregion
     /**
      * Switches the current language to a given language. This method is
      * mutually synchronized.

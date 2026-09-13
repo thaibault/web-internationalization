@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BackgroundAgentGlobalSettings">
+    <option name="selectedModelId" value="claude-opus-4.8" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="16e334b4-d288-4054-af3d-1732e7a36dc3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotChats">
+    <option name="panelChat">
+      <chat>
+        <option name="activeSessionId" value="c5b0db35-a378-4df1-9d96-2f927d631d4e" />
+        <option name="sessions">
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="7451a2d5-3550-444e-863d-25179e73f77f" />
+            <option name="modeId" value="Agent" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="claude-sonnet-4.6" />
+            <option name="status" value="Completed" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="6b3749ee-d19d-4ca8-9248-1791980bc9d3" />
+            <option name="modeId" value="Ask" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="claude-opus-4.6" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="24d74126-b3a1-420a-96fd-d93df29599d6" />
+            <option name="modeId" value="Agent" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="claude-sonnet-4.6" />
+            <option name="status" value="Completed" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="c5b0db35-a378-4df1-9d96-2f927d631d4e" />
+            <option name="modeId" value="Agent" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="claude-sonnet-4.6" />
+            <option name="status" value="Completed" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+        </option>
+        <option name="type" value="PANEL" />
+      </chat>
+    </option>
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/Users/torben.sickert/local/public/project/repository/web-internationalization" value="3DEK0uZQQ4fMD52HBwlCe8uqfTl" />
+    </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedModel">
+    <selectedModels>
+      <entry key="agent-panel" value="Claude Sonnet 4.6" />
+      <entry key="chat-panel" value="Claude Sonnet 4.6" />
+    </selectedModels>
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="108" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0856665474958807" />
+      <entry key="MS500" value="1.941079752595348" />
+      <entry key="S2" value="3.12879935158172" />
+      <entry key="S5" value="3.602987960302325" />
+      <entry key="S10" value="3.7922269822881405" />
+      <entry key="S30" value="3.938956332090006" />
+      <entry key="S60" value="4.163077483433722" />
+      <entry key="M2" value="5.029462731679638" />
+      <entry key="M5" value="7.608409343243846" />
+      <entry key="M10" value="11.92861148141686" />
+      <entry key="M15" value="16.928398766593567" />
+      <entry key="M30" value="36.80170507443239" />
+      <entry key="H1" value="77.89628464184956" />
+      <entry key="H2" value="134.37158085320883" />
+      <entry key="H4" value="196.75865483998479" />
+      <entry key="D1" value="338.42649653691916" />
+      <entry key="W1" value="389.89019169232665" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="1.4158014690241605E-200" />
+      <entry key="S2" value="1.0908137147127692E-50" />
+      <entry key="S5" value="1.0353811067205875E-20" />
+      <entry key="S10" value="1.017536783964387E-10" />
+      <entry key="S30" value="4.668566172162769E-4" />
+      <entry key="S60" value="0.021619425438041472" />
+      <entry key="M2" value="0.1506966672423382" />
+      <entry key="M5" value="0.600097487763801" />
+      <entry key="M10" value="1.2233903927454717" />
+      <entry key="M15" value="1.7899946006198606" />
+      <entry key="M30" value="3.677294412386013" />
+      <entry key="H1" value="7.196915793923116" />
+      <entry key="H2" value="11.84299579985744" />
+      <entry key="H4" value="16.99303377336273" />
+      <entry key="D1" value="28.833648581878357" />
+      <entry key="W1" value="33.151384616639135" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.23990125750402494" />
+      <entry key="MS500" value="1.4282389107448703" />
+      <entry key="S2" value="2.7989287601895647" />
+      <entry key="S5" value="3.4317398211688537" />
+      <entry key="S10" value="3.698363532104045" />
+      <entry key="S30" value="3.9060580175923953" />
+      <entry key="S60" value="4.166552364180331" />
+      <entry key="M2" value="5.167383276594245" />
+      <entry key="M5" value="8.197686979113348" />
+      <entry key="M10" value="13.141528419007596" />
+      <entry key="M15" value="18.707683732319975" />
+      <entry key="M30" value="40.46677751715469" />
+      <entry key="H1" value="85.0802655162929" />
+      <entry key="H2" value="146.20331804523815" />
+      <entry key="H4" value="213.74332264329817" />
+      <entry key="D1" value="367.25772649264127" />
+      <entry key="W1" value="423.0411788536161" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3DEK0uZQQ4fMD52HBwlCe8uqfTl" />
+  <component name="ProjectSessionTemplates">
+    <option name="panelTemplate">
+      <template>
+        <option name="modeId" value="Agent" />
+        <option name="model">
+          <model>
+            <option name="modelType" value="builtin_id" />
+            <option name="modelValue" value="claude-opus-4.8" />
+          </model>
+        </option>
+        <option name="targetType" value="LOCAL" />
+      </template>
+    </option>
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/torben.sickert/local/public/project/repository/web-internationalization&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/torben.sickert/local/public/project/repository/web-internationalization/node_modules/typescript/lib&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-WS-262.10315.144" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="16e334b4-d288-4054-af3d-1732e7a36dc3" name="Changes" comment="" />
+      <created>1777841569205</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1777841569205</updated>
+      <workItem from="1777841570415" duration="46000" />
+      <workItem from="1778165070283" duration="362000" />
+      <workItem from="1778166942044" duration="1145000" />
+      <workItem from="1778241650673" duration="175000" />
+      <workItem from="1778570503426" duration="653000" />
+      <workItem from="1778583390677" duration="26000" />
+      <workItem from="1778583460489" duration="15000" />
+      <workItem from="1778583524681" duration="28000" />
+      <workItem from="1778657881686" duration="218000" />
+      <workItem from="1779025839597" duration="1379000" />
+      <workItem from="1779027246044" duration="34000" />
+      <workItem from="1779028305218" duration="420000" />
+      <workItem from="1779029651806" duration="1120000" />
+      <workItem from="1779125195295" duration="19000" />
+      <workItem from="1779273030805" duration="1651000" />
+      <workItem from="1779299369370" duration="185000" />
+      <workItem from="1779299639513" duration="2000" />
+      <workItem from="1779299948757" duration="3000" />
+      <workItem from="1779300197952" duration="144000" />
+      <workItem from="1779300473561" duration="471000" />
+      <workItem from="1779301527609" duration="287000" />
+      <workItem from="1779302098709" duration="806000" />
+      <workItem from="1779308459482" duration="767000" />
+      <workItem from="1779309882404" duration="42000" />
+      <workItem from="1779365286412" duration="142000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/test.d.ts" />
+        <option value="$PROJECT_DIR$/type.d.ts" />
+        <option value="$PROJECT_DIR$/index.js" />
+        <option value="$PROJECT_DIR$/index.d.ts" />
+      </list>
+    </option>
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>

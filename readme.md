@@ -220,11 +220,9 @@ interactively. Try it by yourself:
 <!--showExample:hidden-->
 
 ```JavaScript
-window.onload = function() {
-    // Detect example langage buttons as well.
-    document.querySelector('web-internationalization')
-        .refreshLanguageButtonDomNodesBinding()
-}
+// Detect example langage buttons as well.
+document.querySelector('web-internationalization')
+    .refreshLanguageButtonDomNodesBinding()
 ```
 
 Here you can see a complete initialization example with all available options

@@ -217,10 +217,17 @@ interactively. Try it by yourself:
 <a href="#lang-frFR">fr</a>
 ```
 
-<!--showExample:hidden-->
+Detect example language buttons as well...
+<!--deDE:
+    Erkennen Sie die Sprachwechsel-Buttons...
+-->
+<!--frFR:
+    Reconnaître également les boutons de changement de langue...
+-->
+
+<!--showExample:JavaScript-->
 
 ```JavaScript
-// Detect example langage buttons as well.
 document.querySelector('web-internationalization')
     .refreshLanguageButtonDomNodesBinding()
 ```

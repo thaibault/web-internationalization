@@ -1,3 +1,14 @@
 {
-    "extends": "./node_modules/weboptimizer/tsconfig.library.json",
+    "compilerOptions": {
+      "rootDir": "src/",
+      "declaration": true,
+      "declarationDir": "dist/"
+    },
+    "extends": "./node_modules/weboptimizer/tsconfig.json",
+    "include": [
+        "src/*.d.ts",
+        "src/**/*.d.ts",
+        "src/*.ts", "src/*.tsx",
+        "src/**/*.ts", "src/**/*.tsx"
+    ]
 }

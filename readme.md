@@ -217,6 +217,8 @@ interactively. Try it by yourself:
 <a href="#lang-frFR">fr</a>
 ```
 
+<!--TODO rerun 
+
 Here you can see a complete initialization example with all available options
 to initialize the plugin with different configuration.
 <!--deDE:
@@ -231,11 +233,11 @@ to initialize the plugin with different configuration.
 
 ```HTML
 <script
-    src="https://torben.website/internationalization/data/distributionBundle/index.js"
+    src="https://unpkg.com/web-internationalization@latest/dist/bundle/index.js"
 ></script>
 <script>
     window.onload = function() {
-        internationalization.index.api.register()
+        webInternationalization.index.api.register()
     }
 </script>
 ```

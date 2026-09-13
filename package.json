@@ -23,16 +23,28 @@
     "url": "git+https://github.com/thaibault/web-internationalization"
   },
   "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./compatible": "./dist/compatible/index.js",
+    "./type": "./dist/type.js"
+  },
+  "main": "dist/index.js",
+  "typesVersions": {
+    "*": {
+      "type": [
+        "./dist/type.d.ts"
+      ]
+    }
+  },
   "files": [
-    "index.d.ts",
-    "index.js",
-    "type.d.ts"
+    "dist"
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "yarn build:types; yarn build:plain",
-    "build:bundle": "yarn build:types; yarn build:bundle:plain",
-    "build:bundle:plain": "weboptimizer build '{__reference__: \"target:bundle\"}'",
+    "build": "yarn build:types; yarn build:plain; yarn build:compatible; yarn build:bundle; yarn build:bundle:compatible",
+    "build:bundle": "weboptimizer build '{__reference__: \"target:bundle\"}'",
+    "build:bundle:compatible": "weboptimizer build '{__reference__: [\"target:bundle\", \"target:compatible\", \"target:bundle:compatible\"]}'",
+    "build:compatible": "weboptimizer build '{__reference__: \"target:compatible\"}'",
     "build:plain": "weboptimizer build",
     "build:types": "weboptimizer build:types",
     "check": "yarn check:types; yarn lint",
@@ -148,16 +160,45 @@
         }
       }
     },
+    "path": {
+      "source": {
+        "base": "src/"
+      },
+      "target": {
+        "base": "dist/"
+      }
+    },
     "target:bundle": {
-      "module": {
-        "preprocessor": {
-          "javaScript": {
-            "options": {
-              "plugins": {
-                "__remove__": "@babel/plugin-transform-runtime"
-              }
-            }
-          }
+      "inPlace": {
+        "externalLibrary": {
+          "dynamic": true,
+          "normal": true
+        }
+      },
+      "path": {
+        "target": {
+          "base": "dist/bundle/"
+        }
+      }
+    },
+    "target:bundle:compatible": {
+      "path": {
+        "target": {
+          "base": "dist/bundle/compatible/"
+        }
+      }
+    },
+    "target:compatible": {
+      "generic": {
+        "supportedBrowsers": [
+          "IE >= 11",
+          "last 2 versions",
+          "> 5%"
+        ]
+      },
+      "path": {
+        "target": {
+          "base": "dist/compatible/"
         }
       }
     },

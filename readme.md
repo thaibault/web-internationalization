@@ -44,80 +44,30 @@ internationalization.
     client l'internationalization.
 -->
 
-<!--Place for automatic generated table of contents.-->
-<div class="doc-toc" style="display:none">
-    <!--|deDE:Inhalt-->
-    <h2 id="content">Content</h2>
+<div class="wd-table-of-contents">
+    <h2 id="content">Content<!--deDE:Inhalt--></h2>
+    <!--wd-table-of-contents-->
 </div>
 
 <!--|deDE:Installation-->
 Installation
 ------------
 
-<!--|deDE:Klassische Dom-Integration-->
-### Classical dom injection
-
-You can simply download the compiled version as zip file here and inject it
-after needed dependencies:
+You can install via package manager, simply download the compiled version as
+zip file here and inject or request via cdn in HTML:
 <!--deDE:
-    Du kannst einfach das Plugin als Zip-Archiv herunterladen und per
-    Script-Tag in deine Webseite integrieren:
+    Sie können das Paket über den Paketmanager installieren oder einfach die
+    kompilierte Version als ZIP-Datei hier herunterladen und in HTML einbinden
+    oder über ein CDN abrufen:
+-->
+<!--frFR:
+    Vous pouvez installer le paquet via le gestionnaire de paquets ou
+    simplement télécharger ici la version compilée sous forme de fichier ZIP,
+    puis l'intégrer dans une page HTML ou la récupérer via un CDN:
 -->
 
-```HTML
-<!--Inject downloaded file:
-<script src="index.js"></script>
--->
-<!--Or integrate via cdn:-->
-<script
-    src="https://torben.website/internationalization/data/distributionBundle/index.js"
-></script>
-```
-
-The compiled bundle supports AMD, commonjs, commonjs2 and variable injection
-into given context (UMD) as export format: You can use a module bundler if you
-want.
-<!--deDE:
-    Das kompilierte Bundle unterstützt AMD, commonjs, commonjs2 und
-    Variable-Injection in den gegebenen Context (UMD) als Export-Format:
-    Dadurch können verschiedene Module-Bundler genutzt werden.
--->
-
-<!--|deDE:Paket-Management und Modul-Komposition-->
-### Package managed and module bundled
-
-If you are using npm as package manager you can simply add this tool to your
-**package.json** as dependency:
-<!--deDE:
-    Nutzt du npm als Paket-Manager, dann solltest du einfach deine
-    <strong>package.json</strong> erweitern:
--->
-
-```JSON
-...
-"dependencies": {
-    ...
-    "internationalization": "latest",
-    ...
-},
-...
-```
-
-After updating your packages you can simply depend on this script and let
-a module bundler do the hard stuff or access it via an exported variable name
-in given context.
-<!--deDE:
-    Nach einem Update deiner Pakete kannst du dieses Plugin einfach in deine
-    JavaScript-Module importieren oder die exportierte Variable im gegebenen
-    Context referenzieren.
--->
-
-```JavaScript
-...
-import Language from 'internationalization'
-
-TODO
-...
+```bash
+npm install web-component-wrapper
 ```
 
 <!--|deDE:Verwendung-->

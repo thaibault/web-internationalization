@@ -11725,19 +11725,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-component-wrapper@npm:^0.0.612":
-  version: 0.0.612
-  resolution: "web-component-wrapper@npm:0.0.612"
+"web-component-wrapper@npm:^0.0.613":
+  version: 0.0.613
+  resolution: "web-component-wrapper@npm:0.0.613"
   peerDependencies:
-    "@babel/runtime": "*"
     "@types/react": "*"
     "@types/react-dom": "*"
     clientnode: "*"
     react: "*"
     react-dom: "*"
   peerDependenciesMeta:
-    "@babel/runtime":
-      optional: true
     "@types/react":
       optional: true
     "@types/react-dom":
@@ -11746,16 +11743,16 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/4216d35ec47b382bed1db421491194a87d44d4064ea8726fae40bc09514aded6400aeb9b052eeab0ce650b93f4d9f69e768380dcaa2e97df01eac7dfcfec7317
+  checksum: 10c0/c9c3096f065a0a5dcdee08daf5e159720d7e594dd5c362ee6a5e46ed1120bab3df3a249df2f89f48a0f06bcdf3bd25e04f6b37c2cda37bc83a8405bb24a4aa89
   languageName: node
   linkType: hard
 
-"web-documentation@npm:^1.0.53":
-  version: 1.0.53
-  resolution: "web-documentation@npm:1.0.53"
+"web-documentation@npm:^1.0.54":
+  version: 1.0.54
+  resolution: "web-documentation@npm:1.0.54"
   bin:
     web-documentation: build/deploy.js
-  checksum: 10c0/4451bc2f4e998cfc0dd242fdc89f3cdc813093f7a95a1229ce251238915974ab94d212d1cc71eec9770936a63a8f9bd5bf810d2f39b154b253ed4110c1ffee64
+  checksum: 10c0/d305aec7dafbbc4d126f7d9156b8ed1d7e40d3b14119e3ba9fc21c81b76ba733e55c1b2a7174c1e39678b041fb4cdceed3f17fcfbd4825e1013f7b4acb186582
   languageName: node
   linkType: hard
 
@@ -11787,8 +11784,8 @@ __metadata:
     jsdoc: "npm:^4.0.5"
     prop-types: "npm:^15.8.1"
     typescript-eslint: "npm:^8.70.0"
-    web-component-wrapper: "npm:^0.0.612"
-    web-documentation: "npm:^1.0.53"
+    web-component-wrapper: "npm:^0.0.613"
+    web-documentation: "npm:^1.0.54"
     weboptimizer: "npm:^4.0.83"
     webpack-dev-server: "npm:^6.0.0"
   peerDependencies:

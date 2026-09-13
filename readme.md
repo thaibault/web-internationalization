@@ -217,7 +217,15 @@ interactively. Try it by yourself:
 <a href="#lang-frFR">fr</a>
 ```
 
-<!--TODO rerun 
+<!--showExample:hidden-->
+
+```JavaScript
+window.onload = function() {
+    // Detect example langage buttons as well.
+    document.querySelector('web-internationalization')
+        .refreshLanguageButtonDomNodesBinding()
+}
+```
 
 Here you can see a complete initialization example with all available options
 to initialize the plugin with different configuration.

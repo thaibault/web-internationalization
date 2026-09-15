@@ -28,7 +28,7 @@ Project status
 [![deploy web documentation](https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/deploy-web-documentation.yaml?label=deploy%20web%20documentation&style=for-the-badge)](https://github.com/thaibault/web-internationalization/actions/workflows/deploy-web-documentation.yaml)
 [![web documentation](https://img.shields.io/website-up-down-green-red/https/torben.website/web-internationalization.svg?label=web-documentation&style=for-the-badge)](https://torben.website/web-internationalization)
 
-<!--|deDE:Einsatz-->
+<!--|deDE:Einsatzmöglichkeiten-->
 <!--|frFR:Utilisier-->
 Use case
 --------
@@ -54,7 +54,7 @@ Installation
 ------------
 
 You can install via package manager, simply download the compiled version as
-zip file here and inject or request via cdn in HTML:
+zip file here and inject or request via CDN in HTML:
 <!--deDE:
     Sie können das Paket über den Paketmanager installieren oder einfach die
     kompilierte Version als ZIP-Datei hier herunterladen und in HTML einbinden
@@ -232,16 +232,12 @@ document.querySelector('web-internationalization')
     .refreshLanguageButtonDomNodesBinding()
 ```
 
-Here you can see a complete initialization example with all available options
-to initialize the plugin with different configuration.
+Here you can see a complete initialization example.
 <!--deDE:
-    Hier können Sie ein Komplettbeispiel der Initialisierung sehen und alle
-    verfügbaren Optionen betrachten, um das Plugin in verschiedenen
-    Konfigurationen zu verwenden.
+    Hier können Sie ein Komplettbeispiel der Initialisierung sehen.
 -->
 <!--frFR:
-    Ici vous pouvez voir toutes les options disponibles pour le plug-in
-    différentes configurations pour initialiser.
+    Ici vous pouvez voir un exemple complet d'initialisation.
 -->
 
 ```JavaScript

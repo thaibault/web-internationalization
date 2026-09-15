@@ -49,7 +49,6 @@ internationalization.
     <!--wd-table-of-contents-->
 </div>
 
-<!--|deDE:Installation-->
 Installation
 ------------
 

@@ -26,30 +26,32 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>if(typeof window==='undefined'||window===null)var window=(typeof globalThis==='undefined'||globalThis===null)?{}:globalThis;/******/ // The require scope
-/******/ const __webpack_require__ = {};
-/******/ 
+            <pre class="prettyprint source linenums"><code>if(typeof window==='undefined'||window===null)var window=(typeof globalThis==='undefined'||globalThis===null)?{}:globalThis;/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	// The require scope
+/******/ 	const __webpack_require__ = {};
+/******/ 	
 /************************************************************************/
-/******/ /* webpack/runtime/define property getters */
-/******/ // define getter/value functions for harmony exports
-/******/ __webpack_require__.d = (exports, definition) => {
-/******/ 	for(var key in definition) {
-/******/ 		if(__webpack_require__.o(definition, key) &amp;&amp; !__webpack_require__.o(exports, key)) {
-/******/ 			Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = (exports, definition) => {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) &amp;&amp; !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 			}
 /******/ 		}
-/******/ 	}
-/******/ };
-/******/ 
-/******/ /* webpack/runtime/hasOwnProperty shorthand */
-/******/ __webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop));
-/******/ 
-/******/ /* webpack/runtime/make namespace object */
-/******/ // define __esModule on exports
-/******/ __webpack_require__.r = (exports) => {
-/******/ 	Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 	Object.defineProperty(exports, '__esModule', { value: true });
-/******/ };
-/******/ 
+/******/ 	};
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop));
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = (exports) => {
+/******/ 		Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/ 	
 /************************************************************************/
 let __webpack_exports__ = {};
 // ESM COMPAT FLAG
@@ -325,7 +327,8 @@ for(const childNode of Array.from(replacement.domNodeToReplaceWith.childNodes)){
 },_defineProperty(_WebInternationalization,"_name","WebInternationalization"),_defineProperty(_WebInternationalization,"_defaultOptions",{currentLanguageIndicatorClassName:"current",currentLanguagePattern:"^[a-z]{2}[A-Z]{2}$",default:"enUS",useEffect:true,initial:null,languageHashPrefix:"lang-",languageMapping:{deDE:["de","de_de","de-de","german","deutsch"],enUS:["en","en_us","en-us"],enEN:["en_en","en-en","english"],frFR:["fr","fr_fr","fr-fr","french"]},lockDescription:"{1}Switch",preReplacementLanguagePattern:"^\\|({1})$",alternativeDomNodeNames:["lang-alternative"],replaceDomNodeNames:["#text","lang-replace"],replacementDomNodeNames:["#comment","lang-replacement"],replacementLanguagePattern:"^([a-z]{2}[A-Z]{2}):((.|\\s)*)$",selection:[],selectors:{knownTranslation:".web-internationalization-generated-content",hideClassName:"wi-hide"},sessionDescription:"{1}",templateDelimiter:{pre:"{{",post:"}}"}}),_WebInternationalization),_descriptor=_applyDecoratedDescriptor(_class.prototype,"options",[_dec],{configurable:true,enumerable:true,writable:true,initializer:function(){return{}}}),_descriptor2=_applyDecoratedDescriptor(_class.prototype,"onEnsure",[_dec2],{configurable:true,enumerable:true,writable:true,initializer:function(){return external_clientnode_namespaceObject.NOOP}}),_descriptor3=_applyDecoratedDescriptor(_class.prototype,"onSwitch",[_dec3],{configurable:true,enumerable:true,writable:true,initializer:function(){return external_clientnode_namespaceObject.NOOP}}),_descriptor4=_applyDecoratedDescriptor(_class.prototype,"onEnsured",[_dec4],{configurable:true,enumerable:true,writable:true,initializer:function(){return external_clientnode_namespaceObject.NOOP}}),_descriptor5=_applyDecoratedDescriptor(_class.prototype,"onSwitched",[_dec5],{configurable:true,enumerable:true,writable:true,initializer:function(){return external_clientnode_namespaceObject.NOOP}}),_class);// endregion
 const api={component:WebInternationalization,register:(tagName=(0,external_clientnode_namespaceObject.camelCaseToDelimited)(WebInternationalization._name))=>{customElements.define(tagName,WebInternationalization)}};/* harmony default export */ const src = (WebInternationalization);if(external_clientnode_namespaceObject.globalContext.AUTO_DEFINE_WEB_INTERNATIONALIZATION)api.register();
 window.index = __webpack_exports__;
-</code></pre>
+/******/ })()
+;</code></pre>
         </article>
     </section>
 
@@ -335,13 +338,13 @@ window.index = __webpack_exports__;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-web-internationalization.html">web-internationalization</a></li></ul><h3>Classes</h3><ul><li><a href="module-web-internationalization-_WebInternationalization.html">_WebInternationalization</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-web-internationalization.html">web-internationalization</a></li></ul><h3>Classes</h3><ul><li><a href="-_anonymous_-WebInternationalization._class-_WebInternationalization.html">_WebInternationalization</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Sep 15 2026 16:01:54 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Sep 15 2026 18:10:40 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>

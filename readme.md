@@ -45,7 +45,7 @@ internationalization.
 -->
 
 <div class="wd-table-of-contents">
-    <h2 id="content">Content<!--deDE:Inhalt--></h2>
+    <h2 id="content">Content<!--deDE:Inhalt--><!--frFR:Contenu--></h2>
     <!--wd-table-of-contents-->
 </div>
 

@@ -244,13 +244,10 @@ to initialize the plugin with different configuration.
     différentes configurations pour initialiser.
 -->
 
-```HTML
-<script
-    src="https://unpkg.com/web-internationalization@latest/dist/bundle/index.js"
-></script>
-<script>
-    window.onload = function() {
-        webInternationalization.index.api.register()
-    }
-</script>
+```JavaScript
+import {
+    api
+} from 'https://unpkg.com/web-internationalization@latest/dist/bundle/index.js'
+
+api.register()
 ```

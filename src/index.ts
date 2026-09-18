@@ -286,7 +286,7 @@ export class WebInternationalization<
             this.options.selection.length &&
             !this.options.selection.includes(language)
         ) {
-            log.debug(`"${language}" isn't one of the allowed languages.`)
+            void log.debug(`"${language}" isn't one of the allowed languages.`)
 
             return
         }
@@ -306,7 +306,7 @@ export class WebInternationalization<
             if (ensure)
                 actionDescription = 'Ensure'
 
-            log.debug(`${actionDescription} "${language}".`)
+            void log.debug(`${actionDescription} "${language}".`)
 
             this._switchCurrentLanguageIndicator(language)
 
@@ -324,7 +324,7 @@ export class WebInternationalization<
             return
         }
 
-        log.debug(`"${language}" is already current selected language.`)
+        void log.debug(`"${language}" is already current selected language.`)
 
         void this.lock.release(this.options.lockDescription)
     }
@@ -750,14 +750,14 @@ export class WebInternationalization<
                     this.options.sessionDescription
                 ) as string
 
-                log.debug(
+                void log.debug(
                     `Determine "${result}", because of local storage`,
                     'information.'
                 )
             } else if (globalContext.window?.navigator.language) {
                 result = globalContext.window.navigator.language
 
-                log.debug(
+                void log.debug(
                     `Determine "${result}", because of browser settings.`
                 )
             }
@@ -765,14 +765,14 @@ export class WebInternationalization<
         if (!result) {
             result = this.options.default
 
-            log.debug(`Determine "${result}", because of default option.`)
+            void log.debug(`Determine "${result}", because of default option.`)
         }
         result = this._normalizeLanguage(result)
         if (
             this.options.selection.length &&
             !this.options.selection.includes(result)
         ) {
-            log.debug(
+            void log.debug(
                 `"${result}" isn't one of the allowed languages. Set`,
                 `language to "${this.options.selection[0]}".`
             )
@@ -871,7 +871,7 @@ export class WebInternationalization<
                 const currentLanguage: string =
                     currentLanguageDomNode.textContent
                 if (currentLanguage && language === currentLanguage)
-                    log.warn(
+                    void log.warn(
                         `Text node "${replacement.textToReplaceWith}" is`,
                         `marked as "${currentLanguage}" and has same`,
                         'translation language as it already is.'

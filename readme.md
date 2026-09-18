@@ -10,7 +10,8 @@ This library written by Torben Sickert stands under a creative commons naming
 3.0 unported license. See https://creativecommons.org/licenses/by/3.0/deed.de
 endregion -->
 
-Project status
+<!--|deDE:Projektstatus-->
+Project Status
 --------------
 
 [![npm](https://img.shields.io/npm/v/web-internationalization?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d&style=for-the-badge)](https://www.npmjs.com/package/web-internationalization)
@@ -28,7 +29,7 @@ Project status
 [![deploy web documentation](https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/deploy-web-documentation.yaml?label=deploy%20web%20documentation&style=for-the-badge)](https://github.com/thaibault/web-internationalization/actions/workflows/deploy-web-documentation.yaml)
 [![web documentation](https://img.shields.io/website-up-down-green-red/https/torben.website/web-internationalization.svg?label=web-documentation&style=for-the-badge)](https://torben.website/web-internationalization)
 
-<!--|deDE:Einsatz-->
+<!--|deDE:Einsatzmöglichkeiten-->
 <!--|frFR:Utilisier-->
 Use case
 --------
@@ -45,16 +46,15 @@ internationalization.
 -->
 
 <div class="wd-table-of-contents">
-    <h2 id="content">Content<!--deDE:Inhalt--></h2>
+    <h2 id="content">Content<!--deDE:Inhalt--><!--frFR:Contenu--></h2>
     <!--wd-table-of-contents-->
 </div>
 
-<!--|deDE:Installation-->
 Installation
 ------------
 
 You can install via package manager, simply download the compiled version as
-zip file here and inject or request via cdn in HTML:
+zip file here and inject or request via CDN in HTML:
 <!--deDE:
     Sie können das Paket über den Paketmanager installieren oder einfach die
     kompilierte Version als ZIP-Datei hier herunterladen und in HTML einbinden
@@ -70,10 +70,11 @@ zip file here and inject or request via cdn in HTML:
 npm install web-component-wrapper
 ```
 
-<!--|deDE:Verwendung-->
-<!--|frFR:Demande-->
-Usage
------
+
+<!--|deDE:Beispiel-->
+<!--frFR:Exemple-->
+Example
+-------
 
 To add two versions of a text string you can simply add your translation
 directly in markup. See how easy it is:
@@ -217,35 +218,33 @@ interactively. Try it by yourself:
 <a href="#lang-frFR">fr</a>
 ```
 
-<!--showExample:hidden-->
-
-```JavaScript
-window.onload = function() {
-    // Detect example langage buttons as well.
-    document.querySelector('web-internationalization')
-        .refreshLanguageButtonDomNodesBinding()
-}
-```
-
-Here you can see a complete initialization example with all available options
-to initialize the plugin with different configuration.
+Detect example language buttons as well...
 <!--deDE:
-    Hier können Sie ein Komplettbeispiel der Initialisierung sehen und alle
-    verfügbaren Optionen betrachten, um das Plugin in verschiedenen
-    Konfigurationen zu verwenden.
+    Erkennen Sie die Sprachwechsel-Buttons...
 -->
 <!--frFR:
-    Ici vous pouvez voir toutes les options disponibles pour le plug-in
-    différentes configurations pour initialiser.
+    Reconnaître également les boutons de changement de langue...
 -->
 
-```HTML
-<script
-    src="https://unpkg.com/web-internationalization@latest/dist/bundle/index.js"
-></script>
-<script>
-    window.onload = function() {
-        webInternationalization.index.api.register()
-    }
-</script>
+<!--showExample:JavaScript-->
+
+```JavaScript
+document.querySelector('web-internationalization')
+    .refreshLanguageButtonDomNodesBinding()
+```
+
+Here you can see a complete initialization example.
+<!--deDE:
+    Hier können Sie ein Komplettbeispiel der Initialisierung sehen.
+-->
+<!--frFR:
+    Ici vous pouvez voir un exemple complet d'initialisation.
+-->
+
+```JavaScript
+import {
+    api
+} from 'https://unpkg.com/web-internationalization@latest/dist/bundle/index.js'
+
+api.register()
 ```

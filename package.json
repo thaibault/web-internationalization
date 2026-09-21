@@ -7,16 +7,16 @@
     "language",
     "internationalization"
   ],
-  "homepage": "https://torben.website/web-internationalization",
+  "homepage": "https://tsickert.com/web-internationalization",
   "bugs": {
-    "email": "info@torben.website",
+    "email": "info@tsickert.com",
     "url": "https://github.com/thaibault/web-internationalization/issues"
   },
   "license": "CC-BY-3.0",
   "author": {
-    "email": "info@torben.website",
+    "email": "info@tsickert.com",
     "name": "Torben Sickert",
-    "url": "https://torben.website"
+    "url": "https://tsickert.com"
   },
   "repository": {
     "type": "git",

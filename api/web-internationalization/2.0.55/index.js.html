@@ -78,9 +78,9 @@ const external_webComponentWrapperWeb_namespaceObject = window["webComponentWrap
 // -*- coding: utf-8 -*-
 /** @module web-internationalization *//* !
     region header
-    [Project page](https://torben.website/web-internationalization)
+    [Project page](https://tsickert.com/web-internationalization)
 
-    Copyright Torben Sickert (info["~at~"]torben.website) 16.12.2012
+    Copyright Torben Sickert (info["~at~"]tsickert.com) 16.12.2012
 
     License
     -------
@@ -182,7 +182,7 @@ refreshLanguageButtonDomNodesBinding(){this.switchLanguageButtonDomNodes=this.ho
      * ensure every text node has the right content.
      * @param ensure - Indicates if a switch effect should be avoided.
      * @returns Returns the current instance wrapped in a promise.
-     */async switch(language,ensure=false){if(language!==true&amp;&amp;this.options.selection.length&amp;&amp;!this.options.selection.includes(language)){log.debug(`"${language}" isn't one of the allowed languages.`);return}await this.lock.acquire(this.options.lockDescription);if(language===true){ensure=true;language=this.currentLanguage}else language=this._normalizeLanguage(language);if(ensure||this.currentLanguage!==language){let actionDescription="Switch to";if(ensure)actionDescription="Ensure";log.debug(`${actionDescription} "${language}".`);this._switchCurrentLanguageIndicator(language);if(ensure)await this.onEnsure(language);else await this.onSwitch(this.currentLanguage,language);this._domNodesToFade=[];this._replacements=[];this._collectDomNodesToReplace(language,ensure);await this._handleSwitchEffect(language,ensure);return}log.debug(`"${language}" is already current selected language.`);void this.lock.release(this.options.lockDescription)}/**
+     */async switch(language,ensure=false){if(language!==true&amp;&amp;this.options.selection.length&amp;&amp;!this.options.selection.includes(language)){void log.debug(`"${language}" isn't one of the allowed languages.`);return}await this.lock.acquire(this.options.lockDescription);if(language===true){ensure=true;language=this.currentLanguage}else language=this._normalizeLanguage(language);if(ensure||this.currentLanguage!==language){let actionDescription="Switch to";if(ensure)actionDescription="Ensure";void log.debug(`${actionDescription} "${language}".`);this._switchCurrentLanguageIndicator(language);if(ensure)await this.onEnsure(language);else await this.onSwitch(this.currentLanguage,language);this._domNodesToFade=[];this._replacements=[];this._collectDomNodesToReplace(language,ensure);await this._handleSwitchEffect(language,ensure);return}void log.debug(`"${language}" is already current selected language.`);void this.lock.release(this.options.lockDescription)}/**
      * Ensures current selected language.
      * @returns Promise resolving to nothing when switching as finished.
      */refresh(){this._movePreReplacementNodes();return this.switch(true)}/// endregion
@@ -257,7 +257,7 @@ if(content&amp;&amp;!this.options.replaceDomNodeNames.includes(node.nodeName.toL
      * Determines a useful initial language depending on session and browser
      * settings.
      * @returns Returns the determined language.
-     */_determineUsefulLanguage(){let result;if(this.options.initial)result=this.options.initial;else if(Object.prototype.hasOwnProperty.call(external_clientnode_namespaceObject.globalContext,"window"))if(external_clientnode_namespaceObject.globalContext.window?.localStorage.getItem(this.options.sessionDescription)){result=external_clientnode_namespaceObject.globalContext.window.localStorage.getItem(this.options.sessionDescription);log.debug(`Determine "${result}", because of local storage`,"information.")}else if(external_clientnode_namespaceObject.globalContext.window?.navigator.language){result=external_clientnode_namespaceObject.globalContext.window.navigator.language;log.debug(`Determine "${result}", because of browser settings.`)}if(!result){result=this.options.default;log.debug(`Determine "${result}", because of default option.`)}result=this._normalizeLanguage(result);if(this.options.selection.length&amp;&amp;!this.options.selection.includes(result)){log.debug(`"${result}" isn't one of the allowed languages. Set`,`language to "${this.options.selection[0]}".`);result=this.options.selection[0]}if(external_clientnode_namespaceObject.globalContext.window?.localStorage)external_clientnode_namespaceObject.globalContext.window.localStorage.setItem(this.options.sessionDescription,result);return result}/**
+     */_determineUsefulLanguage(){let result;if(this.options.initial)result=this.options.initial;else if(Object.prototype.hasOwnProperty.call(external_clientnode_namespaceObject.globalContext,"window"))if(external_clientnode_namespaceObject.globalContext.window?.localStorage.getItem(this.options.sessionDescription)){result=external_clientnode_namespaceObject.globalContext.window.localStorage.getItem(this.options.sessionDescription);void log.debug(`Determine "${result}", because of local storage`,"information.")}else if(external_clientnode_namespaceObject.globalContext.window?.navigator.language){result=external_clientnode_namespaceObject.globalContext.window.navigator.language;void log.debug(`Determine "${result}", because of browser settings.`)}if(!result){result=this.options.default;void log.debug(`Determine "${result}", because of default option.`)}result=this._normalizeLanguage(result);if(this.options.selection.length&amp;&amp;!this.options.selection.includes(result)){void log.debug(`"${result}" isn't one of the allowed languages. Set`,`language to "${this.options.selection[0]}".`);result=this.options.selection[0]}if(external_clientnode_namespaceObject.globalContext.window?.localStorage)external_clientnode_namespaceObject.globalContext.window.localStorage.setItem(this.options.sessionDescription,result);return result}/**
      * Registers a text node to change its content with a given replacement.
      * @param domNodeToTranslate - Text node with content to
      * translate.
@@ -282,7 +282,7 @@ if(content&amp;&amp;!this.options.replaceDomNodeNames.includes(node.nodeName.toL
      * Performs the low-level text replacements for switching to a given
      * language.
      * @param language - The new language to switch to.
-     */_switchLanguage(language){for(const replacement of this._replacements){const currentText=this._getCurrentNodeText(replacement.domNodeToTranslate);const trimmedText=currentText.trim();if(!this.options.templateDelimiter||!trimmedText.endsWith(this.options.templateDelimiter.post)&amp;&amp;this.options.templateDelimiter.post){const currentLanguageDomNode=this._resolveCurrentLanguageDomNode(replacement);const currentLanguage=currentLanguageDomNode.textContent;if(currentLanguage&amp;&amp;language===currentLanguage)log.warn(`Text node "${replacement.textToReplaceWith}" is`,`marked as "${currentLanguage}" and has same`,"translation language as it already is.");// Move markup to be replaced next its parent node.
+     */_switchLanguage(language){for(const replacement of this._replacements){const currentText=this._getCurrentNodeText(replacement.domNodeToTranslate);const trimmedText=currentText.trim();if(!this.options.templateDelimiter||!trimmedText.endsWith(this.options.templateDelimiter.post)&amp;&amp;this.options.templateDelimiter.post){const currentLanguageDomNode=this._resolveCurrentLanguageDomNode(replacement);const currentLanguage=currentLanguageDomNode.textContent;if(currentLanguage&amp;&amp;language===currentLanguage)void log.warn(`Text node "${replacement.textToReplaceWith}" is`,`marked as "${currentLanguage}" and has same`,"translation language as it already is.");// Move markup to be replaced next its parent node.
 const nodeName=replacement.domNodeToReplaceWith.nodeName.toLowerCase();if(this.options.alternativeDomNodeNames.includes(nodeName)){;replacement.domNodeToReplaceWith.setAttribute("active","");replacement.domNodeToTranslate.removeAttribute("active");continue}const newNode=this._createBackupNode(nodeName,currentLanguage,currentText,replacement.domNodeToTranslate);replacement.domNodeToTranslate.after(newNode);replacement.domNodeToTranslate.after(external_clientnode_namespaceObject.globalContext.document.createComment(language));this._applyTextReplacement(replacement);currentLanguageDomNode.remove();replacement.domNodeToReplaceWith.remove()}}this._updateKnownTextNodes();if(external_clientnode_namespaceObject.globalContext.localStorage)external_clientnode_namespaceObject.globalContext.localStorage.setItem(this.options.sessionDescription,language);this.currentLanguage=language}/**
      * Returns the current text content of a dom node, preferring innerHTML
      * over textContent when available.
@@ -344,7 +344,7 @@ window.index = __webpack_exports__;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Sep 15 2026 22:36:31 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Mon Sep 21 2026 17:21:48 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>

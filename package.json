@@ -63,33 +63,33 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^8.0.5",
+    "@babel/eslint-parser": "^8.0.7",
     "@babel/plugin-transform-proto-to-assign": "^8.0.1",
-    "@babel/runtime": "^8.0.5",
+    "@babel/runtime": "^8.0.7",
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/ejs": "^3.1.5",
     "@types/html-minifier": "^4.0.6",
     "@types/imagemin": "^9.0.1",
     "@types/jsdom": "^30.0.0",
-    "@types/node": "^26.5.1",
+    "@types/node": "^26.6.5",
     "@types/webpack-env": "^1.18.8",
-    "@typescript-eslint/eslint-plugin": "^8.70.0",
-    "@typescript-eslint/parser": "^8.70.0",
+    "@typescript-eslint/eslint-plugin": "^8.71.2",
+    "@typescript-eslint/parser": "^8.71.2",
     "@webcomponents/webcomponentsjs": "^2.8.0",
-    "clientnode": "^4.0.1521",
-    "eslint": "^10.10.0",
+    "clientnode": "^4.0.1523",
+    "eslint": "^10.13.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jsdoc": "^64.4.0",
+    "eslint-plugin-jsdoc": "^65.3.8",
     "favicons-webpack-plugin": "^6.0.1",
     "image-minimizer-webpack-plugin": "^5.0.0",
-    "jest": "^30.5.1",
+    "jest": "^30.5.2",
     "jsdoc": "^4.0.5",
     "prop-types": "^15.8.1",
-    "typescript-eslint": "^8.70.0",
-    "web-component-wrapper": "^0.0.614",
-    "web-documentation": "^1.0.57",
-    "weboptimizer": "^4.0.84",
+    "typescript-eslint": "^8.71.2",
+    "web-component-wrapper": "^0.0.617",
+    "web-documentation": "^1.0.61",
+    "weboptimizer": "^4.0.89",
     "webpack-dev-server": "^6.0.0"
   },
   "peerDependencies": {
@@ -220,5 +220,5 @@
       }
     }
   },
-  "packageManager": "yarn@4.18.0"
+  "packageManager": "yarn@4.18.1+sha512.b2e1e7524f654f2749d32b4ebcb4622473cb5bcbc485df2007e12a154e50162a4d795526768bc5f5b8f81717bfd79deb2472813d86fb5ae2eb551fa9c872b08f"
 }

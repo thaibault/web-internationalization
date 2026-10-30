@@ -6235,9 +6235,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:4.0.1523":
-  version: 4.0.1523
-  resolution: "clientnode@npm:4.0.1523"
+"clientnode@npm:4.0.1526":
+  version: 4.0.1526
+  resolution: "clientnode@npm:4.0.1526"
   peerDependencies:
     "@types/prop-types": "*"
     node-fetch: "*"
@@ -6249,7 +6249,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/43fc4332bb1a947d1a6db23f8f370d2650e550cff96d779ab0fd509355aefc8a3d4efe901161ae07e8221f4e9d3e8910134d20698ad40ff90a2c3b73fe363caf
+  checksum: 10c0/b10896f94204c4526b585db0d66affa37788ca97ac3f1445c1bec23605dc2b5f891a5732a7043f218cd5cd76aec5c7cd37b34466cbaf0ed7d8cc9a9abd5b0ee2
   languageName: node
   linkType: hard
 
@@ -12065,7 +12065,7 @@ __metadata:
     typescript-eslint: "npm:^8.72.0"
     web-component-wrapper: "npm:^0.0.619"
     web-documentation: "npm:^1.0.64"
-    weboptimizer: "npm:^4.0.91"
+    weboptimizer: "npm:^4.0.96"
     webpack-dev-server: "npm:^6.1.0"
   peerDependencies:
     clientnode: "*"
@@ -12081,9 +12081,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^4.0.91":
-  version: 4.0.91
-  resolution: "weboptimizer@npm:4.0.91"
+"weboptimizer@npm:^4.0.96":
+  version: 4.0.96
+  resolution: "weboptimizer@npm:4.0.96"
   dependencies:
     "@babel/core": "npm:^8.0.9"
     "@babel/plugin-proposal-decorators": "npm:^8.0.2"
@@ -12095,7 +12095,7 @@ __metadata:
     babel-loader: "npm:^10.1.1"
     babel-plugin-polyfill-corejs3: "npm:^1.0.0"
     babel-plugin-transform-rewrite-imports: "npm:^1.5.4"
-    clientnode: "npm:4.0.1523"
+    clientnode: "npm:4.0.1526"
     core-js: "npm:^3.51.0"
     ejs: "npm:^7.0.2"
     exports-loader: "npm:^5.0.0"
@@ -12227,8 +12227,8 @@ __metadata:
     workbox-webpack-plugin:
       optional: true
   bin:
-    weboptimizer: index.js
-  checksum: 10c0/4d2bf4a185e1cb006c2fd1e2fe2aa7868f345e5590559396fdf8a89861ace006e7008731a9ee174f8a9e45909bd7d0be8fc362ccd8717a35969d39c2e7637da0
+    weboptimizer: dist/index.js
+  checksum: 10c0/5dc96f99a2c35130466ac29b5a6e9e895759e88221e897dd3ad03a4b26fdf23ee1bc2db0beb137530cef3d7fca99b69bc958474a88e229819759434ff1a0e158
   languageName: node
   linkType: hard
 

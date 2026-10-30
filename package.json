@@ -88,7 +88,7 @@
     "typescript-eslint": "^8.72.0",
     "web-component-wrapper": "^0.0.619",
     "web-documentation": "^1.0.64",
-    "weboptimizer": "^4.0.91",
+    "weboptimizer": "^4.0.96",
     "webpack-dev-server": "^6.1.0"
   },
   "peerDependencies": {

@@ -209,7 +209,8 @@ describe('WebInternationalization markup', (): void => {
         const domNode = document.createElement('web-internationalization') as
             WebInternationalization
         domNode.setAttribute(
-            'options', JSON.stringify({initial: 'enUS', ...options})
+            'options',
+            JSON.stringify({initial: 'enUS', useEffect: false, ...options})
         )
         domNode.innerHTML = content
         document.body.appendChild(domNode)
@@ -244,35 +245,6 @@ describe('WebInternationalization markup', (): void => {
         )
     })
 
-    test('PROFILE', async () => {
-        let start = performance.now()
-        const domNode = await create('<p>english<!--deDE:german--></p>')
-        console.log('create', performance.now() - start)
-        const proto = Object.getPrototypeOf(domNode)
-        for (const name of [
-            '_switchCurrentLanguageIndicator', '_collectDomNodesToReplace',
-            '_handleSwitchEffect', '_switchLanguage', 'onSwitch', 'onSwitched'
-        ]) {
-            const original = domNode[name as 'switch'].bind(domNode)
-            ;(domNode as any)[name] = async (...parameters: Array<any>) => {
-                const t = performance.now()
-                const result = await (original as any)(...parameters)
-                console.log(name, performance.now() - t)
-                return result
-            }
-        }
-        const lockAcquire = domNode.lock.acquire.bind(domNode.lock)
-        domNode.lock.acquire = async (...p: Array<any>) => {
-            const t = performance.now()
-            const r = await (lockAcquire as any)(...p)
-            console.log('lock.acquire', performance.now() - t)
-            return r
-        }
-        start = performance.now()
-        await domNode.switch('deDE')
-        console.log('switch total', performance.now() - start)
-        void proto
-    })
     test('options attribute update', async (): Promise<void> => {
         const domNode = await create('<p>english<!--deDE:german--></p>')
 

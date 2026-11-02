@@ -1,6 +1,6 @@
 {
   "name": "web-internationalization",
-  "version": "2.0.58",
+  "version": "2.0.58-1",
   "description": "Expand your audience",
   "keywords": [
     "lang",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thaibault/web-internationalization"
+    "url": "git+https://github.com/thaibault/web-internationalization.git"
   },
   "type": "module",
   "exports": {

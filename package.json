@@ -55,10 +55,10 @@
     "prepare": "yarn build",
     "serve": "weboptimizer serve",
     "start": "yarn serve",
-    "test": "yarn clear && weboptimizer test",
-    "test:browser": "yarn clear && weboptimizer test:browser",
-    "test:coverage": "yarn clear && weboptimizer test:coverage",
-    "test:coverage:report": "yarn clear && weboptimizer test:coverage:report",
+    "test": "weboptimizer test",
+    "test:browser": "weboptimizer test:browser",
+    "test:coverage": "weboptimizer test:coverage",
+    "test:coverage:report": "weboptimizer test:coverage:report",
     "update:documentation": "web-documentation",
     "watch": "weboptimizer build --watch"
   },
@@ -88,7 +88,7 @@
     "typescript-eslint": "^8.72.1",
     "web-component-wrapper": "^0.0.620",
     "web-documentation": "^1.0.68",
-    "weboptimizer": "^4.0.99",
+    "weboptimizer": "^4.0.103",
     "webpack-dev-server": "^6.1.0"
   },
   "peerDependencies": {

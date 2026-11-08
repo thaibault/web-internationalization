@@ -22,6 +22,9 @@ jobs:
   main:
     runs-on: ubuntu-latest
     container: node:lts
+    # Allows pushing the built documentation to the "gh-pages" branch.
+    permissions:
+      contents: write
 
     steps:
       - uses: thaibault/documentation-website@main

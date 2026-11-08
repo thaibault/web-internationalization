@@ -175,7 +175,7 @@ typings/*.d.ts
 __pycache__
 *.py[cod]
 
-# Temporary downloading file artefact
+# Temporary downloading file artifact
 *.crdownload
 
 # Project specific

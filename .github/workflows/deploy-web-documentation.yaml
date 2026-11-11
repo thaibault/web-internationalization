@@ -27,6 +27,6 @@ jobs:
       contents: write
 
     steps:
-      - uses: thaibault/documentation-website@main
+      - uses: thaibault/web-documentation@main
         with:
           debug: ${{ inputs.debug || '' }}

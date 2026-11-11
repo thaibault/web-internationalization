@@ -70,6 +70,13 @@ zip file here and inject or request via CDN in HTML:
 npm install web-component-wrapper
 ```
 
+```JavaScript
+import {
+    api
+} from 'https://unpkg.com/web-internationalization@latest/dist/bundle/index.js'
+
+api.register()
+```
 
 <!--|deDE:Beispiel-->
 <!--frFR:Exemple-->
@@ -240,11 +247,3 @@ Here you can see a complete initialization example.
 <!--frFR:
     Ici vous pouvez voir un exemple complet d'initialisation.
 -->
-
-```JavaScript
-import {
-    api
-} from 'https://unpkg.com/web-internationalization@latest/dist/bundle/index.js'
-
-api.register()
-```

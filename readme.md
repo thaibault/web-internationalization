@@ -129,13 +129,27 @@ tag name.
 ### With a package manager
 
 ```bash
-npm install \
-    web-internationalization clientnode core-js prop-types \
-    web-component-wrapper
+npm install web-internationalization core-js
 ```
+
+The default entry point additionally needs its optional peer dependencies
+"clientnode" and "web-component-wrapper". The bundle variant
+"web-internationalization/bundle" already contains them:
+<!--deDE:
+    Der Standardeinstiegspunkt benötigt zusätzlich seine optionalen
+    Peer-Abhängigkeiten "clientnode" und "web-component-wrapper". Die
+    Bundle-Variante "web-internationalization/bundle" enthält sie bereits:
+-->
+<!--frFR:
+    Le point d'entrée par défaut nécessite en plus ses dépendances « peer »
+    optionnelles "clientnode" et "web-component-wrapper". La variante bundle
+    "web-internationalization/bundle" les contient déjà:
+-->
 
 ```JavaScript
 import {api} from 'web-internationalization'
+// Or without further dependencies:
+// import {api} from 'web-internationalization/bundle'
 
 api.register()
 ```
@@ -145,20 +159,23 @@ api.register()
 ### Older browsers
 
 The default variants target browsers supporting ES6 classes. For older
-browsers use "dist/compatible/index.js" or the bundle
-"dist/bundle/compatible/index.js" and load the web components polyfill
-before.
+browsers use "web-internationalization/compatible" or the bundle
+"web-internationalization/bundle/compatible" ("dist/bundle/compatible/index.js"
+on a CDN) and load the web components polyfill before.
 <!--deDE:
     Die Standardvarianten zielen auf Browser, die ES6-Klassen unterstützen.
-    Für ältere Browser verwenden Sie "dist/compatible/index.js" oder das
-    Bundle "dist/bundle/compatible/index.js" und laden vorher das Web
+    Für ältere Browser verwenden Sie "web-internationalization/compatible"
+    oder das Bundle "web-internationalization/bundle/compatible"
+    ("dist/bundle/compatible/index.js" über ein CDN) und laden vorher das Web
     Components Polyfill.
 -->
 <!--frFR:
     Les variantes par défaut ciblent les navigateurs qui prennent en charge
     les classes ES6. Pour les navigateurs plus anciens, utilisez
-    "dist/compatible/index.js" ou le bundle "dist/bundle/compatible/index.js"
-    et chargez auparavant le polyfill des web components.
+    "web-internationalization/compatible" ou le bundle
+    "web-internationalization/bundle/compatible"
+    ("dist/bundle/compatible/index.js" via un CDN) et chargez auparavant le
+    polyfill des web components.
 -->
 
 <!--|deDE:Übersetzungen schreiben-->

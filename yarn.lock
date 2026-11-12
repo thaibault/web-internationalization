@@ -12311,8 +12311,12 @@ __metadata:
   peerDependencies:
     clientnode: "*"
     core-js: "*"
-    prop-types: ^15.8.1
     web-component-wrapper: "*"
+  peerDependenciesMeta:
+    clientnode:
+      optional: true
+    web-component-wrapper:
+      optional: true
   languageName: unknown
   linkType: soft
 

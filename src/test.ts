@@ -402,6 +402,14 @@ describe('WebInternationalization markup', (): void => {
         // Not allowed languages are ignored.
         await domNode.switch('frFR')
         expect(domNode.currentLanguage).toStrictEqual('deDE')
+        await domNode.switch('fr')
+        expect(domNode.currentLanguage).toStrictEqual('deDE')
+
+        // Aliases of allowed languages are respected.
+        await domNode.switch('en')
+        expect(domNode.currentLanguage).toStrictEqual('enUS')
+        await domNode.switch('de')
+        expect(domNode.currentLanguage).toStrictEqual('deDE')
 
         // Re-binding replaces previous handlers.
         domNode.refreshLanguageButtonDomNodesBinding()

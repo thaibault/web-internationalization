@@ -281,14 +281,23 @@ export class WebInternationalization<
      * @returns Returns the current instance wrapped in a promise.
      */
     async switch(language: string | true, ensure = false): Promise<void> {
-        if (
-            language !== true &&
-            this.options.selection.length &&
-            !this.options.selection.includes(language)
-        ) {
-            void log.debug(`"${language}" isn't one of the allowed languages.`)
+        if (language !== true) {
+            // NOTE: Respect aliases like "de" for "deDE" as well.
+            const normalizedLanguage = this._normalizeLanguage(language)
 
-            return
+            if (
+                this.options.selection.length &&
+                !this.options.selection.includes(language) &&
+                !this.options.selection.includes(normalizedLanguage)
+            ) {
+                void log.debug(
+                    `"${language}" isn't one of the allowed languages.`
+                )
+
+                return
+            }
+
+            language = normalizedLanguage
         }
 
         await this.lock.acquire(this.options.lockDescription)
@@ -297,9 +306,7 @@ export class WebInternationalization<
             ensure = true
 
             language = this.currentLanguage
-        } else
-            language = this._normalizeLanguage(language)
-
+        }
 
         if (ensure || this.currentLanguage !== language) {
             let actionDescription = 'Switch to'

@@ -12384,6 +12384,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.72.1"
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
     clientnode: "npm:^4.0.1529"
+    core-js: "npm:^3.51.0"
     eslint: "npm:^10.14.0"
     eslint-config-google: "npm:^0.14.0"
     eslint-plugin-jsdoc: "npm:^65.4.2"
@@ -12399,6 +12400,7 @@ __metadata:
     webpack-dev-server: "npm:^6.1.0"
   peerDependencies:
     clientnode: "*"
+    core-js: "*"
     prop-types: ^15.8.1
     web-component-wrapper: "*"
   languageName: unknown

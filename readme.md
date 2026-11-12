@@ -7,7 +7,8 @@ License
 -------
 
 This library written by Torben Sickert stands under a creative commons naming
-3.0 unported license. See https://creativecommons.org/licenses/by/3.0/deed.de
+4.0 international license.
+See https://creativecommons.org/licenses/by/4.0/deed.de
 endregion -->
 
 <!--|deDE:Projektstatus-->

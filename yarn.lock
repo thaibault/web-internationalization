@@ -12280,6 +12280,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web-internationalization@workspace:."
   dependencies:
+    "@babel/core": "npm:^8.1.0"
     "@babel/eslint-parser": "npm:^8.0.7"
     "@babel/plugin-transform-proto-to-assign": "npm:^8.0.1"
     "@eslint/js": "npm:^10.0.1"

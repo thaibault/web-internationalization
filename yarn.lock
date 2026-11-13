@@ -12307,7 +12307,7 @@ __metadata:
     typescript-eslint: "npm:^8.72.2"
     web-component-wrapper: "npm:^0.0.622"
     web-documentation: "npm:^1.0.74"
-    weboptimizer: "npm:^4.0.114"
+    weboptimizer: "npm:^4.0.115"
     webpack-dev-server: "npm:^6.1.0"
   peerDependencies:
     clientnode: "*"
@@ -12328,11 +12328,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^4.0.114":
-  version: 4.0.114
-  resolution: "weboptimizer@npm:4.0.114"
+"weboptimizer@npm:^4.0.115":
+  version: 4.0.115
+  resolution: "weboptimizer@npm:4.0.115"
   dependencies:
-    "@babel/core": "npm:^8.1.0"
     "@babel/plugin-proposal-decorators": "npm:^8.0.2"
     "@babel/plugin-transform-class-properties": "npm:^8.0.1"
     "@babel/plugin-transform-proto-to-assign": "npm:^8.0.1"
@@ -12359,12 +12358,15 @@ __metadata:
     webpack-cli: "npm:^7.3.1"
     webpack-sources: "npm:^3.7.0"
   peerDependencies:
+    "@babel/core": ^8.1.0
     "@babel/eslint-parser": "*"
     "@eslint/js": "*"
+    "@stylistic/eslint-plugin": "*"
     "@types/ejs": "*"
     "@types/imagemin": "*"
     "@types/node": "*"
     "@types/webpack-env": "*"
+    "@typescript-eslint/parser": "*"
     core-js: "*"
     css-loader: "*"
     cssnano: "*"
@@ -12372,6 +12374,7 @@ __metadata:
     eslint-config-google: "*"
     eslint-plugin-jsdoc: "*"
     favicons-webpack-plugin: "*"
+    globals: "*"
     identity-obj-proxy: "*"
     image-minimizer-webpack-plugin: "*"
     imagemin: "*"
@@ -12401,6 +12404,8 @@ __metadata:
       optional: true
     "@eslint/js":
       optional: true
+    "@stylistic/eslint-plugin":
+      optional: true
     "@types/ejs":
       optional: true
     "@types/imagemin":
@@ -12408,8 +12413,6 @@ __metadata:
     "@types/node":
       optional: true
     "@types/webpack-env":
-      optional: true
-    "@typescript-eslint/eslint-plugin":
       optional: true
     "@typescript-eslint/parser":
       optional: true
@@ -12424,6 +12427,8 @@ __metadata:
     eslint-plugin-jsdoc:
       optional: true
     favicons-webpack-plugin:
+      optional: true
+    globals:
       optional: true
     identity-obj-proxy:
       optional: true
@@ -12473,7 +12478,7 @@ __metadata:
       optional: true
   bin:
     weboptimizer: dist/index.js
-  checksum: 10c0/3804e733a5480b8bf238d65d5060500d3e42f43c78183ac86bfea83d855ccde72298e9bfa2dd28be18e84fa4ee1543305d460debba401e4565a7c8977ccf4267
+  checksum: 10c0/8fbacb88626899ac5bda5890730592e81904fab0ca9eeeb085b7dd3d83e892bc7a8a0c0920cf70da76f60bd5e8fdfc571d9c4f347b3970bfaeb0a3f43e1ee4ab
   languageName: node
   linkType: hard
 

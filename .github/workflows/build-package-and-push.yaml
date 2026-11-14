@@ -37,6 +37,8 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # Not needed anymore when using "Trusted Publishing".
           #npm-token: ${{ secrets.NPM_TOKEN }}
+          # Publishes an existing "PKGBUILD" to arch's user repository.
+          aur-ssh-private-key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
           type: ${{ inputs.type || 'patch' }}
 
       - name: Print determined version.

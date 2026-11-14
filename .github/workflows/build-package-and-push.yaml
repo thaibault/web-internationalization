@@ -34,7 +34,6 @@ jobs:
         id: build-package-and-push
         with:
           debug: ${{ inputs.debug || '' }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           # Not needed anymore when using "Trusted Publishing".
           #npm-token: ${{ secrets.NPM_TOKEN }}
           # Publishes an existing "PKGBUILD" to arch's user repository.

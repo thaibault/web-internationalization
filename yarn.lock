@@ -3859,15 +3859,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/imagemin@npm:^9.0.1":
-  version: 9.0.1
-  resolution: "@types/imagemin@npm:9.0.1"
-  dependencies:
-    "@types/node": "npm:*"
-  checksum: 10c0/0f5edd5e1b39c132424f2e2c29c8a713d9c813bb99f8dcf987b5b56ff85989412d4b77ac99b1b7794050e7bde4ff82d885eb87bbf135ac2a02e1096eeb3b18eb
-  languageName: node
-  linkType: hard
-
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.1, @types/istanbul-lib-coverage@npm:^2.0.6":
   version: 2.0.6
   resolution: "@types/istanbul-lib-coverage@npm:2.0.6"
@@ -8270,27 +8261,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"image-minimizer-webpack-plugin@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "image-minimizer-webpack-plugin@npm:5.0.0"
-  dependencies:
-    schema-utils: "npm:^4.2.0"
-    serialize-javascript: "npm:^7.0.3"
-  peerDependencies:
-    webpack: ^5.1.0
-  peerDependenciesMeta:
-    "@squoosh/lib":
-      optional: true
-    imagemin:
-      optional: true
-    sharp:
-      optional: true
-    svgo:
-      optional: true
-  checksum: 10c0/cbc661dc5f0dd72846ac154abd37fc4da5a8b9705c2701e9782173b2bdd5d5a70854fac1af7f89dd1fd7e5fc4ac1c306cd8ad5378b79ccb40f7071af8a75b8b0
-  languageName: node
-  linkType: hard
-
 "import-local@npm:^3.2.0":
   version: 3.2.0
   resolution: "import-local@npm:3.2.0"
@@ -11092,18 +11062,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "schema-utils@npm:4.2.0"
-  dependencies:
-    "@types/json-schema": "npm:^7.0.9"
-    ajv: "npm:^8.9.0"
-    ajv-formats: "npm:^2.1.1"
-    ajv-keywords: "npm:^5.1.0"
-  checksum: 10c0/8dab7e7800316387fd8569870b4b668cfcecf95ac551e369ea799bbcbfb63fb0365366d4b59f64822c9f7904d8c5afcfaf5a6124a4b08783e558cd25f299a6b4
-  languageName: node
-  linkType: hard
-
 "schema-utils@npm:^4.3.3":
   version: 4.3.3
   resolution: "schema-utils@npm:4.3.3"
@@ -11226,13 +11184,6 @@ __metadata:
     range-parser: "npm:^1.2.1"
     statuses: "npm:^2.0.2"
   checksum: 10c0/fbbbbdc902a913d65605274be23f3d604065cfc3ee3d78bf9fc8af1dc9fc82667c50d3d657f5e601ac657bac9b396b50ee97bd29cd55436320cf1cddebdcec72
-  languageName: node
-  linkType: hard
-
-"serialize-javascript@npm:^7.0.3":
-  version: 7.0.4
-  resolution: "serialize-javascript@npm:7.0.4"
-  checksum: 10c0/f3da6f994c41306fbfabb55eefe280a46da05592939a84b0d95c84e296c92ba9e6a3d86cf7bbd71e7a59e1cfcd8481745910af109bedbd3ed853b444d32f9ee9
   languageName: node
   linkType: hard
 
@@ -12325,7 +12276,6 @@ __metadata:
     "@stylistic/eslint-plugin": "npm:^5.10.0"
     "@types/ejs": "npm:^3.1.5"
     "@types/html-minifier": "npm:^4.0.6"
-    "@types/imagemin": "npm:^9.0.1"
     "@types/jsdom": "npm:^30.0.0"
     "@types/node": "npm:^26.6.6"
     "@types/webpack-env": "npm:^1.18.8"
@@ -12338,14 +12288,13 @@ __metadata:
     eslint-config-google: "npm:^0.14.0"
     eslint-plugin-jsdoc: "npm:^65.4.7"
     favicons-webpack-plugin: "npm:^6.0.1"
-    image-minimizer-webpack-plugin: "npm:^5.0.0"
     jest: "npm:^30.5.2"
     jsdoc: "npm:^4.0.5"
     prop-types: "npm:^15.8.1"
     typescript-eslint: "npm:^8.72.2"
     web-component-wrapper: "npm:^0.0.624"
     web-documentation: "npm:^1.0.74"
-    weboptimizer: "npm:^4.0.118"
+    weboptimizer: "npm:^4.0.119"
     webpack-dev-server: "npm:^6.1.0"
   peerDependencies:
     clientnode: "*"
@@ -12366,9 +12315,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^4.0.118":
-  version: 4.0.118
-  resolution: "weboptimizer@npm:4.0.118"
+"weboptimizer@npm:^4.0.119":
+  version: 4.0.119
+  resolution: "weboptimizer@npm:4.0.119"
   dependencies:
     "@babel/plugin-proposal-decorators": "npm:^8.0.2"
     "@babel/plugin-transform-class-properties": "npm:^8.0.1"
@@ -12401,7 +12350,6 @@ __metadata:
     "@eslint/js": "*"
     "@stylistic/eslint-plugin": "*"
     "@types/ejs": "*"
-    "@types/imagemin": "*"
     "@types/node": "*"
     "@types/webpack-env": "*"
     "@typescript-eslint/parser": "*"
@@ -12414,12 +12362,12 @@ __metadata:
     favicons-webpack-plugin: "*"
     globals: "*"
     identity-obj-proxy: "*"
-    image-minimizer-webpack-plugin: "*"
     imagemin: "*"
     jest: "*"
     jest-canvas-mock: "*"
     jsdoc: "*"
     mini-css-extract-plugin: "*"
+    minimizer-webpack-plugin: ^5.12.0
     postcss: "*"
     postcss-fontpath: "*"
     postcss-import: "*"
@@ -12432,7 +12380,6 @@ __metadata:
     stylelint: "*"
     stylelint-config-standard: "*"
     stylelint-config-standard-scss: "*"
-    terser-webpack-plugin: "*"
     typescript-eslint: "*"
     typescript-plugin-css-modules: "*"
     webpack-dev-server: "*"
@@ -12445,8 +12392,6 @@ __metadata:
     "@stylistic/eslint-plugin":
       optional: true
     "@types/ejs":
-      optional: true
-    "@types/imagemin":
       optional: true
     "@types/node":
       optional: true
@@ -12470,8 +12415,6 @@ __metadata:
       optional: true
     identity-obj-proxy:
       optional: true
-    image-minimizer-webpack-plugin:
-      optional: true
     imagemin:
       optional: true
     jest:
@@ -12481,6 +12424,8 @@ __metadata:
     jsdoc:
       optional: true
     mini-css-extract-plugin:
+      optional: true
+    minimizer-webpack-plugin:
       optional: true
     postcss-fontpath:
       optional: true
@@ -12504,8 +12449,6 @@ __metadata:
       optional: true
     stylelint-config-standard-scss:
       optional: true
-    terser-webpack-plugin:
-      optional: true
     typescript-eslint:
       optional: true
     typescript-plugin-css-modules:
@@ -12516,7 +12459,7 @@ __metadata:
       optional: true
   bin:
     weboptimizer: dist/index.js
-  checksum: 10c0/0c8a7fd277f9e8bf0996550cc7f0f165ab5550c9cd61b61b0243e677efcee2b7d11e36215862465a8c86b64f021f92b604e62ed2402bcfeefe99e5238f4f2f12
+  checksum: 10c0/28634dd066a2fb66ab458914354f9b206f7b7c483d1770b32fcaee20bf91928fbb2a89c4aa028b9641910cfa272ac0d59dc5504c690d7da91d6431b6ce5ae448
   languageName: node
   linkType: hard
 

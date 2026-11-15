@@ -84,7 +84,6 @@
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/ejs": "^3.1.5",
     "@types/html-minifier": "^4.0.6",
-    "@types/imagemin": "^9.0.1",
     "@types/jsdom": "^30.0.0",
     "@types/node": "^26.6.6",
     "@types/webpack-env": "^1.18.8",
@@ -97,14 +96,13 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jsdoc": "^65.4.7",
     "favicons-webpack-plugin": "^6.0.1",
-    "image-minimizer-webpack-plugin": "^5.0.0",
     "jest": "^30.5.2",
     "jsdoc": "^4.0.5",
     "prop-types": "^15.8.1",
     "typescript-eslint": "^8.72.2",
     "web-component-wrapper": "^0.0.624",
     "web-documentation": "^1.0.74",
-    "weboptimizer": "^4.0.118",
+    "weboptimizer": "^4.0.119",
     "webpack-dev-server": "^6.1.0"
   },
   "peerDependencies": {

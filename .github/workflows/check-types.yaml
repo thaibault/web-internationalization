@@ -29,5 +29,5 @@ jobs:
 
       - name: Check-types
         env:
-          NODE_ENV: ${{ contains(inputs.debug, 'true') && 'debug' }}
+          NODE_ENV: ${{ contains(inputs.debug, 'true') && 'debug' || '' }}
         run: yarn check:types

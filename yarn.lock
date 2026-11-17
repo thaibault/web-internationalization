@@ -7186,9 +7186,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^65.4.7":
-  version: 65.4.7
-  resolution: "eslint-plugin-jsdoc@npm:65.4.7"
+"eslint-plugin-jsdoc@npm:^65.4.8":
+  version: 65.4.8
+  resolution: "eslint-plugin-jsdoc@npm:65.4.8"
   dependencies:
     "@es-joy/escodegen": "npm:^5.0.1"
     "@es-joy/jsdoccomment": "npm:~1.2.0"
@@ -7212,7 +7212,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/7e5b4344ac3a0bf26fb113a2c16d70b8b178b19e55b9fd768a7f7a6a33d94b37fd138818b0b15da80e4d8396c2ed80c11b2ce7d1705425df752e865a79e97121
+  checksum: 10c0/8dc84cdc16110d28aacd9d0f5b17f115cda60e85f8aa59a46fa83b3bec5d19e653b26793d0b6d7dd4c0058a9bc385ad3f933e4b93c3e678821e430f76fc59052
   languageName: node
   linkType: hard
 
@@ -12229,12 +12229,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-documentation@npm:^1.0.76":
-  version: 1.0.76
-  resolution: "web-documentation@npm:1.0.76"
+"web-documentation@npm:^1.0.77":
+  version: 1.0.77
+  resolution: "web-documentation@npm:1.0.77"
   bin:
     web-documentation: dist/deploy.js
-  checksum: 10c0/4956ab1138b48442c300bb07b2fcab292bab3f71a75e6cf055c5f4010b5866797e1e740cfadefe83912aa9c940ad14b9f9ed9d5be17b4170de716655d4680249
+  checksum: 10c0/48e01e75e515815a46108925fa3c115aee20654340f6f7ceabfe84e1fa12dbd3c04d710ac4835818c9c333f2037cb1dffb48cfe4e489eb665a4227ff05f4e5e5
   languageName: node
   linkType: hard
 
@@ -12259,15 +12259,15 @@ __metadata:
     core-js: "npm:^3.51.0"
     eslint: "npm:^10.15.0"
     eslint-config-google: "npm:^0.14.0"
-    eslint-plugin-jsdoc: "npm:^65.4.7"
+    eslint-plugin-jsdoc: "npm:^65.4.8"
     favicons-webpack-plugin: "npm:^6.0.1"
     jest: "npm:^30.5.2"
     jsdoc: "npm:^4.0.5"
     prop-types: "npm:^15.8.1"
     typescript-eslint: "npm:^8.72.2"
     web-component-wrapper: "npm:^0.0.624"
-    web-documentation: "npm:^1.0.76"
-    weboptimizer: "npm:^4.0.121"
+    web-documentation: "npm:^1.0.77"
+    weboptimizer: "npm:^4.0.122"
     webpack-dev-server: "npm:^6.1.0"
   peerDependencies:
     clientnode: "*"
@@ -12288,9 +12288,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^4.0.121":
-  version: 4.0.121
-  resolution: "weboptimizer@npm:4.0.121"
+"weboptimizer@npm:^4.0.122":
+  version: 4.0.122
+  resolution: "weboptimizer@npm:4.0.122"
   dependencies:
     "@babel/plugin-proposal-decorators": "npm:^8.0.2"
     "@babel/plugin-transform-class-properties": "npm:^8.0.1"
@@ -12432,7 +12432,7 @@ __metadata:
       optional: true
   bin:
     weboptimizer: dist/index.js
-  checksum: 10c0/522a58c44dd3516c72ea5310b4fe649a1bdbfe61cafe0d8e9753fff7a2b148574c08d16fde656f4ab66ad4bb20a5acb855af5f0d1656f7be83f02b5cff968f52
+  checksum: 10c0/881f8648ac0574d49e55c4e70ff24b0c0f62c46af8920bdbf15ffd0a56bc81fc58a9ab9f2a900bd1be4be54eeaf8a958b678661ffa4a208405bf5afbbefc3002
   languageName: node
   linkType: hard
 

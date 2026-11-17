@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3>web-internationalization 2.0.60</h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><!-- !/usr/bin/env markdown
+-*- coding: utf-8 -*-
+region header
+Copyright Torben Sickert (info["~at~"]tsickert.com) 16.12.2012
+
+License
+-------
+
+This library written by Torben Sickert stands under a creative commons naming
+4.0 international license.
+See https://creativecommons.org/licenses/by/4.0/deed.de
+endregion -->
+<!--|deDE:Projektstatus-->
+<!--|frFR:Statut du projet-->
+<h2>Project Status</h2>
+<p><a href="https://www.npmjs.com/package/web-internationalization"><img src="https://img.shields.io/npm/v/web-internationalization?color=%23d55e5d&amp;label=npm%20package%20version&amp;logoColor=%23d55e5d&amp;style=for-the-badge" alt="npm"></a>
+<a href="https://www.npmjs.com/package/web-internationalization"><img src="https://img.shields.io/npm/dy/web-internationalization.svg?style=for-the-badge" alt="npm downloads"></a></p>
+<p><a href="https://github.com/thaibault/web-internationalization/actions/workflows/build.yaml"><img src="https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/build.yaml?style=for-the-badge" alt="build"></a>
+<a href="https://github.com/thaibault/web-internationalization/actions/workflows/build-package-and-push.yaml"><img src="https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/build-package-and-push.yaml?label=build%20push%20package&amp;style=for-the-badge" alt="build push package"></a></p>
+<p><a href="https://github.com/thaibault/web-internationalization/actions/workflows/check-types.yaml"><img src="https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/check-types.yaml?label=check%20types&amp;style=for-the-badge" alt="check types"></a>
+<a href="https://github.com/thaibault/web-internationalization/actions/workflows/lint.yaml"><img src="https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/lint.yaml?label=lint&amp;style=for-the-badge" alt="lint"></a>
+<a href="https://github.com/thaibault/web-internationalization/actions/workflows/test-coverage-report.yaml"><img src="https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/test-coverage-report.yaml?label=test&amp;style=for-the-badge" alt="test"></a></p>
+<p><a href="https://coveralls.io/github/thaibault/web-internationalization"><img src="https://img.shields.io/coverallsCoverage/github/thaibault/web-internationalization?label=code%20coverage&amp;style=for-the-badge" alt="code coverage"></a></p>
+<p><a href="https://github.com/thaibault/web-internationalization/actions/workflows/deploy-web-documentation.yaml"><img src="https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/deploy-web-documentation.yaml?label=deploy%20web%20documentation&amp;style=for-the-badge" alt="deploy web documentation"></a>
+<a href="https://tsickert.com/web-internationalization"><img src="https://img.shields.io/website-up-down-green-red/https/tsickert.com/web-internationalization.svg?label=web-documentation&amp;style=for-the-badge" alt="web documentation"></a></p>
+<!--|deDE:Einsatzmöglichkeiten-->
+<!--|frFR:Cas d'utilisation-->
+<h2>Use case</h2>
+<p>Translate a website directly in the browser without a build step, server or
+translation files. Write the translations right next to the original text,
+mostly as HTML comments, and wrap the page into the &quot;web-internationalization&quot;
+web component. It switches all texts when a visitor clicks a language link,
+remembers the choice and picks a fitting language on the first visit.</p>
+<!--deDE:
+    Übersetzen Sie eine Webseite direkt im Browser, ohne Build-Schritt, Server
+    oder Übersetzungsdateien. Schreiben Sie die Übersetzungen direkt neben den
+    Originaltext, meist als HTML-Kommentare, und umschließen Sie die Seite mit
+    der Web Component "web-internationalization". Sie wechselt alle Texte,
+    wenn Besucher auf einen Sprachlink klicken, merkt sich die Auswahl und
+    wählt beim ersten Besuch eine passende Sprache.
+-->
+<!--frFR:
+    Traduisez un site web directement dans le navigateur, sans étape de
+    compilation, serveur ni fichiers de traduction. Écrivez les traductions
+    juste à côté du texte original, le plus souvent sous forme de
+    commentaires HTML, et englobez la page dans le web component
+    "web-internationalization". Il change tous les textes lorsqu'un visiteur
+    clique sur un lien de langue, mémorise ce choix et choisit une langue
+    adaptée lors de la première visite.
+-->
+<div class="wd-table-of-contents">
+    <h2 id="content">Content<!--deDE:Inhalt--><!--frFR:Contenu--></h2>
+    <!--wd-table-of-contents-->
+</div>
+<!--|deDE:Schnellstart-->
+<!--|frFR:Démarrage rapide-->
+<h2>Quick start</h2>
+<p>Load the bundle, which contains all dependencies, register the component and
+add a few styles that hide the translations not shown:</p>
+<!--deDE:
+    Laden Sie das Bundle, das alle Abhängigkeiten enthält, registrieren Sie
+    die Komponente und fügen Sie ein paar Styles hinzu, die die gerade nicht
+    angezeigten Übersetzungen ausblenden:
+-->
+<!--frFR:
+    Chargez le bundle, qui contient toutes les dépendances, enregistrez le
+    composant et ajoutez quelques styles qui masquent les traductions non
+    affichées:
+-->
+<pre class="prettyprint source lang-HTML"><code>&lt;script type=&quot;module&quot;>
+    import {
+        api
+    } from 'https://unpkg.com/web-internationalization@latest/dist/bundle/index.js'
+
+    api.register()
+&lt;/script>
+&lt;style>
+    lang-replacement, lang-alternative:not([active]), .wi-hide {
+        display: none;
+    }
+&lt;/style>
+
+&lt;web-internationalization>
+    &lt;a href=&quot;#lang-enUS&quot;>English&lt;/a>
+    &lt;a href=&quot;#lang-deDE&quot;>Deutsch&lt;/a>
+
+    &lt;p>
+        Welcome to my website.
+        &lt;!--deDE:Willkommen auf meiner Webseite.-->
+    &lt;/p>
+&lt;/web-internationalization>
+</code></pre>
+<p>Instead of calling &quot;api.register()&quot; you can also set
+&quot;window.AUTO_DEFINE_WEB_INTERNATIONALIZATION = true&quot; before the script is
+loaded. &quot;api.register('my-translator')&quot; registers the component under another
+tag name.</p>
+<!--deDE:
+    Statt "api.register()" aufzurufen, können Sie auch
+    "window.AUTO_DEFINE_WEB_INTERNATIONALIZATION = true" setzen, bevor das
+    Skript geladen wird. "api.register('my-translator')" registriert die
+    Komponente unter einem anderen Tag-Namen.
+-->
+<!--frFR:
+    Au lieu d'appeler "api.register()", vous pouvez aussi définir
+    "window.AUTO_DEFINE_WEB_INTERNATIONALIZATION = true" avant le chargement
+    du script. "api.register('my-translator')" enregistre le composant sous
+    un autre nom de balise.
+-->
+<!--|deDE:Mit einem Paketmanager-->
+<!--|frFR:Avec un gestionnaire de paquets-->
+<h3>With a package manager</h3>
+<pre class="prettyprint source lang-bash"><code>npm install web-internationalization core-js
+</code></pre>
+<p>The default entry point additionally needs its optional peer dependencies
+&quot;clientnode&quot; and &quot;web-component-wrapper&quot;. The bundle variant
+&quot;web-internationalization/bundle&quot; already contains them:</p>
+<!--deDE:
+    Der Standardeinstiegspunkt benötigt zusätzlich seine optionalen
+    Peer-Abhängigkeiten "clientnode" und "web-component-wrapper". Die
+    Bundle-Variante "web-internationalization/bundle" enthält sie bereits:
+-->
+<!--frFR:
+    Le point d'entrée par défaut nécessite en plus ses dépendances « peer »
+    optionnelles "clientnode" et "web-component-wrapper". La variante bundle
+    "web-internationalization/bundle" les contient déjà:
+-->
+<pre class="prettyprint source lang-JavaScript"><code>import {api} from 'web-internationalization'
+// Or without further dependencies:
+// import {api} from 'web-internationalization/bundle'
+
+api.register()
+</code></pre>
+<!--|deDE:Ältere Browser-->
+<!--|frFR:Navigateurs plus anciens-->
+<h3>Older browsers</h3>
+<p>The default variants target browsers supporting ES6 classes. For older
+browsers use &quot;web-internationalization/compatible&quot; or the bundle
+&quot;web-internationalization/bundle/compatible&quot; (&quot;dist/bundle/compatible/index.js&quot;
+on a CDN) and load the web components polyfill before.</p>
+<!--deDE:
+    Die Standardvarianten zielen auf Browser, die ES6-Klassen unterstützen.
+    Für ältere Browser verwenden Sie "web-internationalization/compatible"
+    oder das Bundle "web-internationalization/bundle/compatible"
+    ("dist/bundle/compatible/index.js" über ein CDN) und laden vorher das Web
+    Components Polyfill.
+-->
+<!--frFR:
+    Les variantes par défaut ciblent les navigateurs qui prennent en charge
+    les classes ES6. Pour les navigateurs plus anciens, utilisez
+    "web-internationalization/compatible" ou le bundle
+    "web-internationalization/bundle/compatible"
+    ("dist/bundle/compatible/index.js" via un CDN) et chargez auparavant le
+    polyfill des web components.
+-->
+<!--|deDE:Übersetzungen schreiben-->
+<!--|frFR:Écrire les traductions-->
+<h2>Writing translations</h2>
+<p>The component only translates content inside its own tag. Each language is
+written as a code of two lowercase and two uppercase letters, like &quot;enUS&quot;,
+&quot;deDE&quot; or &quot;frFR&quot;.</p>
+<!--deDE:
+    Die Komponente übersetzt nur Inhalte innerhalb ihres eigenen Tags. Jede
+    Sprache wird als Code aus zwei Klein- und zwei Großbuchstaben
+    geschrieben, z. B. "enUS", "deDE" oder "frFR".
+-->
+<!--frFR:
+    Le composant ne traduit que le contenu situé à l'intérieur de sa propre
+    balise. Chaque langue s'écrit sous forme d'un code de deux lettres
+    minuscules et deux majuscules, comme "enUS", "deDE" ou "frFR".
+-->
+<!--|deDE:Text mit Kommentaren-->
+<!--|frFR:Texte avec des commentaires-->
+<h3>Text with comments</h3>
+<p>Put a comment starting with the language code and a colon right behind a
+text:</p>
+<!--deDE:
+    Setzen Sie direkt hinter einen Text einen Kommentar, der mit dem
+    Sprachcode und einem Doppelpunkt beginnt:
+-->
+<!--frFR:
+    Placez juste après un texte un commentaire commençant par le code de
+    langue suivi de deux-points:
+-->
+<!--showExample-->
+<pre class="prettyprint source lang-HTML"><code>&lt;p>
+    Your English version.
+    &lt;!--deDE:Ihre deutsche Variante.-->
+    &lt;!--frFR:
+        Votre version française.
+    -->
+&lt;/p>
+</code></pre>
+<p>A comment with a leading &quot;|&quot; translates the next element containing text
+instead. This is handy for headings and elements which should stay clean:</p>
+<!--deDE:
+    Ein Kommentar mit vorangestelltem "|" übersetzt stattdessen das nächste
+    Element, das Text enthält. Das ist praktisch für Überschriften und
+    Elemente, die frei von Kommentaren bleiben sollen:
+-->
+<!--frFR:
+    Un commentaire précédé de "|" traduit à la place l'élément suivant qui
+    contient du texte. C'est pratique pour les titres et les éléments qui
+    doivent rester sans commentaires:
+-->
+<!--showExample-->
+<pre class="prettyprint source lang-HTML"><code>&lt;!--|deDE:Ihre deutsche Variante.-->&lt;!--|frFR:Votre version française.-->
+&lt;p>Your English version.&lt;/p>
+</code></pre>
+<!--|deDE:Text mit Auszeichnungen-->
+<!--|frFR:Texte avec balisage-->
+<h3>Text with markup</h3>
+<p>A comment only replaces the single text node in front of it. To translate
+text containing elements, wrap it into &quot;lang-replace&quot;:</p>
+<!--deDE:
+    Ein Kommentar ersetzt nur den einzelnen Textknoten davor. Um Text mit
+    enthaltenen Elementen zu übersetzen, umschließen Sie ihn mit
+    "lang-replace":
+-->
+<!--frFR:
+    Un commentaire ne remplace que le nœud de texte qui le précède. Pour
+    traduire un texte contenant des éléments, englobez-le dans
+    "lang-replace":
+-->
+<!--showExample-->
+<pre class="prettyprint source lang-HTML"><code>&lt;p>
+    &lt;lang-replace>
+        Your English version with &lt;strong>markup&lt;/strong> inside.
+    &lt;/lang-replace>
+    &lt;!--deDE:Ihre deutsche Variante mit &lt;strong>Auszeichnung&lt;/strong>.-->
+    &lt;!--frFR:Votre version française avec &lt;strong>balisage&lt;/strong>.-->
+&lt;/p>
+</code></pre>
+<p>Instead of comments you can also use &quot;lang-replacement&quot; elements, so that
+editors and tools treat the translations as regular markup:</p>
+<!--deDE:
+    Statt Kommentaren können Sie auch "lang-replacement"-Elemente verwenden,
+    sodass Editoren und Werkzeuge die Übersetzungen als normales Markup
+    behandeln:
+-->
+<!--frFR:
+    Au lieu de commentaires, vous pouvez aussi utiliser des éléments
+    "lang-replacement", afin que les éditeurs et outils traitent les
+    traductions comme du balisage ordinaire:
+-->
+<!--showExample-->
+<pre class="prettyprint source lang-HTML"><code>&lt;p>
+    &lt;lang-replace>
+        Your English version with &lt;strong>markup&lt;/strong> inside.
+    &lt;/lang-replace>
+    &lt;lang-replacement>deDE:
+        Ihre deutsche Variante mit &lt;strong>Auszeichnung&lt;/strong>.
+    &lt;/lang-replacement>
+    &lt;lang-replacement>frFR:
+        Votre version française avec &lt;strong>balisage&lt;/strong>.
+    &lt;/lang-replacement>
+&lt;/p>
+</code></pre>
+<!--|deDE:Alternativen-->
+<!--|frFR:Alternatives-->
+<h3>Alternatives</h3>
+<p>Replacements move content around in the DOM. If scripts or styles rely on
+stable elements, write each language as its own &quot;lang-alternative&quot; element.
+The one without a &quot;lang&quot; attribute holds the default language. Only the
+element of the current language gets the &quot;active&quot; attribute and is shown:</p>
+<!--deDE:
+    Ersetzungen verschieben Inhalte im DOM. Sind Skripte oder Styles auf
+    stabile Elemente angewiesen, schreiben Sie jede Sprache als eigenes
+    "lang-alternative"-Element. Das Element ohne "lang"-Attribut enthält die
+    Standardsprache. Nur das Element der aktuellen Sprache erhält das
+    Attribut "active" und wird angezeigt:
+-->
+<!--frFR:
+    Les remplacements déplacent du contenu dans le DOM. Si des scripts ou des
+    styles dépendent d'éléments stables, écrivez chaque langue dans son
+    propre élément "lang-alternative". Celui sans attribut "lang" contient la
+    langue par défaut. Seul l'élément de la langue courante reçoit l'attribut
+    "active" et est affiché:
+-->
+<!--showExample-->
+<pre class="prettyprint source lang-HTML"><code>&lt;p>
+    &lt;lang-alternative>Your English version.&lt;/lang-alternative>
+    &lt;lang-alternative lang=&quot;deDE&quot;>Ihre deutsche Variante.&lt;/lang-alternative>
+    &lt;lang-alternative lang=&quot;frFR&quot;>Votre version française.&lt;/lang-alternative>
+&lt;/p>
+</code></pre>
+<!--|deDE:Bekannte Übersetzungen wiederverwenden-->
+<!--|frFR:Réutiliser les traductions connues-->
+<h3>Reusing known translations</h3>
+<p>Generated content like a table of contents repeats texts which are
+translated elsewhere already. Mark such areas with the class
+&quot;web-internationalization-generated-content&quot; and every text in them which
+exactly matches an already translated text is switched as well:</p>
+<!--deDE:
+    Generierte Inhalte wie ein Inhaltsverzeichnis wiederholen Texte, die an
+    anderer Stelle bereits übersetzt sind. Markieren Sie solche Bereiche mit
+    der Klasse "web-internationalization-generated-content", dann wird jeder
+    Text darin, der genau einem bereits übersetzten Text entspricht,
+    ebenfalls umgeschaltet:
+-->
+<!--frFR:
+    Un contenu généré comme une table des matières répète des textes déjà
+    traduits ailleurs. Marquez ces zones avec la classe
+    "web-internationalization-generated-content" et chaque texte qui y
+    correspond exactement à un texte déjà traduit change lui aussi:
+-->
+<!--showExample-->
+<pre class="prettyprint source lang-HTML"><code>&lt;ul class=&quot;web-internationalization-generated-content&quot;>
+    &lt;li>&lt;a href=&quot;#introduction&quot;>Introduction&lt;/a>&lt;/li>
+&lt;/ul>
+
+&lt;h2 id=&quot;introduction&quot;>
+    Introduction&lt;!--deDE:Einführung-->&lt;!--frFR:Présentation-->
+&lt;/h2>
+</code></pre>
+<p>Texts ending with the template delimiter &quot;}}&quot; are left untouched, so
+templates rendered later on the client keep working.</p>
+<!--deDE:
+    Texte, die mit dem Template-Begrenzer "}}" enden, bleiben unverändert,
+    damit später im Client gerenderte Templates weiter funktionieren.
+-->
+<!--frFR:
+    Les textes se terminant par le délimiteur de template "}}" restent
+    intacts, afin que les templates rendus plus tard côté client continuent
+    de fonctionner.
+-->
+<!--|deDE:Sprache wechseln-->
+<!--|frFR:Changer de langue-->
+<h2>Switching the language</h2>
+<p>Every link inside the component pointing to &quot;#lang-&quot; followed by a language
+code switches to that language. The link of the current language gets the
+class &quot;current&quot;, so you can highlight it with CSS:</p>
+<!--deDE:
+    Jeder Link innerhalb der Komponente, der auf "#lang-" gefolgt von einem
+    Sprachcode zeigt, wechselt zu dieser Sprache. Der Link der aktuellen
+    Sprache erhält die Klasse "current", sodass Sie ihn per CSS hervorheben
+    können:
+-->
+<!--frFR:
+    Chaque lien à l'intérieur du composant pointant vers "#lang-" suivi d'un
+    code de langue bascule vers cette langue. Le lien de la langue courante
+    reçoit la classe "current", ce qui permet de le mettre en évidence en
+    CSS:
+-->
+<!--showExample-->
+<pre class="prettyprint source lang-HTML"><code>&lt;a href=&quot;#lang-deDE&quot;>de&lt;/a>
+&lt;a href=&quot;#lang-enUS&quot;>en&lt;/a>
+&lt;a href=&quot;#lang-frFR&quot;>fr&lt;/a>
+</code></pre>
+<p>Without a configured &quot;selection&quot; these links also define which languages are
+allowed. If you add links later, bind them with
+&quot;refreshLanguageButtonDomNodesBinding()&quot;. You can also switch from code:</p>
+<!--deDE:
+    Ohne konfigurierte "selection" legen diese Links auch fest, welche
+    Sprachen erlaubt sind. Fügen Sie später Links hinzu, binden Sie sie mit
+    "refreshLanguageButtonDomNodesBinding()". Sie können auch per Code
+    wechseln:
+-->
+<!--frFR:
+    Sans "selection" configurée, ces liens définissent aussi les langues
+    autorisées. Si vous ajoutez des liens plus tard, liez-les avec
+    "refreshLanguageButtonDomNodesBinding()". Vous pouvez aussi changer de
+    langue depuis le code:
+-->
+<pre class="prettyprint source lang-JavaScript"><code>const translator = document.querySelector('web-internationalization')
+
+translator.refreshLanguageButtonDomNodesBinding()
+await translator.switch('deDE')
+console.log(translator.currentLanguage)
+</code></pre>
+<!--|deDE:Startsprache-->
+<!--|frFR:Langue initiale-->
+<h3>Initial language</h3>
+<p>On the first render the language is taken from the &quot;initial&quot; option, else
+from the visitor's last choice saved in the local storage, else from the
+browser language and finally from the &quot;default&quot; option (&quot;enUS&quot;). Common
+spellings like &quot;de&quot;, &quot;de-DE&quot; or &quot;german&quot; are mapped to their language code,
+unknown ones fall back to the default.</p>
+<!--deDE:
+    Beim ersten Rendern wird die Sprache aus der Option "initial" genommen,
+    sonst aus der letzten im Local Storage gespeicherten Wahl der Besucher,
+    sonst aus der Browsersprache und zuletzt aus der Option "default"
+    ("enUS"). Übliche Schreibweisen wie "de", "de-DE" oder "german" werden
+    ihrem Sprachcode zugeordnet, unbekannte fallen auf die Standardsprache
+    zurück.
+-->
+<!--frFR:
+    Lors du premier rendu, la langue provient de l'option "initial", sinon du
+    dernier choix du visiteur enregistré dans le local storage, sinon de la
+    langue du navigateur et enfin de l'option "default" ("enUS"). Les
+    écritures courantes comme "de", "de-DE" ou "german" sont associées à leur
+    code de langue, les inconnues reviennent à la langue par défaut.
+-->
+<!--|deDE:Konfiguration-->
+<!--|frFR:Configuration-->
+<h2>Configuration</h2>
+<p>Pass options as a JavaScript object in the &quot;options&quot; attribute:</p>
+<!--deDE:Übergeben Sie Optionen als JavaScript-Objekt im Attribut "options":-->
+<!--frFR:
+    Passez les options sous forme d'objet JavaScript dans l'attribut
+    "options":
+-->
+<pre class="prettyprint source lang-HTML"><code>&lt;web-internationalization
+    options=&quot;{default: 'deDE', selection: ['deDE', 'enUS'], useEffect: false}&quot;
+>
+    ...
+&lt;/web-internationalization>
+</code></pre>
+<ul>
+<li>&quot;default&quot;: Language of the original texts and the fallback, &quot;enUS&quot; by
+default.<!--deDE:"default": Sprache der Originaltexte und Rückfallsprache, standardmäßig "enUS".--><!--frFR:"default": Langue des textes originaux et langue de repli, "enUS" par défaut.--></li>
+<li>&quot;initial&quot;: Language to start with, overrides the automatic detection.<!--deDE:"initial": Sprache, mit der begonnen wird, überschreibt die automatische Erkennung.--><!--frFR:"initial": Langue de départ, remplace la détection automatique.--></li>
+<li>&quot;selection&quot;: Allowed languages. Switching to others is ignored.<!--deDE:"selection": Erlaubte Sprachen. Wechsel zu anderen werden ignoriert.--><!--frFR:"selection": Langues autorisées. Les changements vers d'autres langues sont ignorés.--></li>
+<li>&quot;useEffect&quot;: Fades changed texts out and in, &quot;true&quot; by default.<!--deDE:"useEffect": Blendet geänderte Texte aus und wieder ein, standardmäßig "true".--><!--frFR:"useEffect": Fait disparaître puis réapparaître les textes modifiés, "true" par défaut.--></li>
+<li>&quot;languageMapping&quot;: Alternative spellings per language code.<!--deDE:"languageMapping": Alternative Schreibweisen je Sprachcode.--><!--frFR:"languageMapping": Écritures alternatives par code de langue.--></li>
+<li>&quot;languageHashPrefix&quot;: Link prefix of language links, &quot;lang-&quot; by default.<!--deDE:"languageHashPrefix": Präfix der Sprachlinks, standardmäßig "lang-".--><!--frFR:"languageHashPrefix": Préfixe des liens de langue, "lang-" par défaut.--></li>
+<li>&quot;currentLanguageIndicatorClassName&quot;: Class of the current language link,
+&quot;current&quot; by default.<!--deDE:"currentLanguageIndicatorClassName": Klasse des Links der aktuellen Sprache, standardmäßig "current".--><!--frFR:"currentLanguageIndicatorClassName": Classe du lien de la langue courante, "current" par défaut.--></li>
+<li>&quot;selectors.knownTranslation&quot;: Selector of areas reusing known translations.<!--deDE:"selectors.knownTranslation": Selektor der Bereiche, die bekannte Übersetzungen wiederverwenden.--><!--frFR:"selectors.knownTranslation": Sélecteur des zones réutilisant les traductions connues.--></li>
+<li>&quot;templateDelimiter&quot;: Delimiters of client side templates, &quot;{{&quot; and &quot;}}&quot; by
+default.<!--deDE:"templateDelimiter": Begrenzer clientseitiger Templates, standardmäßig "{{" und "}}".--><!--frFR:"templateDelimiter": Délimiteurs des templates côté client, "{{" et "}}" par défaut.--></li>
+</ul>
+<!--|deDE:Ereignisse-->
+<!--|frFR:Événements-->
+<h3>Events</h3>
+<p>&quot;onSwitch&quot; runs before and &quot;onSwitched&quot; after switching to another language,
+both get the old and the new language. &quot;onEnsure&quot; and &quot;onEnsured&quot; get the
+language when the current one is applied again, e.g. on the first render.
+&quot;onSwitch&quot; and &quot;onEnsure&quot; may return a promise, the texts are replaced after
+it resolved. Set them as properties or as attributes, where &quot;parameters&quot;
+holds the arguments:</p>
+<!--deDE:
+    "onSwitch" läuft vor und "onSwitched" nach dem Wechsel zu einer anderen
+    Sprache, beide erhalten die alte und die neue Sprache. "onEnsure" und
+    "onEnsured" erhalten die Sprache, wenn die aktuelle erneut angewendet
+    wird, z. B. beim ersten Rendern. "onSwitch" und "onEnsure" dürfen ein
+    Promise zurückgeben, die Texte werden ersetzt, sobald es erfüllt ist.
+    Setzen Sie sie als Eigenschaften oder als Attribute, wobei "parameters"
+    die Argumente enthält:
+-->
+<!--frFR:
+    "onSwitch" s'exécute avant et "onSwitched" après le passage à une autre
+    langue, tous deux reçoivent l'ancienne et la nouvelle langue. "onEnsure"
+    et "onEnsured" reçoivent la langue lorsque la langue courante est
+    appliquée de nouveau, par exemple lors du premier rendu. "onSwitch" et
+    "onEnsure" peuvent retourner une promesse, les textes sont remplacés une
+    fois celle-ci résolue. Définissez-les comme propriétés ou comme
+    attributs, où "parameters" contient les arguments:
+-->
+<pre class="prettyprint source lang-HTML"><code>&lt;web-internationalization
+    on-switched=&quot;document.documentElement.lang = parameters[1].substring(0, 2)&quot;
+>
+    ...
+&lt;/web-internationalization>
+</code></pre>
+<pre class="prettyprint source lang-JavaScript"><code>document.querySelector('web-internationalization').onSwitch =
+    async (oldLanguage, newLanguage) => {
+        await loadFonts(newLanguage)
+    }
+</code></pre>
+<!--|deDE:Entwicklung-->
+<!--|frFR:Développement-->
+<h2>Development</h2>
+<pre class="prettyprint source lang-bash"><code>yarn install
+yarn start
+yarn test
+</code></pre>
+<p>&quot;yarn start&quot; serves a playground with examples of all translation variants.</p>
+<!--deDE:
+    "yarn start" stellt eine Spielwiese mit Beispielen aller
+    Übersetzungsvarianten bereit.
+-->
+<!--frFR:
+    "yarn start" sert un terrain de jeu avec des exemples de toutes les
+    variantes de traduction.
+--></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Nov 17 2026 11:48:43 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -26,6 +26,21 @@ import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter'
 import WebInternationalization, {api} from './index'
 import type {Options} from './type'
 // endregion
+/**
+ * Creates a not yet connected instance of the registered component.
+ * @returns Created instance.
+ */
+const createElement = (): WebInternationalization => {
+    const domNode = document.createElement('web-internationalization')
+
+    if (!(domNode instanceof WebInternationalization))
+        throw new Error(
+            '"web-internationalization" is not registered as ' +
+            '"WebInternationalization".'
+        )
+
+    return domNode as WebInternationalization
+}
 describe('WebInternationalization', (): void => {
     let root: WebInternationalization
 
@@ -38,8 +53,7 @@ describe('WebInternationalization', (): void => {
             )
 
         api.register()
-        root = document.createElement('web-internationalization') as
-            WebInternationalization
+        root = createElement()
         document.body.appendChild(root)
 
         await root.renderState.promise
@@ -206,8 +220,7 @@ describe('WebInternationalization markup', (): void => {
     const create = async (
         content: string, options: Partial<Options> = {}
     ): Promise<WebInternationalization> => {
-        const domNode = document.createElement('web-internationalization') as
-            WebInternationalization
+        const domNode = createElement()
         domNode.setAttribute(
             'options',
             JSON.stringify({initial: 'enUS', useEffect: false, ...options})
